@@ -16,6 +16,8 @@ import IdleTimer from 'react-idle-timer'
 //methods
 import functions from "./functions/index";
 
+
+
 //initial state
 // import { default as initialState } from "./initialState";
 
@@ -157,10 +159,12 @@ export class AudioPlayer extends Component {
       showClassName : 'idle-audio'
     })
   }
-  render() {
 
+
+  render() {
+     console.log('asdad')
     let title = this.props.audioFiles[this.state.currentTrackIdx].Title;
-    
+    let audioC = this.setAudio(this.props.audioContext)
     if (!this.props.rearrange) {
       //DEFAULT PLAYER VIEW
 
@@ -177,7 +181,7 @@ export class AudioPlayer extends Component {
           onAction={this.handleOnAction}
           debounce={250}
         />
-        {this.setAudio(this.props.audioContext)}
+        {audioC}
          
 
 

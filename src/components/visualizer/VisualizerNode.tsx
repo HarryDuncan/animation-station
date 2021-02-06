@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import * as THREE from "three";
-import {initializeAllScenes, getSceneByIndex, deleteAllScenes} from './SceneManager'
+import {init, getSceneByIndex, dispose} from './../../engine/MainFrame'
 import {fractionate, modulate, avg, max} from './visualizerFunctions/functions.js';
 
 
@@ -62,7 +62,7 @@ export class VisualizerNode extends Component {
     var bufferLength = framework.analyserNode.frequencyBinCount;
     framework.data = new Uint8Array(bufferLength);
     framework.analyserNode.connect(this.props.audioCtx.destination)
-    console.log(framework)
+    
     // Initializes 3 JS Stuff
     
     framework.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -72,13 +72,14 @@ export class VisualizerNode extends Component {
 
     this.elVisualizer.appendChild(framework.renderer.domElement );
      window.addEventListener('resize', onWindowResize, false);
-    initializeAllScenes(framework)
+
+    init(framework)
     currentVisualizer = getSceneByIndex(framework.visualizerIndex)
     framework.scene = currentVisualizer.scene
     framework.camera = currentVisualizer.camera
     
     framework.renderer.render(framework.scene, framework.camera );
-    switchVisualizers(framework)
+    // switchVisualizers(framework)
     tick()
     function tick() {
       currentVisualizer.onUpdate(framework); // perform any requested updates
@@ -116,18 +117,18 @@ export class VisualizerNode extends Component {
 
  
 
-componentWillUnmount(){
+public componentWillUnmount(){
     framework.breakAnimation = true
     if(framework.renderer !== undefined && framework.renderer !== null){
       framework.renderer.dispose()
     }
-    deleteAllScenes() 
+    dispose() 
     this.props.audio.pause()
     window.removeEventListener('resize', this.handleResize, false)
   }
 
 
-  togglePlaying = () => {
+  public togglePlaying = () => {
     framework.isPlaying = !framework.isPlaying
   }
  render() {

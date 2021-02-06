@@ -72,7 +72,7 @@ const navLinkGroups: INavLinkGroup[] = [
   },
 ];
 
-export const NavSide: React.FunctionComponent = () => {
+const NavMenu: React.FunctionComponent = () => {
   return (
     <Nav
       onLinkClick={_onLinkClick}
@@ -89,3 +89,5 @@ function _onLinkClick(ev?: React.MouseEvent<HTMLElement>, item?: INavLink) {
     alert('News link clicked');
   }
 }
+
+export default NavMenu;

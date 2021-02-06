@@ -1,5 +1,11 @@
 import React from 'react';
-import {VisualizerNode} from './../../Visual/VisualizerNode';
+import {VisualizerNode} from './../../VisualizerNode';
+
+const path = require('path');
+const url = require('url');
+const fs = require('fs');
+
+
 export function mountComponent() {
   let opts = this.setOpts([
     'playIcon',
@@ -81,16 +87,21 @@ export function setStyle(tier) {
   
 
 export function setAudio(context) {
-  context.resume()
+
+  let srcData = fs.readFile(`/Users/harry/Desktop/DevProjects/animationStation/public/${this.props.audioFiles[this.state.currentTrackIdx]['StreamUrl']}`,(err, data) => {
+    if(err){
+      throw err;
+    } 
+    console.log(data);
+    })
+
   return <div>
-  
- 
-   
+
     <audio
-    src={`./hjdmix/${this.props.audioFiles[this.state.currentTrackIdx]['StreamUrl']}`}
-    ref={(audioRef) => {
-    this.audioRef = audioRef;
-  }}
+      src={srcData}
+      ref={(audioRef) => {
+      this.audioRef = audioRef;
+    }}
     onLoadedMetadata={this.loadDuration}
     // onSuspend={() => clearInterval(this.seekingInterval)}
     onPlay={this.startPlay}

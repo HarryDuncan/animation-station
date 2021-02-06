@@ -18,8 +18,8 @@ const fullScreen : IIconProps = {iconName: 'ChromeFullScreen', styles : {root: {
 
 
 // Container where for the music visualizer - where the audio interface meets the engine
-export const VisualizerWrapper: React.FunctionComponent<IVisualizerContainerProps> = props => {
-  
+export const VisualizerContainer: React.FunctionComponent<IVisualizerContainerProps> = props => {
+
  const [isFullScreen, toggleFullScreen] = useState(false)
  const [isActive, toggleActive] = useState(true)
 
