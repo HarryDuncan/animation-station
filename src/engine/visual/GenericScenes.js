@@ -143,17 +143,19 @@ export function BallAndPlane (framework) {
 
         function makeRoughGround(mesh, distortionFr) {
           console.log(mesh)
-          mesh.geometry.vertices.forEach(function (vertex, i) {
-              var amp = 2;
-              var time = Date.now();
-              var distance = (noise2D(vertex.x + time * 0.0003, vertex.y + time * 0.0001) + 0) * distortionFr * amp;
-              vertex.z = distance;
-          });
-          mesh.geometry.verticesNeedUpdate = true;
-          mesh.geometry.normalsNeedUpdate = true;
-          mesh.geometry.computeVertexNormals();
-          mesh.geometry.computeFaceNormals();
-      }
+            if(mesh.geometry.vertices !== undefined){
+                mesh.geometry.vertices.forEach(function (vertex, i) {
+                var amp = 2;
+                var time = Date.now();
+                var distance = (noise2D(vertex.x + time * 0.0003, vertex.y + time * 0.0001) + 0) * distortionFr * amp;
+                vertex.z = distance;
+            });
+            mesh.geometry.verticesNeedUpdate = true;
+            mesh.geometry.normalsNeedUpdate = true;
+            mesh.geometry.computeVertexNormals();
+            mesh.geometry.computeFaceNormals();
+          }
+        }
       }
 
       

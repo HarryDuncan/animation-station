@@ -1,17 +1,30 @@
 import React from 'react';
 import {connect} from "react-redux";
-import {NavMenu} from '../ui';
-import {VisualizerContainer} from './../visualizer/VisualizerContainer';
+import './home.scss'
+import {toggleListMenu} from '../../store/player/player.actions';
 
+// import {NavMenu} from '../ui';
+// import {VisualizerContainer} from './../visualizer/VisualizerContainer';
+// {this.state.hideNav?
+				// 	null
+				// 	:
+				// 	<NavMenu />
+				// }
+				// 	 <VisualizerContainer audioContext={this.state.audioCont} trackProps={[{'title' : 'Access','Title' : 'Access', StreamUrl : 'Access.wav', 'ID' : 0}]} selectedTrack={'Access'} hideNav={this._hideNavMenu} exitCallback={this._unselect} />
+				
 
 interface IHomePageState {
 	hideNav : boolean;
 	audioCont : any;
+
+	
+
 }
 interface IHomePageProps {
-
-
+	toggleListMenu : any;
 }
+
+
 class HomePage extends React.Component<IHomePageProps, IHomePageState>{
 	constructor(props: IHomePageProps){
 	super(props)
@@ -34,17 +47,20 @@ class HomePage extends React.Component<IHomePageProps, IHomePageState>{
 	    
 	}
 
+	public onCloseClick = () => {
+		alert('asd')
+	}
+
+	public onMenuClick = () => {
+	
+		this.props.toggleListMenu()
+	}
 
 	public render(){
 		return(
-				<div>
-				{this.state.hideNav?
-					null
-					:
-					<NavMenu />
-				}
-					 <VisualizerContainer audioContext={this.state.audioCont} trackProps={[{'title' : 'Access','Title' : 'Access', StreamUrl : 'Access.wav', 'ID' : 0}]} selectedTrack={'Access'} hideNav={this._hideNavMenu} exitCallback={this._unselect} />
-				
+				<div className='home-container'>
+					<div className='close-button' onClick={this.onCloseClick}></div>
+                    <div className='menu-button' onClick={this.onMenuClick}></div>
 				</div>
 				);
 		
@@ -68,7 +84,7 @@ const mapStateToProps = (state: any) => ({
 })
  
 const mapDispatchToProps = {
-	
+	toggleListMenu
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

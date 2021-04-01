@@ -1,9 +1,5 @@
 import React from 'react';
-import {VisualizerNode} from './../../VisualizerNode';
-
-const path = require('path');
-const url = require('url');
-const fs = require('fs');
+import Node from './../../renderer/Node';
 
 
 export function mountComponent() {
@@ -86,23 +82,25 @@ export function setStyle(tier) {
    
   
 
-export function setAudio(context, srcData) {
-
-
+export function setAudio(context) {
+  context.resume()
+  
   return <div>
-
+  
+ 
+   
     <audio
-      src={srcData}
-      ref={(audioRef) => {
-      this.audioRef = audioRef;
-    }}
+    src={`./hjdmix/${this.props.audioFiles[this.state.currentTrackIdx]['StreamUrl']}`}
+    ref={(audioRef) => {
+    this.audioRef = audioRef;
+  }}
     onLoadedMetadata={this.loadDuration}
     // onSuspend={() => clearInterval(this.seekingInterval)}
     onPlay={this.startPlay}
     onEnded={this.endPlay}
     />
 
-    <VisualizerNode audioCtx={context} audio={this.audioRef} isFullScreen={this.props.visualizerFullScreen} playerState={this.state}  />
+    <Node audioCtx={context} audio={this.audioRef} isFullScreen={this.props.visualizerFullScreen} playerState={this.state}  />
     </div>
 }
 

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import * as THREE from "three";
 import {init, getSceneByIndex, dispose} from './../../engine/MainFrame'
-import {fractionate, modulate, avg, max} from './visualizerFunctions/functions.js';
 
 
 let framework = {
@@ -117,7 +116,7 @@ export class VisualizerNode extends Component {
 
  
 
-public componentWillUnmount(){
+componentWillUnmount(){
     framework.breakAnimation = true
     if(framework.renderer !== undefined && framework.renderer !== null){
       framework.renderer.dispose()
@@ -128,7 +127,7 @@ public componentWillUnmount(){
   }
 
 
-  public togglePlaying = () => {
+  togglePlaying = () => {
     framework.isPlaying = !framework.isPlaying
   }
  render() {

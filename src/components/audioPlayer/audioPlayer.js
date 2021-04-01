@@ -7,45 +7,32 @@ import {
   renderForward,
   renderLoop,
   renderName,
-  renderSeekBar,
-  renderTime,
-  renderVolume,
+  
+ 
   renderCustomArrange
 } from "./innerComponents/index";
+
+import {Volume} from './innerComponents/Volume'
+import {SeekBar} from './innerComponents/SeekBar'
+
 import IdleTimer from 'react-idle-timer'
 //methods
 import functions from "./functions/index";
-
-const fs = require('fs');
-
-//initial state
-// import { default as initialState } from "./initialState";
-
 //style sheet
 import "./audioPlayerStyle.scss";
-
+import {connect} from 'react-redux';
 //prop types
 import { audioPlayerPropTypes } from "./spec/propTypes";
 
-const getAudio = (files, id) => {
 
-  let srcData = fs.readFile(`/Users/harry/Desktop/DevProjects/animationStation/public/${files[id]['StreamUrl']}`,(err, data) => {
-      if(err){
-        throw err;
-      } 
-      return data
-    })
-  return srcData
-}
 
-export class AudioPlayer extends Component {
+class AudioPlayer extends Component {
   constructor(props) {
     super(props);
    
     this.rewindTimeout = null;
     this.seekingInterval = null;
     this.nameDisplay = null;
-    this.audioData =  getAudio(this.props.audioFiles, 0)
 
     this.state = {
                   showClassName : "active-audio",
@@ -81,9 +68,7 @@ export class AudioPlayer extends Component {
                   rewindHoverIcon : icons.rewindHoverIcon,
                   loopIcon : icons.loopIcon,
                   loopEngagedIcon : icons.loopEngagedIcon,
-                  seekWidth : "35%",
-                  volumeWidth : "33%",
-                  nameWidth : "32%",
+                  nameWidth : "22%",
                   sliderClass : "slider",
                   fontFamily : "sans-serif",
                   fontWeight : "100",
@@ -106,9 +91,7 @@ export class AudioPlayer extends Component {
       forward: renderForward.bind(this),
       loop: renderLoop.bind(this),
       name: renderName.bind(this),
-      seek: renderSeekBar.bind(this),
-      time: renderTime.bind(this),
-      volume: renderVolume.bind(this)
+      
     };
 
     //binding methods
@@ -147,12 +130,13 @@ export class AudioPlayer extends Component {
 
   componentDidMount() {
     this.mountComponent();
-    
+    this.handlePlay()
   }
 
 
   handleOnActive(){
     this.props.activeCB(true)
+    // document.exitPointerLock();
     this.setState({
       showClassName : 'active-audio'
     })
@@ -160,6 +144,7 @@ export class AudioPlayer extends Component {
 
   handleOnAction(){
     this.props.activeCB(true)
+    // document.exitPointerLock();
     this.setState({
       showClassName : 'active-audio'
     })
@@ -167,24 +152,17 @@ export class AudioPlayer extends Component {
 
   handleOnIdle(){
     this.props.activeCB(false)
+    // let el = document.getElementById('vizualizer-full')
+    // el.webkitRequestFullScreen()
     this.setState({
       showClassName : 'idle-audio'
     })
   }
-
-
   render() {
-    
     let title = this.props.audioFiles[this.state.currentTrackIdx].Title;
-    let audioC = this.setAudio(this.props.audioContext, this.audioData)
-    if (!this.props.rearrange) {
-      //DEFAULT PLAYER VIEW
-
-      return (
-        <div
-          className="audio-player"
-          style={this.setStyle()}
-        >
+    const isMobile = window.innerWidth <= 900;
+    return (
+        <div className={"audio-player "} style={this.setStyle()}>
         <IdleTimer
           ref={ref => { this.idleTimer = ref }}
           timeout={1000 * 60 * 0.081}
@@ -193,37 +171,56 @@ export class AudioPlayer extends Component {
           onAction={this.handleOnAction}
           debounce={250}
         />
-        {audioC}
-         
-
-
-          {/* Rewind */}
+        {this.setAudio(this.props.audioContext)}
+         {isMobile ? 
           <div className={this.state.showClassName}>
-            <div className="wrapper">
+            <div className={"wrapper " + (this.props.isLight? 'light-screen' : '')}>
               {this.props.hideRewind ? null : this.componentObj.rewind()}
                {this.componentObj.play("first")}
               {/* Forward */}
               {this.props.hideForward ? null : this.componentObj.forward()}
             </div>
-            {/* Track Name and Artist */}
-            {this.props.hideName ? null : this.componentObj.name()}
+            
+                       
+            <SeekBar seekerVal={this.state.seekerVal} handleSeekSlider={this.handleSeekSlider} handleSeek={this.handleSeek} currentAudioTime={this.state.currentAudioTime} duration={this.state.duration} />
+          
+          
+          
 
-            {/* Seeking Bar*/}
-            {this.props.hideSeeking ? null : this.componentObj.seek()}
+            <div className={'mobile-bottom-wrapper'}>
+              <Volume renderMuteIcon={this.renderMuteIcon} handleVolume={this.handleVolume}  volume={this.state.volume}/>
+              {this.componentObj.name()}
+            </div>
 
-            {/* Current Time / Duration */}
-            {this.componentObj.time()}
-
-            {/* Volume Controls */}
-            {this.componentObj.volume()}
           </div>
+          :
+            <div className={this.state.showClassName}>
+            <div className={"wrapper " + (this.props.isLight? 'light-screen' : '')}>
+              {this.props.hideRewind ? null : this.componentObj.rewind()}
+               {this.componentObj.play("first")}
+              {/* Forward */}
+              {this.props.hideForward ? null : this.componentObj.forward()}
+            </div>
+            
+            <SeekBar seekerVal={this.state.seekerVal} handleSeekSlider={this.handleSeekSlider} handleSeek={this.handleSeek} currentAudioTime={this.state.currentAudioTime} duration={this.state.duration} />
+          
+            {this.props.hideName ? null : this.componentObj.name()}
+            <Volume renderMuteIcon={this.renderMuteIcon} handleVolume={this.handleVolume}  volume={this.state.volume}/>
+
+          </div>
+         }
         </div>
       );
-    } else {
-      // Custom Arrangement
-      return this.renderCustomArrange();
-    }
   }
 }
 
 AudioPlayer.propTypes = audioPlayerPropTypes;
+
+const mapDispatchToProps = {
+
+}
+const mapStateToProps  = (state) => ({
+  isLight : state.app.isLight
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(AudioPlayer)

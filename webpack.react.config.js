@@ -43,6 +43,7 @@ module.exports = {
     contentBase: path.join(__dirname, '../dist/renderer'),
     historyApiFallback: true,
     compress: true,
+    watchContentBase: true,
     hot: true,
     port: 4000,
     publicPath: '/',
