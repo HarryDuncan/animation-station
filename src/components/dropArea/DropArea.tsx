@@ -1,61 +1,46 @@
 import React, { Component } from 'react';
-import BetterDrag from '../utils/BetterDrag';
-import DropAreaActions from '../actions/dropArea';
-import styles from './DropArea.css';
-import readFiles from '../utils/readFiles';
+import {connect} from "react-redux";
+import * as ReadFiles from '../../utils/ReadFiles';
+import {addToTrackList} from './../../store/player/player.actions';
+import './DropArea.scss';
+
+
+// import DropAreaActions from '../actions/dropArea';
+
+
+
 
 interface IDropAreaProps{
-
+  addToTrackList : any;
 }
 
 interface IDropAreaState{
   hover : boolean;
 }
 
-export default class DropArea extends React.Component<IDropAreaProps, IDropAreaState>{
+class DropArea extends React.Component<IDropAreaProps, IDropAreaState>{
   constructor(props : IDropAreaProps) {
     super();
-    this.onDragOver = this.onDragOver.bind(this);
-    this.onDragOut = this.onDragOut.bind(this);
-    this.onDrop = this.onDrop.bind(this);
     this.state = {
       hover: false
     };
   }
 
-  public componentDidMount = () => {
-    this.betterDrag = new BetterDrag(document);
-    this.betterDrag.on('dragenter', this.onDragOver);
-    this.betterDrag.on('dragleave', this.onDragOut);
-    this.betterDrag.on('drop', this.onDrop);
-  }
+  
 
-  public componentWillUnmount = () => {
-    this.betterDrag.removeListener('dragenter', this.onDragOver);
-    this.betterDrag.removeListener('dragleave', this.onDragOut);
-    this.betterDrag.removeListener('drop', this.onDrop);
-    this.betterDrag.destroy();
-  }
 
-  public onDragOver = (e : any) => {
-    const files = e.dataTransfer.files;
-    if (files.length) {
-      DropAreaActions.draggingFiles();
-      this.setState({
-        hover: true
-      });
-    }
-  }
 
   public onDragOut = () => {
-    DropAreaActions.stopDraggingFiles();
+   // DropAreaActions.stopDraggingFiles();
     this.setState({
       hover: false
     });
   }
 
-  public onDrop = (e : any ) => {
-    const obj = readFiles.separateDirectoriesFromFiles(e.dataTransfer.files);
+  public fileDrop = (e : any ) => {
+    e.preventDefault();
+    
+    const obj = ReadFiles.separateDirectoriesFromFiles(e.dataTransfer.files);
     let files = obj.files;
     if (obj.directories.length) {
       readFiles.getAllFiles(obj.directories)
@@ -69,18 +54,26 @@ export default class DropArea extends React.Component<IDropAreaProps, IDropAreaS
   }
 
   public addFilesToList = (files : any ) => {
-    files = readFiles.filterFilesByType(files, 'audio');
+    files = ReadFiles.filterFilesByType(files, 'audio');
+
     if (files.length) {
-      DropAreaActions.addToList(files);
+      this.props.addToTrackList(files);
     }
+  }
+
+  public startDrag = (event : any ) => {
+     event.preventDefault();
+    this.setState({
+        hover: true
+      });
   }
 
   public render = () => {
     return (
       <div>
         { this.props.children }
-        <div className={ `messageArea${this.state.hover ? ' messageArea--hover' : ''}` }>
-          <div className={ styles.dashedContainer }>
+        <div className={this.state.hover ? ' messageArea--hover' : ''}>
+          <div className={ 'dashedContainer' } onDragOver={this.startDrag} onDrop={this.fileDrop}>
             Release to add to the list
           </div>
         </div>
@@ -88,3 +81,13 @@ export default class DropArea extends React.Component<IDropAreaProps, IDropAreaS
     );
   }
 }
+
+const mapStateToProps = (state: any) => ({
+
+})
+ 
+const mapDispatchToProps = {
+  addToTrackList
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DropArea);

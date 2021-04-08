@@ -1,5 +1,5 @@
 import React from 'react';
-import Node from './../../renderer/Node';
+// import Node from './../../renderer/Node';
 
 
 export function mountComponent() {
@@ -90,7 +90,7 @@ export function setAudio(context) {
  
    
     <audio
-    src={`./hjdmix/${this.props.audioFiles[this.state.currentTrackIdx]['StreamUrl']}`}
+    src={`./hjdmix/${this.props.audioFiles[this.state.currentTrackIdx]['Path']}`}
     ref={(audioRef) => {
     this.audioRef = audioRef;
   }}
@@ -100,9 +100,11 @@ export function setAudio(context) {
     onEnded={this.endPlay}
     />
 
-    <Node audioCtx={context} audio={this.audioRef} isFullScreen={this.props.visualizerFullScreen} playerState={this.state}  />
+ 
     </div>
 }
+
+//   <Node audioCtx={context} audio={this.audioRef} isFullScreen={this.props.visualizerFullScreen} playerState={this.state}  />
 
 export function setPercentages() {
   if (this.props.rearrange) {

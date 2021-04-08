@@ -4,6 +4,7 @@ import { remote } from 'electron';
 
 const initialPlayerState : IPlayerState = {
 	listMenuOpen : false,
+	trackList : [],
 }
 
 
@@ -21,6 +22,10 @@ function musicPlayer(state: IPlayerState = initialPlayerState, action: any){
 			return {...state,
 				listMenuOpen : false
 			};
+		case playerActionTypes.ADD_TO_LIST:
+			return update(state, {
+				trackList : {$push : action.payload.addedTracks.map((item : any, i : number)  => ({...item, 'ID' : Number(i), 'Title' : item['name'] , 'path' : item['path']}))}
+			});
 		default:
 			return state;
 	

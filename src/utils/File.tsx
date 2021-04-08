@@ -8,7 +8,7 @@ class File {
   constructor(path) {
     this.path = path;
     this.name = p.basename(path);
-    this.type = mime.lookup(path);
+    this.type = mime.getType(path);
   }
 
   set id(value) {
@@ -48,22 +48,22 @@ class File {
     this._cover = value;
   }
 
-  readTags() {
-    return new Promise(resolve => {
-      new jsmediatags.Reader(this.path)
-            .setTagsToRead(['title', 'artist', 'album', 'picture'])
-            .read({
-              onSuccess: (tag) => {
-                this.tag = tag.tags;
-                resolve();
-              },
-              onError: () => {
-                this.tag = this.name;
-                resolve();
-              }
-            });
-    });
-  }
+  // readTags() {
+  //   return new Promise(resolve => {
+  //     new jsmediatags.Reader(this.path)
+  //           .setTagsToRead(['title', 'artist', 'album', 'picture'])
+  //           .read({
+  //             onSuccess: (tag) => {
+  //               this.tag = tag.tags;
+  //               resolve();
+  //             },
+  //             onError: () => {
+  //               this.tag = this.name;
+  //               resolve();
+  //             }
+  //           });
+  //   });
+  // }
 
   searchAlbumArt(...args) {
     return new Promise((resolve, reject) => {

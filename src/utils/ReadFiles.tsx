@@ -2,8 +2,8 @@ import fs from 'fs';
 import File from './File';
 import WaterFallOver from './WaterFallOver';
 
-class ReadFiles {
-  separateDirectoriesFromFiles(inputFiles) {
+
+ export const separateDirectoriesFromFiles = (inputFiles) => {
     const directories = [];
     const files = [];
     let i = 0;
@@ -21,7 +21,7 @@ class ReadFiles {
     return { directories, files };
   }
 
-  getAllAvailableFiles(file) {
+export const getAllAvailableFiles = (file) => {
     return new Promise(resolve => {
       fs.stat(file, (err, stat) => {
         if (stat && stat.isDirectory()) {
@@ -36,7 +36,7 @@ class ReadFiles {
     });
   }
 
-  getAllFiles(dir) {
+export const getAllFiles = (dir : any) =>  {
     return new Promise(resolve => {
       let results = [];
       let waterFall, file;
@@ -75,11 +75,9 @@ class ReadFiles {
     });
   }
 
-  filterFilesByType(files, type) {
+export const filterFilesByType = (files : any , type : any ) => {
     return files.filter((file) => (
       file.type.indexOf(type) > -1
     ));
   }
-}
 
-export default new ReadFiles();
