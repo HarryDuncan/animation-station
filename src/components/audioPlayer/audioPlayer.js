@@ -1,26 +1,15 @@
 import React, { Component } from "react";
 import icons from './assets/index';
-//Functions that render dumb components
-import {
-  renderPlay,
-  renderRewind,
-  renderForward,
-  renderLoop,
-  renderName,
-  
- 
-  renderCustomArrange
-} from "./innerComponents/index";
-
-import {Volume} from './innerComponents/Volume'
-import {SeekBar} from './innerComponents/SeekBar'
-
 import IdleTimer from 'react-idle-timer'
+import {connect} from 'react-redux';
+import {Volume, SeekBar, Play} from './innerComponents'
+
+
 //methods
 import functions from "./functions/index";
 //style sheet
 import "./audioPlayerStyle.scss";
-import {connect} from 'react-redux';
+
 //prop types
 import { audioPlayerPropTypes } from "./spec/propTypes";
 
@@ -33,10 +22,10 @@ class AudioPlayer extends Component {
     this.rewindTimeout = null;
     this.seekingInterval = null;
     this.nameDisplay = null;
-
+    this.audioRef = null;
     this.state = {
                   showClassName : "active-audio",
-                  currentTrackIdx : this.props.currentTrackId,
+                  currentTrackIdx : 0,
                   seekerVal : "0",
                   volume : "75",
                   playing : false,
@@ -84,16 +73,7 @@ class AudioPlayer extends Component {
                     marginLeft : "0"
                   }
   }
-    //reference object for rendering inner components
-    this.componentObj = {
-      play: renderPlay.bind(this),
-      rewind: renderRewind.bind(this),
-      forward: renderForward.bind(this),
-      loop: renderLoop.bind(this),
-      name: renderName.bind(this),
-      
-    };
-
+   
     //binding methods
     this.mountComponent = functions.mountComponent.bind(this);
     this.setScrollSize = functions.setScrollSize.bind(this);
@@ -121,7 +101,6 @@ class AudioPlayer extends Component {
     this.renderPlayIcon = functions.renderPlayIcon.bind(this);
     this.renderMuteIcon = functions.renderMuteIcon.bind(this);
     this.handleLoop = functions.handleLoop.bind(this);
-    this.renderCustomArrange = renderCustomArrange.bind(this);
 
     this.handleOnAction = this.handleOnAction.bind(this)
     this.handleOnActive = this.handleOnActive.bind(this)
@@ -135,7 +114,7 @@ class AudioPlayer extends Component {
 
 
   handleOnActive(){
-    this.props.activeCB(true)
+    // this.props.activeCB(true)
     // document.exitPointerLock();
     this.setState({
       showClassName : 'active-audio'
@@ -143,7 +122,7 @@ class AudioPlayer extends Component {
   }
 
   handleOnAction(){
-    this.props.activeCB(true)
+    // this.props.activeCB(true)
     // document.exitPointerLock();
     this.setState({
       showClassName : 'active-audio'
@@ -151,15 +130,16 @@ class AudioPlayer extends Component {
   }
 
   handleOnIdle(){
-    this.props.activeCB(false)
-    // let el = document.getElementById('vizualizer-full')
-    // el.webkitRequestFullScreen()
+    // this.props.activeCB(false)
+  
     this.setState({
       showClassName : 'idle-audio'
     })
   }
   render() {
+
     let title = this.props.audioFiles[this.state.currentTrackIdx].Title;
+   
     const isMobile = window.innerWidth <= 900;
     return (
         <div className={"audio-player "} style={this.setStyle()}>
@@ -173,12 +153,16 @@ class AudioPlayer extends Component {
         />
         {this.setAudio(this.props.audioContext)}
          {isMobile ? 
+
+          
           <div className={this.state.showClassName}>
             <div className={"wrapper " + (this.props.isLight? 'light-screen' : '')}>
-              {this.props.hideRewind ? null : this.componentObj.rewind()}
-               {this.componentObj.play("first")}
-              {/* Forward */}
-              {this.props.hideForward ? null : this.componentObj.forward()}
+              
+              
+              
+              <Play playing={this.state.playing} handlePause={this.handlePause} handlePlay={this.handlePlay} handleHoverOver={this.handleHoverOver} handleHoverOut={this.handleHoverOut} iconSize={this.state.iconSize} renderPlayIcon={this.renderPlayIcon} />
+
+            
             </div>
             
                        
@@ -189,22 +173,26 @@ class AudioPlayer extends Component {
 
             <div className={'mobile-bottom-wrapper'}>
               <Volume renderMuteIcon={this.renderMuteIcon} handleVolume={this.handleVolume}  volume={this.state.volume}/>
-              {this.componentObj.name()}
+             
             </div>
 
           </div>
           :
             <div className={this.state.showClassName}>
             <div className={"wrapper " + (this.props.isLight? 'light-screen' : '')}>
-              {this.props.hideRewind ? null : this.componentObj.rewind()}
-               {this.componentObj.play("first")}
-              {/* Forward */}
-              {this.props.hideForward ? null : this.componentObj.forward()}
+              
+              
+              
+
+            <Play  playing={this.state.playing} handlePause={this.handlePause} handlePlay={this.handlePlay} handleHoverOver={this.handleHoverOver} handleHoverOut={this.handleHoverOut} iconSize={this.state.iconSize} renderPlayIcon={this.renderPlayIcon} />
+
+            
+             
             </div>
             
             <SeekBar seekerVal={this.state.seekerVal} handleSeekSlider={this.handleSeekSlider} handleSeek={this.handleSeek} currentAudioTime={this.state.currentAudioTime} duration={this.state.duration} />
           
-            {this.props.hideName ? null : this.componentObj.name()}
+           
             <Volume renderMuteIcon={this.renderMuteIcon} handleVolume={this.handleVolume}  volume={this.state.volume}/>
 
           </div>
@@ -215,12 +203,12 @@ class AudioPlayer extends Component {
 }
 
 AudioPlayer.propTypes = audioPlayerPropTypes;
-
+// audioContext={this.props.audioContext} file={this.props.audioFiles[this.state.currentTrackIdx]} 
 const mapDispatchToProps = {
 
 }
 const mapStateToProps  = (state) => ({
-  isLight : state.app.isLight
+ 
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AudioPlayer)

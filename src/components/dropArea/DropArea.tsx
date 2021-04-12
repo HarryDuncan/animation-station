@@ -54,6 +54,7 @@ class DropArea extends React.Component<IDropAreaProps, IDropAreaState>{
   }
 
   public addFilesToList = (files : any ) => {
+   
     files = ReadFiles.filterFilesByType(files, 'audio');
 
     if (files.length) {

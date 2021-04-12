@@ -22,6 +22,7 @@
     "webpack": "^5.20.2",
     "webpack-cli": "^3.3.12"
   },
+ "private": false,
   "dependencies": {
     "@babel/core": "^7.12.13",
     "@babel/preset-env": "^7.12.13",

@@ -45,9 +45,8 @@ export function handlePlay(tryCount = 0) {
       this.handlePlay(tryCount + 1)
     }, 500)
   } else {
-  let playPromise = this
-    .audioRef
-    .play();
+    console.log(this.audioRef)
+  let playPromise = this.audioRef.play();
   if (playPromise != undefined) {
     playPromise.then(success => {
     }).catch(err => {

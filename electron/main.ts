@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, protocol} from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 
@@ -10,6 +10,7 @@ function createWindow() {
     height: 600,
     webPreferences: {
       nodeIntegration: true,
+      webSecurity: false
     },
   });
 
@@ -31,4 +32,11 @@ function createWindow() {
 }
 
 app.on('ready', createWindow);
+
+app.whenReady().then(() => {
+  protocol.registerFileProtocol('file', (request, callback) => {
+    const pathname = decodeURI(request.url.replace('file:///', ''));
+    callback(pathname);
+  });
+});
 app.allowRendererProcessReuse = true;

@@ -84,24 +84,23 @@ export function setStyle(tier) {
 
 export function setAudio(context) {
   context.resume()
-  
-  return <div>
-  
- 
-   
-    <audio
-    src={`./hjdmix/${this.props.audioFiles[this.state.currentTrackIdx]['Path']}`}
-    ref={(audioRef) => {
-    this.audioRef = audioRef;
-  }}
-    onLoadedMetadata={this.loadDuration}
-    // onSuspend={() => clearInterval(this.seekingInterval)}
-    onPlay={this.startPlay}
-    onEnded={this.endPlay}
-    />
+     // <input ref={(audioInputRef => {this.audioInputRef = audioInputRef})} id="audio_file" type="file" accept="audio/*" } />
 
- 
+  return(
+      <div>
+            <audio
+          crossOrigin="anonymous"
+         src={`file:///${this.props.audioFiles[this.state.currentTrackIdx]['src']}`}
+          ref={(audioRef) => {
+            this.audioRef = audioRef;
+          }}
+          onLoadedMetadata={this.loadDuration}
+          // onSuspend={() => clearInterval(this.seekingInterval)}
+          onPlay={this.startPlay}
+          onEnded={this.endPlay}
+        />
     </div>
+    )
 }
 
 //   <Node audioCtx={context} audio={this.audioRef} isFullScreen={this.props.visualizerFullScreen} playerState={this.state}  />

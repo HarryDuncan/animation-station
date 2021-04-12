@@ -114,7 +114,7 @@ class HomePage extends React.Component<IHomePageProps, IHomePageState>{
 				    <div>
 					   {this.props.trackList.length > 0?
 
-					   	<AudioPlayer audioFiles={this.props.trackList}/>
+					   	<AudioPlayer  isLight={false} audioContext={this._setAudioContext()} audioFiles={this.props.trackList} />
 					   	:
 					   	null
 					   }
