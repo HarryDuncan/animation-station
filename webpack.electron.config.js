@@ -24,6 +24,13 @@ module.exports = {
           },
         ],
       },
+      // THREE JS
+      {
+        test: /three\/examples\/js/,
+         use: {
+          loader: 'babel-loader',
+        },
+      },
         {
         test: /\.s[ac]ss$/i,
         use: [
@@ -34,6 +41,16 @@ module.exports = {
           // Compiles Sass to CSS
           "sass-loader",
         ],
+      },
+       {
+        test: /\.(glb|gltf)$/,
+        use:
+        [
+            {
+                loader: 'file-loader',
+               
+            }
+        ]
       }
     ],
   },

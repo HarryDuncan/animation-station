@@ -11,18 +11,20 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "babel-plugin-add-module-exports": "^1.0.4",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "css-loader": "^5.0.1",
     "electron": "^11.2.2",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.0.0",
+    "imports-loader": "^2.0.0",
     "sass": "^1.32.6",
     "sass-loader": "^10.1.1",
     "style-loader": "^2.0.0",
     "webpack": "^5.20.2",
     "webpack-cli": "^3.3.12"
   },
- "private": false,
+  "private": false,
   "dependencies": {
     "@babel/core": "^7.12.13",
     "@babel/preset-env": "^7.12.13",
@@ -50,6 +52,7 @@
     "redux-thunk": "^2.3.0",
     "request": "^2.88.2",
     "three": "^0.125.2",
+    "tinycolor2": "^1.4.2",
     "webpack-dev-server": "^3.7.1"
   }
 }

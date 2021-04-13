@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import icons from './assets/index';
 import IdleTimer from 'react-idle-timer'
 import {connect} from 'react-redux';
-import {Volume, SeekBar, Play} from './innerComponents'
+import {Volume, SeekBar, Play, Forward, Rewind, Loop, Name} from './innerComponents'
 
 
 //methods
@@ -10,19 +10,14 @@ import functions from "./functions/index";
 //style sheet
 import "./audioPlayerStyle.scss";
 
-//prop types
-import { audioPlayerPropTypes } from "./spec/propTypes";
-
-
 
 class AudioPlayer extends Component {
   constructor(props) {
     super(props);
-   
+
     this.rewindTimeout = null;
     this.seekingInterval = null;
     this.nameDisplay = null;
-    this.audioRef = null;
     this.state = {
                   showClassName : "active-audio",
                   currentTrackIdx : 0,
@@ -109,7 +104,7 @@ class AudioPlayer extends Component {
 
   componentDidMount() {
     this.mountComponent();
-    this.handlePlay()
+    // this.handlePlay()
   }
 
 
@@ -152,58 +147,29 @@ class AudioPlayer extends Component {
           debounce={250}
         />
         {this.setAudio(this.props.audioContext)}
-         {isMobile ? 
 
-          
-          <div className={this.state.showClassName}>
-            <div className={"wrapper " + (this.props.isLight? 'light-screen' : '')}>
-              
-              
-              
-              <Play playing={this.state.playing} handlePause={this.handlePause} handlePlay={this.handlePlay} handleHoverOver={this.handleHoverOver} handleHoverOut={this.handleHoverOut} iconSize={this.state.iconSize} renderPlayIcon={this.renderPlayIcon} />
-
-            
-            </div>
-            
-                       
-            <SeekBar seekerVal={this.state.seekerVal} handleSeekSlider={this.handleSeekSlider} handleSeek={this.handleSeek} currentAudioTime={this.state.currentAudioTime} duration={this.state.duration} />
-          
-          
-          
-
-            <div className={'mobile-bottom-wrapper'}>
-              <Volume renderMuteIcon={this.renderMuteIcon} handleVolume={this.handleVolume}  volume={this.state.volume}/>
-             
-            </div>
-
-          </div>
-          :
             <div className={this.state.showClassName}>
             <div className={"wrapper " + (this.props.isLight? 'light-screen' : '')}>
-              
-              
-              
 
+              
+            <Rewind handleHoverOver={this.handleHoverOver} handleHoverOut={this.handleHoverOut} handleRewind={this.handleRewind}   rewindHoverIcon={this.state.rewindHover}  rewindIcon={this.state.rewindIcon}  iconSize={this.state.iconSize} />
             <Play  playing={this.state.playing} handlePause={this.handlePause} handlePlay={this.handlePlay} handleHoverOver={this.handleHoverOver} handleHoverOut={this.handleHoverOut} iconSize={this.state.iconSize} renderPlayIcon={this.renderPlayIcon} />
+            <Forward endPlay={this.endPlay} forwardIcon={this.state.forwardIcon} forwardHoverIcon={this.state.forwardHover} iconSize={this.state.iconSize} handleHoverOver={this.handleHoverOver} handleHoverOut={this.handleHoverOut} />
+         
+            <Name hideSeeking={false} setNameDisplayRef={this.setNameDisplayRef} scrollMarquee={this.state.scrollMarquee} scrollMarqueeFunc={this.scrollMarqueeFunc}  title={title} width={this.state.nameWidth}/>
 
-            
-             
             </div>
             
             <SeekBar seekerVal={this.state.seekerVal} handleSeekSlider={this.handleSeekSlider} handleSeek={this.handleSeek} currentAudioTime={this.state.currentAudioTime} duration={this.state.duration} />
-          
-           
             <Volume renderMuteIcon={this.renderMuteIcon} handleVolume={this.handleVolume}  volume={this.state.volume}/>
 
           </div>
-         }
         </div>
       );
   }
 }
 
-AudioPlayer.propTypes = audioPlayerPropTypes;
-// audioContext={this.props.audioContext} file={this.props.audioFiles[this.state.currentTrackIdx]} 
+
 const mapDispatchToProps = {
 
 }

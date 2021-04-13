@@ -5,11 +5,6 @@ import {addToTrackList} from './../../store/player/player.actions';
 import './DropArea.scss';
 
 
-// import DropAreaActions from '../actions/dropArea';
-
-
-
-
 interface IDropAreaProps{
   addToTrackList : any;
 }
@@ -54,7 +49,7 @@ class DropArea extends React.Component<IDropAreaProps, IDropAreaState>{
   }
 
   public addFilesToList = (files : any ) => {
-   
+
     files = ReadFiles.filterFilesByType(files, 'audio');
 
     if (files.length) {

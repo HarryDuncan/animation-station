@@ -32,7 +32,7 @@ export const Name : React.FunctionComponent<INameProps> = (props) => {
           ? (`${props.artist} - `)
           : null
         }
-        {props.title}
+        {props.title.replace('.mp3', '')}
       </div>
     </div>
   )

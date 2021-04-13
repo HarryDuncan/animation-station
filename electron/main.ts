@@ -38,5 +38,9 @@ app.whenReady().then(() => {
     const pathname = decodeURI(request.url.replace('file:///', ''));
     callback(pathname);
   });
+   protocol.registerFileProtocol('atom', (request, callback) => {
+    const url = request.url.substr(7)
+    callback({ path: path.normalize(`${__dirname}/${url}`) })
+  })
 });
 app.allowRendererProcessReuse = true;

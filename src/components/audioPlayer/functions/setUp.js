@@ -1,5 +1,5 @@
 import React from 'react';
-// import Node from './../../renderer/Node';
+import Node from './../../visualizer/renderer/Node';
 
 
 export function mountComponent() {
@@ -84,26 +84,25 @@ export function setStyle(tier) {
 
 export function setAudio(context) {
   context.resume()
-     // <input ref={(audioInputRef => {this.audioInputRef = audioInputRef})} id="audio_file" type="file" accept="audio/*" } />
 
   return(
       <div>
-            <audio
-          crossOrigin="anonymous"
-         src={`file:///${this.props.audioFiles[this.state.currentTrackIdx]['src']}`}
-          ref={(audioRef) => {
-            this.audioRef = audioRef;
-          }}
-          onLoadedMetadata={this.loadDuration}
-          // onSuspend={() => clearInterval(this.seekingInterval)}
-          onPlay={this.startPlay}
-          onEnded={this.endPlay}
-        />
+          <audio
+              crossOrigin="anonymous"
+             src={`file:///${this.props.audioFiles[this.state.currentTrackIdx]['src']}`}
+              ref={(audioRef) => {
+                this.audioRef = audioRef;
+              }}
+              onLoadedMetadata={this.loadDuration}
+              // onSuspend={() => clearInterval(this.seekingInterval)}
+              onPlay={this.startPlay}
+              onEnded={this.endPlay}
+            />
+        <Node audioCtx={context} audio={this.audioRef} isFullScreen={this.props.visualizerFullScreen} playerState={this.state}  />
+
     </div>
     )
 }
-
-//   <Node audioCtx={context} audio={this.audioRef} isFullScreen={this.props.visualizerFullScreen} playerState={this.state}  />
 
 export function setPercentages() {
   if (this.props.rearrange) {
