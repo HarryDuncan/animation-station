@@ -1,6 +1,3 @@
-# Python Mainframe for audio analysis
-
-def analyzer(audioStream):
-    return 1
-
-num = nframes
+import sys
+print('Hello from Python!')
+sys.stdout.flush()
