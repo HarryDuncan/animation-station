@@ -15,11 +15,11 @@ _sym_db = _symbol_database.Default()
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='analyzer.proto',
-  package='',
+  package='analyzer',
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0e\x61nalyzer.proto\" \n\x0cHelloRequest\x12\x10\n\x08greeting\x18\x01 \x01(\t\"\x1e\n\rHelloResponse\x12\r\n\x05reply\x18\x01 \x01(\t29\n\x0cHelloService\x12)\n\x08SayHello\x12\r.HelloRequest\x1a\x0e.HelloResponseb\x06proto3'
+  serialized_pb=b'\n\x0e\x61nalyzer.proto\x12\x08\x61nalyzer\" \n\x0cHelloRequest\x12\x10\n\x08greeting\x18\x01 \x01(\t\"\x1e\n\rHelloResponse\x12\r\n\x05reply\x18\x01 \x01(\t2K\n\x0cHelloService\x12;\n\x08sayHello\x12\x16.analyzer.HelloRequest\x1a\x17.analyzer.HelloResponseb\x06proto3'
 )
 
 
@@ -27,14 +27,14 @@ DESCRIPTOR = _descriptor.FileDescriptor(
 
 _HELLOREQUEST = _descriptor.Descriptor(
   name='HelloRequest',
-  full_name='HelloRequest',
+  full_name='analyzer.HelloRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='greeting', full_name='HelloRequest.greeting', index=0,
+      name='greeting', full_name='analyzer.HelloRequest.greeting', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -52,21 +52,21 @@ _HELLOREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=18,
-  serialized_end=50,
+  serialized_start=28,
+  serialized_end=60,
 )
 
 
 _HELLORESPONSE = _descriptor.Descriptor(
   name='HelloResponse',
-  full_name='HelloResponse',
+  full_name='analyzer.HelloResponse',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='reply', full_name='HelloResponse.reply', index=0,
+      name='reply', full_name='analyzer.HelloResponse.reply', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -84,8 +84,8 @@ _HELLORESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=52,
-  serialized_end=82,
+  serialized_start=62,
+  serialized_end=92,
 )
 
 DESCRIPTOR.message_types_by_name['HelloRequest'] = _HELLOREQUEST
@@ -95,14 +95,14 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 HelloRequest = _reflection.GeneratedProtocolMessageType('HelloRequest', (_message.Message,), {
   'DESCRIPTOR' : _HELLOREQUEST,
   '__module__' : 'analyzer_pb2'
-  # @@protoc_insertion_point(class_scope:HelloRequest)
+  # @@protoc_insertion_point(class_scope:analyzer.HelloRequest)
   })
 _sym_db.RegisterMessage(HelloRequest)
 
 HelloResponse = _reflection.GeneratedProtocolMessageType('HelloResponse', (_message.Message,), {
   'DESCRIPTOR' : _HELLORESPONSE,
   '__module__' : 'analyzer_pb2'
-  # @@protoc_insertion_point(class_scope:HelloResponse)
+  # @@protoc_insertion_point(class_scope:analyzer.HelloResponse)
   })
 _sym_db.RegisterMessage(HelloResponse)
 
@@ -110,17 +110,17 @@ _sym_db.RegisterMessage(HelloResponse)
 
 _HELLOSERVICE = _descriptor.ServiceDescriptor(
   name='HelloService',
-  full_name='HelloService',
+  full_name='analyzer.HelloService',
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=84,
-  serialized_end=141,
+  serialized_start=94,
+  serialized_end=169,
   methods=[
   _descriptor.MethodDescriptor(
-    name='SayHello',
-    full_name='HelloService.SayHello',
+    name='sayHello',
+    full_name='analyzer.HelloService.sayHello',
     index=0,
     containing_service=None,
     input_type=_HELLOREQUEST,

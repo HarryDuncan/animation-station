@@ -1,34 +1,22 @@
 import { app, BrowserWindow, protocol} from 'electron';
 import * as path from 'path';
 import * as url from 'url';
-var grpc = require('@grpc/grpc-js');
-var protoLoader = require('@grpc/proto-loader');
-//
-// var messages = require('../analyzer_pb2_grpc');
-// var services = require('../analyzer_pb2');
 
-var grpc = require('@grpc/grpc-js');
-
-const protoDef = protoLoader.loadSync(path.join(__dirname, '../proto/analyzer.proto'))
-const packageObject = grpc.loadPackageDefinition(protoDef);
-const server = new grpc.Server();
-
-server.addService(packageObject.HelloService.service, {});
 let mainWindow: Electron.BrowserWindow | null;
 
 function createWindow() {
   createPyProc()
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    show: false,
     webPreferences: {
       nodeIntegration: true,
-      webSecurity: false
-    },
+    }
   });
 
-  if (process.env.NODE_ENV === 'development') {
+  mainWindow.maximize()
+  mainWindow.show()
 
+  if (process.env.NODE_ENV === 'development') {
     mainWindow.loadURL(`http://localhost:4000`);
   } else {
     mainWindow.loadURL(
@@ -52,13 +40,13 @@ let pyProc = null
 let pyPort = null
 
 const selectPort = () => {
-  pyPort = 4242
+  pyPort = 5001
   return pyPort
 }
 
 const createPyProc = () => {
   let port = '' + selectPort()
-  let script = path.join(__dirname, '../proto/hello.py')
+  let script = path.join(__dirname, '../engine/hello.py')
   pyProc = require('child_process').spawn('python', [script, port])
 
   if (pyProc != null) {
@@ -84,7 +72,7 @@ app.whenReady().then(() => {
   })
 });
 
-app.on('ready', createPyProc)
+
 app.on('will-quit', exitPyProc)
 app.on('ready', createWindow);
 

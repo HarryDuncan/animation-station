@@ -6,6 +6,7 @@
   "scripts": {
     "dev:electron": "NODE_ENV=development webpack --config webpack.electron.config.js --mode development && electron .",
     "dev:react": "NODE_ENV=development webpack-dev-server --config webpack.react.config.js --mode development"
+
   },
   "keywords": [],
   "author": "",
@@ -39,11 +40,15 @@
     "@types/react-dom": "^17.0.0",
     "album-art": "^2.0.2",
     "babel-loader": "^8.2.2",
+    "docker": "^1.0.0",
+    "google-protobuf": "^3.17.3",
     "grpc": "^1.24.10",
+    "grpc-web": "^1.2.1",
     "immutability-helper": "^3.1.1",
     "jsmediatags": "^3.9.5",
     "mime": "^2.5.2",
     "open-simplex-noise": "^2.4.0",
+    "protoc-gen-grpc-web": "^1.2.1",
     "python-shell": "^3.0.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

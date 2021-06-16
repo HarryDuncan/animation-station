@@ -1,4 +1,5 @@
 syntax = "proto3";
+package analyzer;
 
 service HelloService {
   rpc sayHello (HelloRequest) returns (HelloResponse);

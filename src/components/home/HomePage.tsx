@@ -4,7 +4,12 @@ import './home.scss'
 import {toggleListMenu, closeList} from '../../store/player/player.actions';
 import { Nav, INavLink, INavStyles, INavLinkGroup} from 'office-ui-fabric-react/lib/Nav';
 import AudioPlayer from './../audioPlayer/AudioPlayer';
-import {zerorpc} from 'zerorpc'
+import * as protoLoader from '@grpc/proto-loader';
+import { HelloRequest , HelloResponse } from "./../../analyzerpb/proto/analyzer_pb"
+import { HelloServiceClient} from "./../../analyzerpb/proto/AnalyzerServiceClientPb"
+// import * as path from 'path';
+// import * as url from 'url';
+import * as grpc from '@grpc/grpc-js';
 
 const navStyles: Partial<INavStyles> = {
   root: {
@@ -32,10 +37,13 @@ interface IHomePageProps {
 }
 
 
+
+
+
+
 class HomePage extends React.Component<IHomePageProps, IHomePageState>{
 	constructor(props: IHomePageProps){
 	super(props)
-
 		this.state = {
 			hideNav : false,
 			key : null,
@@ -59,8 +67,20 @@ class HomePage extends React.Component<IHomePageProps, IHomePageState>{
 
   public componentDidMount = () => {
 
-    let client = new zerorpc.Client()
-    client.connect("tcp://127.0.0.1:4242")
+
+    const client = new HelloServiceClient('http://localhost:8000')
+    var request = new HelloRequest();
+    request.setGreeting('heee')
+    client.sayHello(request,{}, function(err, response) {
+      console.log(response)
+      console.log('Greeting:', response.reply);
+    });
+
+
+
+  //  console.log(hello)
+
+
   }
 
 

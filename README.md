@@ -1,6 +1,12 @@
 # AnimationStation
-Desktop Application for music visualisation 
+Desktop Application for music visualisation
 
-Built on react electron base with typescript
+- Built on react electron base with typescript and python server
 
-- Python and C++ for audio analysis and Javascript + three js for visual rendering
+compiled with docker and interfacing with grpc
+
+
+build
+docker-compose -f docker-compose-macos.yml build
+run
+docker-compose -f docker-compose-macos.yml up -d
