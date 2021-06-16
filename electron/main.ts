@@ -5,7 +5,7 @@ import * as url from 'url';
 let mainWindow: Electron.BrowserWindow | null;
 
 function createWindow() {
-  createPyProc()
+
   mainWindow = new BrowserWindow({
     show: false,
     webPreferences: {
@@ -33,32 +33,6 @@ function createWindow() {
   });
 }
 
-// add these to the end or middle of main.js
-
-
-let pyProc = null
-let pyPort = null
-
-const selectPort = () => {
-  pyPort = 5001
-  return pyPort
-}
-
-const createPyProc = () => {
-  let port = '' + selectPort()
-  let script = path.join(__dirname, '../engine/hello.py')
-  pyProc = require('child_process').spawn('python', [script, port])
-
-  if (pyProc != null) {
-    console.log('child process success')
-  }
-}
-
-const exitPyProc = () => {
-  pyProc.kill()
-  pyProc = null
-  pyPort = null
-}
 
 
 app.whenReady().then(() => {
@@ -72,8 +46,6 @@ app.whenReady().then(() => {
   })
 });
 
-
-app.on('will-quit', exitPyProc)
 app.on('ready', createWindow);
 
 app.allowRendererProcessReuse = true;

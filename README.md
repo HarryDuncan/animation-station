@@ -7,6 +7,6 @@ compiled with docker and interfacing with grpc
 
 
 build
-docker-compose -f docker-compose-macos.yml build
+- docker-compose -f docker-compose-macos.yml build
 run
-docker-compose -f docker-compose-macos.yml up -d
+- docker-compose -f docker-compose-macos.yml up -d
