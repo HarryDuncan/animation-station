@@ -4,11 +4,27 @@ import {getDataPoints, sceneScaffold} from './functions';
 let allScenes = {'responsive' : [], 'nonResponsive' : []};
 let currentVisualizer;
 
+import {InitRequest, InitResponse, StreamData, DataPoints  } from "./../../analyzerpb/protos/analyzer_pb"
+import { AnalyzerServiceClient} from "./../../analyzerpb/protos/AnalyzerServiceClientPb"
 
+var client;
+var audioData = new StreamData()
 // Function to initialize all scenes
 // TODO - Make promise then start playback when all items are loaded
 export const initializeAllScenes = (framework) =>{
-   
+
+
+
+    client = new AnalyzerServiceClient('http://localhost:8000')
+    var init = new InitRequest();
+    init.setInitmessage('init')
+
+    console.log(init)
+    console.log(client)
+    client.initAnalyzer(init,{}, function(err, response) {
+      console.log(response)
+
+    });
     allScenes.responsive.push(Scenes.BallAndPlane(framework))
    //  allScenes.responsive.push(Scenes.DancingBlocks(framework))
    //  allScenes.responsive.push(Scenes.MagicBlobs(framework))
@@ -17,7 +33,7 @@ export const initializeAllScenes = (framework) =>{
 
     allScenes.nonResponsive.push(Scenes.CrazySpiral(framework))
    // allScenes.nonResponsive.push(Scenes.StarField(framework))
-  
+
 
     // Todo - Load Mix Specific scenes
    // allScenes.push(Scenes.CubeWithTexture(framework))]
@@ -27,7 +43,7 @@ export const initializeAllScenes = (framework) =>{
   for (let i = 0; i < allScenes.length -1; i++) {
       allScenes.nonResponsive[i].index = i;
   }
-    
+
 }
 
 export const getScene = (framework) => {
@@ -45,7 +61,7 @@ export const getScene = (framework) => {
 
 
 export const updateSceneManager = (framework) => {
-   getDataPoints(framework) 
+   getDataPoints(framework)
 }
 
 
@@ -61,6 +77,3 @@ const updateIncrement = (frameworkIncrement, scenes) => {
     return frameworkIncrement + 1
   }
 }
-
-
-

@@ -9,7 +9,7 @@ const noise3D = makeNoise3D(424342)
 // Ball and plane scene
 export function BallAndPlane (framework) {
 
-  
+
   // Initializes 3 JS Stuff
     let scene = new THREE.Scene();
     let group = new THREE.Group();
@@ -24,23 +24,23 @@ export function BallAndPlane (framework) {
         side: THREE.DoubleSide,
         wireframe: true
     });
-    
+
     let plane = new THREE.Mesh(planeGeometry, planeMaterial);
     plane.rotation.x = -0.5 * Math.PI;
     plane.position.set(0, 90, 0);
     group.add(plane);
-    
+
 
     let icosahedronMaterial = new THREE.ShaderMaterial({
       uniforms: {
-          time: { 
-            type: "f", 
+          time: {
+            type: "f",
             value: Date.now()
           },
           noiseStrength: {
             type: "f",
             value: 2.0
-          }, 
+          },
           numOctaves: {
             type: "f",
             value: 3
@@ -60,12 +60,12 @@ export function BallAndPlane (framework) {
     group.add(plane2);
 
     let icosahedronGeometry = new THREE.IcosahedronGeometry(10, 4);
-  
+
 
     let ball = new THREE.Mesh(icosahedronGeometry, icosahedronMaterial);
     ball.position.set(0, 0, 0);
     group.add(ball);
- 
+
     let ambientLight = new THREE.AmbientLight(0xaaaaaa);
     scene.add(ambientLight);
 
@@ -77,7 +77,7 @@ export function BallAndPlane (framework) {
     scene.add(spotLight);
     scene.add(group);
     scene.name = 'BallAndPlane'
-  // The scene Object  
+  // The scene Object
 
   let BallAndPlaneScene = {
       name: 'BallAndPlane',
@@ -87,32 +87,32 @@ export function BallAndPlane (framework) {
       responsive : true,
       sceneLength: 10000,
       onUpdate: function(framework){
-       
-       //  framework.analyserNode.getByteFrequencyData(framework.data);
-        // let lowerHalfArray = framework.data.slice(0, (framework.data.length/2) - 1);
-        // let upperHalfArray = framework.data.slice((framework.data.length/2) - 1, framework.data.length - 1);
 
-        // let overallAvg = avg(framework.data);
-        // let lowerMax = max(lowerHalfArray);
-        // let lowerAvg = avg(lowerHalfArray);
-        // let upperMax = max(upperHalfArray);
-        // let upperAvg = avg(upperHalfArray);
+        framework.analyserNode.getByteFrequencyData(framework.data);
+        let lowerHalfArray = framework.data.slice(0, (framework.data.length/2) - 1);
+        let upperHalfArray = framework.data.slice((framework.data.length/2) - 1, framework.data.length - 1);
 
-        // let lowerMaxFr = lowerMax / lowerHalfArray.length;
-        // let lowerAvgFr = lowerAvg / lowerHalfArray.length;
-        // let upperMaxFr = upperMax / upperHalfArray.length;
-        // let upperAvgFr = upperAvg / upperHalfArray.length;
+        let overallAvg = avg(framework.data);
+        let lowerMax = max(lowerHalfArray);
+        let lowerAvg = avg(lowerHalfArray);
+        let upperMax = max(upperHalfArray);
+        let upperAvg = avg(upperHalfArray);
+
+        let lowerMaxFr = lowerMax / lowerHalfArray.length;
+        let lowerAvgFr = lowerAvg / lowerHalfArray.length;
+        let upperMaxFr = upperMax / upperHalfArray.length;
+        let upperAvgFr = upperAvg / upperHalfArray.length;
 
         makeRoughGround(plane, modulate(framework.streamData.bufferData.upperMaxFr , 0, 1, 0.5, 10));
         makeRoughGround(plane2, modulate(framework.streamData.bufferData.lowerMaxFr, 0, 1, 0.5, 17));
-       //  makeRoughBall(ball, modulate(Math.pow(framework.streamData.bufferData.lowerMaxFr, 2), 0, 1, 0, 20), modulate(framework.streamData.bufferData.upperAvgFr, 0, 1, 0, 10));
+        makeRoughBall(ball, modulate(Math.pow(framework.streamData.bufferData.lowerMaxFr, 2), 0, 1, 0, 20), modulate(framework.streamData.bufferData.upperAvgFr, 0, 1, 0, 10));
         group.rotation.y += 0.0005;
          function onWindowResize() {
             framework.camera.aspect = window.innerWidth / window.innerHeight;
             framework.camera.updateProjectionMatrix();
             framework.renderer.setSize(window.innerWidth, window.innerHeight);
           }
-      
+
         function makeRoughBall(mesh, bassFr, treFr) {
           mesh.geometry.vertices.forEach(function (vertex, i) {
               var offset = mesh.geometry.parameters.radius;
@@ -121,7 +121,7 @@ export function BallAndPlane (framework) {
               vertex.normalize();
               var rf = 0.0003;
               var distance = (offset + bassFr ) + noise3D(vertex.x + time *rf*8, vertex.y +  time*rf*7, vertex.z + time*rf*9) * amp * treFr;
-              
+
               vertex.multiplyScalar(distance);
           });
           mesh.geometry.verticesNeedUpdate = true;
@@ -130,32 +130,22 @@ export function BallAndPlane (framework) {
           mesh.geometry.computeFaceNormals();
       }
 
-        function makeRoughGround(mesh, distortionFr) {
-          
-          const position = mesh.geometry.attributes.position.array;
-          console.log(mesh.geometry)
-         
-          var amp = 3;
-          for ( let i = 0, l = position.count; i < l; i ++ ){
-             
-                var time = Date.now();
-                var distance = (noise2D(position[i - 2] + time * 0.0003, position[i - 1] + time * 0.0001) + 0) * distortionFr * amp;
-                console.log(distance)
-                position[i] = distance
-              
-            
-              
-          }
-          mesh.geometry.attributes.position.needsUpdate = true
-          mesh.geometry.verticesNeedUpdate = true;
-          mesh.geometry.normalsNeedUpdate = true;
-          mesh.geometry.computeVertexNormals();
-          mesh.geometry.computeFaceNormals();
-        }
-      }
+      function makeRoughGround(mesh, distortionFr) {
 
-      
-      
+              mesh.geometry.vertices.forEach(function (vertex, i) {
+                  var amp = 3;
+                  var time = Date.now();
+                  var distance = (noise2D(vertex.x + time * 0.0003, vertex.y + time * 0.0001) + 0) * distortionFr * amp;
+                  vertex.z = distance;
+              });
+              mesh.geometry.verticesNeedUpdate = true;
+              mesh.geometry.normalsNeedUpdate = true;
+              mesh.geometry.computeVertexNormals();
+              mesh.geometry.computeFaceNormals();
+            }
+          }
+
+
 
     }
 

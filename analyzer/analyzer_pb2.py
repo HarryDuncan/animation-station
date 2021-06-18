@@ -19,22 +19,22 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0e\x61nalyzer.proto\x12\x08\x61nalyzer\" \n\x0cHelloRequest\x12\x10\n\x08greeting\x18\x01 \x01(\t\"\x1e\n\rHelloResponse\x12\r\n\x05reply\x18\x01 \x01(\t2K\n\x0cHelloService\x12;\n\x08sayHello\x12\x16.analyzer.HelloRequest\x1a\x17.analyzer.HelloResponseb\x06proto3'
+  serialized_pb=b'\n\x0e\x61nalyzer.proto\x12\x08\x61nalyzer\"\"\n\x0bInitRequest\x12\x13\n\x0binitMessage\x18\x01 \x01(\t\"+\n\x0cInitResponse\x12\x1b\n\x13initResponseMessage\x18\x01 \x01(\t\"\x0c\n\nStreamData\"\x0c\n\nDataPoints2\x8d\x01\n\x0f\x41nalyzerService\x12=\n\x0cinitAnalyzer\x12\x15.analyzer.InitRequest\x1a\x16.analyzer.InitResponse\x12;\n\ranalyzeStream\x12\x14.analyzer.StreamData\x1a\x14.analyzer.DataPointsb\x06proto3'
 )
 
 
 
 
-_HELLOREQUEST = _descriptor.Descriptor(
-  name='HelloRequest',
-  full_name='analyzer.HelloRequest',
+_INITREQUEST = _descriptor.Descriptor(
+  name='InitRequest',
+  full_name='analyzer.InitRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='greeting', full_name='analyzer.HelloRequest.greeting', index=0,
+      name='initMessage', full_name='analyzer.InitRequest.initMessage', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -53,20 +53,20 @@ _HELLOREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=28,
-  serialized_end=60,
+  serialized_end=62,
 )
 
 
-_HELLORESPONSE = _descriptor.Descriptor(
-  name='HelloResponse',
-  full_name='analyzer.HelloResponse',
+_INITRESPONSE = _descriptor.Descriptor(
+  name='InitResponse',
+  full_name='analyzer.InitResponse',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='reply', full_name='analyzer.HelloResponse.reply', index=0,
+      name='initResponseMessage', full_name='analyzer.InitResponse.initResponseMessage', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -84,53 +84,129 @@ _HELLORESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=62,
-  serialized_end=92,
+  serialized_start=64,
+  serialized_end=107,
 )
 
-DESCRIPTOR.message_types_by_name['HelloRequest'] = _HELLOREQUEST
-DESCRIPTOR.message_types_by_name['HelloResponse'] = _HELLORESPONSE
+
+_STREAMDATA = _descriptor.Descriptor(
+  name='StreamData',
+  full_name='analyzer.StreamData',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=109,
+  serialized_end=121,
+)
+
+
+_DATAPOINTS = _descriptor.Descriptor(
+  name='DataPoints',
+  full_name='analyzer.DataPoints',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=123,
+  serialized_end=135,
+)
+
+DESCRIPTOR.message_types_by_name['InitRequest'] = _INITREQUEST
+DESCRIPTOR.message_types_by_name['InitResponse'] = _INITRESPONSE
+DESCRIPTOR.message_types_by_name['StreamData'] = _STREAMDATA
+DESCRIPTOR.message_types_by_name['DataPoints'] = _DATAPOINTS
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-HelloRequest = _reflection.GeneratedProtocolMessageType('HelloRequest', (_message.Message,), {
-  'DESCRIPTOR' : _HELLOREQUEST,
+InitRequest = _reflection.GeneratedProtocolMessageType('InitRequest', (_message.Message,), {
+  'DESCRIPTOR' : _INITREQUEST,
   '__module__' : 'analyzer_pb2'
-  # @@protoc_insertion_point(class_scope:analyzer.HelloRequest)
+  # @@protoc_insertion_point(class_scope:analyzer.InitRequest)
   })
-_sym_db.RegisterMessage(HelloRequest)
+_sym_db.RegisterMessage(InitRequest)
 
-HelloResponse = _reflection.GeneratedProtocolMessageType('HelloResponse', (_message.Message,), {
-  'DESCRIPTOR' : _HELLORESPONSE,
+InitResponse = _reflection.GeneratedProtocolMessageType('InitResponse', (_message.Message,), {
+  'DESCRIPTOR' : _INITRESPONSE,
   '__module__' : 'analyzer_pb2'
-  # @@protoc_insertion_point(class_scope:analyzer.HelloResponse)
+  # @@protoc_insertion_point(class_scope:analyzer.InitResponse)
   })
-_sym_db.RegisterMessage(HelloResponse)
+_sym_db.RegisterMessage(InitResponse)
+
+StreamData = _reflection.GeneratedProtocolMessageType('StreamData', (_message.Message,), {
+  'DESCRIPTOR' : _STREAMDATA,
+  '__module__' : 'analyzer_pb2'
+  # @@protoc_insertion_point(class_scope:analyzer.StreamData)
+  })
+_sym_db.RegisterMessage(StreamData)
+
+DataPoints = _reflection.GeneratedProtocolMessageType('DataPoints', (_message.Message,), {
+  'DESCRIPTOR' : _DATAPOINTS,
+  '__module__' : 'analyzer_pb2'
+  # @@protoc_insertion_point(class_scope:analyzer.DataPoints)
+  })
+_sym_db.RegisterMessage(DataPoints)
 
 
 
-_HELLOSERVICE = _descriptor.ServiceDescriptor(
-  name='HelloService',
-  full_name='analyzer.HelloService',
+_ANALYZERSERVICE = _descriptor.ServiceDescriptor(
+  name='AnalyzerService',
+  full_name='analyzer.AnalyzerService',
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=94,
-  serialized_end=169,
+  serialized_start=138,
+  serialized_end=279,
   methods=[
   _descriptor.MethodDescriptor(
-    name='sayHello',
-    full_name='analyzer.HelloService.sayHello',
+    name='initAnalyzer',
+    full_name='analyzer.AnalyzerService.initAnalyzer',
     index=0,
     containing_service=None,
-    input_type=_HELLOREQUEST,
-    output_type=_HELLORESPONSE,
+    input_type=_INITREQUEST,
+    output_type=_INITRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='analyzeStream',
+    full_name='analyzer.AnalyzerService.analyzeStream',
+    index=1,
+    containing_service=None,
+    input_type=_STREAMDATA,
+    output_type=_DATAPOINTS,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
 ])
-_sym_db.RegisterServiceDescriptor(_HELLOSERVICE)
+_sym_db.RegisterServiceDescriptor(_ANALYZERSERVICE)
 
-DESCRIPTOR.services_by_name['HelloService'] = _HELLOSERVICE
+DESCRIPTOR.services_by_name['AnalyzerService'] = _ANALYZERSERVICE
 
 # @@protoc_insertion_point(module_scope)

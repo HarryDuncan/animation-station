@@ -1,7 +1,7 @@
 import React from 'react';
-import Node from './../../visualizer/renderer/Node';
+import Node from './../../visualizer/Node';
 
-
+// On mount - sets the options for all the styling/layout of the player
 export function mountComponent() {
   let opts = this.setOpts([
     'playIcon',
@@ -27,7 +27,7 @@ export function mountComponent() {
     'iconSize'
   ]);
   this.setState(opts, () => {
-    if (!this.props.hideName) 
+    if (!this.props.hideName)
       this.setScrollSize();
     this.setPercentages();
   });
@@ -79,8 +79,8 @@ export function setStyle(tier) {
   return style;
 }
 
-   
-  
+
+
 
 export function setAudio(context) {
   context.resume()
@@ -89,11 +89,11 @@ export function setAudio(context) {
       <div>
           <audio
               crossOrigin="anonymous"
-             src={`file:///${this.props.audioFiles[this.state.currentTrackIdx]['src']}`}
+             src={`file:///${this.props.audioFiles[this.state.currentTrackIndex]['src']}`}
               ref={(audioRef) => {
                 this.audioRef = audioRef;
               }}
-              onLoadedMetadata={this.loadDuration}
+
               // onSuspend={() => clearInterval(this.seekingInterval)}
               onPlay={this.startPlay}
               onEnded={this.endPlay}

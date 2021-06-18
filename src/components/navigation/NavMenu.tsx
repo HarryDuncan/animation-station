@@ -14,48 +14,6 @@ const navStyles: Partial<INavStyles> = {
 
 
 
-//
-// public _onLinkClick = (ev?: React.MouseEvent<HTMLElement>, item?: INavLink) => {
-// 		switch(item['key']){
-// 			case 'Add Tracks':
-// 				this.props.toggleListMenu()
-// 				break;
-// 			default:
-// 				console.log('asdas')
-// 		}
-// 		this.setState({
-// 			key : item['key']
-// 		})
-// 	}
-// 	public render(){
-// 		const navLinkGroups: INavLink[] = [
-// 			  {
-// 			    links: [
-//
-// 			      {
-// 			        name: 'Add Tracks',
-// 			       	onClick : console.log('asdasd'),
-// 			        key: 'Add Tracks',
-// 			      },
-// 			      {
-// 			        name: 'Create Playlist',
-// 			       	onClick :  console.log('asdasd'),
-// 			        key: 'Create Playlist'
-// 			      },
-// 			      {
-// 			        name: 'Connect Input',
-// 			        onClick : console.log('asdasd'),
-// 			        key: 'Input',
-//
-// 			      },
-//
-// 			    ],
-// 			  },
-// 			];
-
-
-
-
 
 
 
@@ -76,10 +34,33 @@ interface INavMenuProps{
 
 const NavMenu: React.FunctionComponent<INavMenuProps> = (props) => {
 
-  const _generateNavMenuItems = (linkClickCallback : (arg : string) => void,  playlistItems? : IPlayListItem) => {
+  const _generateNavMenuItems = (linkClickCallback : (arg : string) => void,  playlistItems? : IPlayListItem[]) => {
+
+
+    // Renders the playlost items
+    const _renderPlaylistLinks = (playlistItems : IPlayListItem[]) => {
+      let linkArr = [{
+                      name: 'Add New Playlist',
+                      onClick : () => linkClickCallback('new'),
+                      key: 'new',
+                    }]
+
+      let playlistLinks = playlistItems.map((item, index) => ({name : item.playlistTitle, onClick : () => linkClickCallback(item.playlistId), key : item.playlistId}))
+
+      if(playlistLinks.length > 0 ){
+        linkArr = linkArr.concat(playlistLinks)
+      }
+
+      return linkArr
+    }
     const navLinkGroups: INavLinkGroup[] = [
       {
         links: [
+          {
+            name: 'Home',
+            key: 'Home',
+            onClick : () => linkClickCallback('Home')
+          },
           {
             name: 'Play Live',
             key: 'Live',
@@ -110,14 +91,7 @@ const NavMenu: React.FunctionComponent<INavMenuProps> = (props) => {
             name: 'Playlists',
             expandAriaLabel: 'Expand Playlists section',
             collapseAriaLabel: 'Collapse Playlists section',
-            links: [
-              {
-                name: 'Add New Playlist',
-                onClick : () => linkClickCallback('new'),
-                key: '',
-
-              },
-            ],
+            links:  _renderPlaylistLinks(playlistItems),
             isExpanded: true,
           },
 
@@ -134,7 +108,7 @@ const NavMenu: React.FunctionComponent<INavMenuProps> = (props) => {
       selectedKey="key3"
       ariaLabel="Nav basic example"
       styles={navStyles}
-      groups={_generateNavMenuItems(props.itemClickedCallback)}
+      groups={_generateNavMenuItems(props.itemClickedCallback, props.playlistItems)}
     />
   );
 };

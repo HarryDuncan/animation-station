@@ -1,89 +1,71 @@
-import React, { Component } from 'react';
+import React, {useState } from 'react';
 import {connect} from "react-redux";
 import * as ReadFiles from '../../utils/ReadFiles';
-import {addToTrackList} from './../../store/player/player.actions';
 import './DropArea.scss';
 
 
 interface IDropAreaProps{
-  addToTrackList : any;
+  // The elements rendered within the drop area
+  children : JSX.Element;
+  // Callback - parsing back to parent component
+  returnFileCallback : (fileData : any) => void;
+  // File restrictions/validations
+
+
 }
 
-interface IDropAreaState{
-  hover : boolean;
-}
 
-class DropArea extends React.Component<IDropAreaProps, IDropAreaState>{
-  constructor(props : IDropAreaProps) {
-    super();
-    this.state = {
-      hover: false
-    };
+
+export const DropArea :  React.FunctionComponent<IDropAreaProps> = (props) => {
+
+  const [isHovering, toggleHovering] = useState(false)
+
+
+  const onDragOut = () => {
+    toggleHovering(false)
   }
 
-  
-
-
-
-  public onDragOut = () => {
-   // DropAreaActions.stopDraggingFiles();
-    this.setState({
-      hover: false
-    });
-  }
-
-  public fileDrop = (e : any ) => {
+  const _fileDrop = (e : any ) => {
     e.preventDefault();
-    
+
     const obj = ReadFiles.separateDirectoriesFromFiles(e.dataTransfer.files);
     let files = obj.files;
     if (obj.directories.length) {
       readFiles.getAllFiles(obj.directories)
                .then(results => {
                  files = files.concat(results);
-                 this.addFilesToList(files);
+                 _addFilesToList(files);
                });
     } else {
-      this.addFilesToList(files);
+      _addFilesToList(files);
     }
   }
 
-  public addFilesToList = (files : any ) => {
+  const _addFilesToList = (files : any ) => {
 
     files = ReadFiles.filterFilesByType(files, 'audio');
 
-    if (files.length) {
-      this.props.addToTrackList(files);
-    }
+    props.returnFileCallback(files)
+
+    // if (files.length) {
+    //   this.props.addToTrackList(files);
+    // }
   }
 
-  public startDrag = (event : any ) => {
-     event.preventDefault();
-    this.setState({
-        hover: true
-      });
+  const _startDrag = (event : any ) => {
+    event.preventDefault();
+    toggleHovering(true)
   }
 
-  public render = () => {
+
     return (
       <div>
-        { this.props.children }
-        <div className={this.state.hover ? ' messageArea--hover' : ''}>
-          <div className={ 'dashedContainer' } onDragOver={this.startDrag} onDrop={this.fileDrop}>
+        { props.children }
+        <div className={isHovering ? ' messageArea--hover' : ''}>
+          <div className={ 'dashedContainer' } onDragOver={_startDrag} onDrop={_fileDrop}>
             Release to add to the list
           </div>
         </div>
       </div>
     );
-  }
 }
-
-const mapStateToProps = (state: any) => ({
-
-})
- 
-const mapDispatchToProps = {
-  addToTrackList
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(DropArea);

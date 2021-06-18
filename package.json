@@ -6,7 +6,6 @@
   "scripts": {
     "dev:electron": "NODE_ENV=development webpack --config webpack.electron.config.js --mode development && electron .",
     "dev:react": "NODE_ENV=development webpack-dev-server --config webpack.react.config.js --mode development"
-
   },
   "keywords": [],
   "author": "",
@@ -47,6 +46,8 @@
     "immutability-helper": "^3.1.1",
     "jsmediatags": "^3.9.5",
     "mime": "^2.5.2",
+    "moment": "^2.29.1",
+    "moment-timezone": "^0.5.33",
     "open-simplex-noise": "^2.4.0",
     "protoc-gen-grpc-web": "^1.2.1",
     "python-shell": "^3.0.0",

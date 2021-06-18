@@ -6,7 +6,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { initializeIcons } from '@uifabric/icons';
 import logger from 'redux-logger';
 import reducer from './store/reducer';
-import Main from './main'
+import Root from './Root'
 import{ BrowserRouter} from 'react-router-dom'
 
 initializeIcons();
@@ -28,4 +28,4 @@ document.body.appendChild(mainElement);
 
 
 
-ReactDom.render(<BrowserRouter><Provider store={store}> <Main /></Provider></BrowserRouter>, mainElement);
+ReactDom.render(<BrowserRouter><Provider store={store}> <Root /></Provider></BrowserRouter>, mainElement);

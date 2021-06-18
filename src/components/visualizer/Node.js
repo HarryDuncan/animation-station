@@ -2,12 +2,12 @@ import React, { Component } from "react";
 import * as THREE from "three";
 import {initializeAllScenes,getScene, deleteAllScenes, updateSceneManager} from './SceneManager'
 import {dataPoints} from './data/dataPoints'
-import './../visualizer.scss';
+import './visualizer.scss';
 // import {changeToLight} from '../../../store/app/app.actions';
 import framework from './data/Framework'
 import {connect} from 'react-redux'
 
-let currentVisualizer; 
+let currentVisualizer;
 
 // This node is where the controler meets the visualizer
 class Node extends Component {
@@ -22,7 +22,7 @@ class Node extends Component {
   }
 
   createScene(){
-    framework.breakAnimation = false
+      framework.breakAnimation = false
 
     // Creates Analyzer Nodes to analyze audio data ----- Audio Context stuff
       framework.isPlaying = true
@@ -35,7 +35,7 @@ class Node extends Component {
       framework.analyserNode.smoothingTimeConstant = 0.01
 
 
-    framework.source = this.props.audioCtx.createMediaElementSource(this.props.audio) 
+    framework.source = this.props.audioCtx.createMediaElementSource(this.props.audio)
     framework.source.connect(framework.analyserNode);
     var bufferLength = framework.analyserNode.frequencyBinCount;
     framework.data = new Uint8Array(bufferLength);
@@ -79,7 +79,7 @@ class Node extends Component {
           framework.camera = currentVisualizer.camera
           framework.streamData.change = false
           dispatchFunctions(currentVisualizer)
-         
+
           setTimeout(() => {
             switchVisualizers(framework, dispatchFunctions)
           }, currentVisualizer.sceneLength)
@@ -98,13 +98,13 @@ class Node extends Component {
         framework.camera.updateProjectionMatrix();
         framework.renderer.setSize(window.innerWidth, window.innerHeight);
     }
-  
+
   }
 
 
 // Functions if we need to update app state while visualizer is playing
 dispatchFunctions(data){
-  // TODO - Change Seeker and logo from light to dark depending on bg 
+  // TODO - Change Seeker and logo from light to dark depending on bg
   // if(data['backgroundDark'] === true){
   //   this.props.changeToLight(true)
   // }else{
@@ -122,7 +122,7 @@ componentWillUnmount(){
     if(framework.renderer !== undefined && framework.renderer !== null){
       framework.renderer.dispose()
     }
-    deleteAllScenes() 
+    deleteAllScenes()
     this.props.audio.pause()
     window.removeEventListener('resize', this.handleResize, false)
   }
@@ -131,7 +131,7 @@ componentWillUnmount(){
   togglePlaying = () => {
     framework.isPlaying = !framework.isPlaying
   }
- 
+
 
 
 
@@ -140,22 +140,21 @@ componentWillUnmount(){
    if(this.props.playerState.playStarted && !framework.isPlaying && this.props.audio !== undefined){
       framework.isPlaying = true
       this.createScene();
-     
+
     }else if(!this.props.playerState.playStarted && framework.isPlaying){
        framework.isPlaying = false
     }
     return (
-        <div id={'vizualizer-full'} className={'visualizer-node-full'} 
+        <div id={'vizualizer-full'} className={'visualizer-node-full'}
           ref={thisNode => this.elVisualizer=thisNode}>
-      </div>  
+      </div>
     )
   }
 
 }
 
 const mapDispatchToProps = {
-  
+
 }
 
 export default connect(null, mapDispatchToProps)(Node)
-

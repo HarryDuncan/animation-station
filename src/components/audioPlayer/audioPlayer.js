@@ -3,9 +3,6 @@ import icons from './assets/index';
 import IdleTimer from 'react-idle-timer'
 import {connect} from 'react-redux';
 import {Volume, SeekBar, Play, Forward, Rewind, Loop, Name} from './innerComponents'
-
-
-//methods
 import functions from "./functions/index";
 //style sheet
 import "./audioPlayerStyle.scss";
@@ -19,8 +16,8 @@ class AudioPlayer extends Component {
     this.seekingInterval = null;
     this.nameDisplay = null;
     this.state = {
+                  currentTrackIndex : this.props.currentTrackIndex,
                   showClassName : "active-audio",
-                  currentTrackIdx : 0,
                   seekerVal : "0",
                   volume : "75",
                   playing : false,
@@ -68,7 +65,7 @@ class AudioPlayer extends Component {
                     marginLeft : "0"
                   }
   }
-   
+
     //binding methods
     this.mountComponent = functions.mountComponent.bind(this);
     this.setScrollSize = functions.setScrollSize.bind(this);
@@ -126,16 +123,18 @@ class AudioPlayer extends Component {
 
   handleOnIdle(){
     // this.props.activeCB(false)
-  
+
     this.setState({
       showClassName : 'idle-audio'
     })
   }
+
+
+
   render() {
 
-    let title = this.props.audioFiles[this.state.currentTrackIdx].Title;
-   
-    const isMobile = window.innerWidth <= 900;
+    let title = this.props.audioFiles[this.state.currentTrackIndex].trackTitle;
+
     return (
         <div className={"audio-player "} style={this.setStyle()}>
         <IdleTimer
@@ -151,15 +150,15 @@ class AudioPlayer extends Component {
             <div className={this.state.showClassName}>
             <div className={"wrapper " + (this.props.isLight? 'light-screen' : '')}>
 
-              
+
             <Rewind handleHoverOver={this.handleHoverOver} handleHoverOut={this.handleHoverOut} handleRewind={this.handleRewind}   rewindHoverIcon={this.state.rewindHover}  rewindIcon={this.state.rewindIcon}  iconSize={this.state.iconSize} />
             <Play  playing={this.state.playing} handlePause={this.handlePause} handlePlay={this.handlePlay} handleHoverOver={this.handleHoverOver} handleHoverOut={this.handleHoverOut} iconSize={this.state.iconSize} renderPlayIcon={this.renderPlayIcon} />
             <Forward endPlay={this.endPlay} forwardIcon={this.state.forwardIcon} forwardHoverIcon={this.state.forwardHover} iconSize={this.state.iconSize} handleHoverOver={this.handleHoverOver} handleHoverOut={this.handleHoverOut} />
-         
+
             <Name hideSeeking={false} setNameDisplayRef={this.setNameDisplayRef} scrollMarquee={this.state.scrollMarquee} scrollMarqueeFunc={this.scrollMarqueeFunc}  title={title} width={this.state.nameWidth}/>
 
             </div>
-            
+
             <SeekBar seekerVal={this.state.seekerVal} handleSeekSlider={this.handleSeekSlider} handleSeek={this.handleSeek} currentAudioTime={this.state.currentAudioTime} duration={this.state.duration} />
             <Volume renderMuteIcon={this.renderMuteIcon} handleVolume={this.handleVolume}  volume={this.state.volume}/>
 
@@ -174,7 +173,7 @@ const mapDispatchToProps = {
 
 }
 const mapStateToProps  = (state) => ({
- 
+
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AudioPlayer)

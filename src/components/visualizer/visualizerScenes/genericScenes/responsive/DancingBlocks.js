@@ -24,18 +24,18 @@ export function DancingBlocks (framework) {
     plane2.receiveShadow = true;
     scene.add(plane2);
     const loader = new GLTFLoader();
-    let url = require('./../../../../../../assets/animationAssets/4blocks.glb')
-    
+    let url = require('./../../../../../assets/animationAssets/4blocks.glb')
+
       loader.load(url, (gltf) => {
         var root = gltf.scene;
          var scale = document.documentElement.clientWidth <= 900 ? 7 : 12;
-        
+
           root.scale.set (scale,scale,scale);
           root.castShadow = true;
-           
+
             // var material2 =  new THREE.MeshPhongMaterial({color : 0xff0048,  reflectivity : 0.7}) ;
-            let material1 = new THREE.MeshBasicMaterial({map : new THREE.TextureLoader().load(require('./../../../../../../assets/animationAssets/textures/Cube.png'))})
-            let material2 = new THREE.MeshBasicMaterial({map : new THREE.TextureLoader().load(require('./../../../../../../assets/animationAssets/textures/Cube2.png'))})
+            let material1 = new THREE.MeshBasicMaterial({map : new THREE.TextureLoader().load(require('./../../../../../assets/animationAssets/textures/Cube.png'))})
+            let material2 = new THREE.MeshBasicMaterial({map : new THREE.TextureLoader().load(require('./../../../../../assets/animationAssets/textures/Cube2.png'))})
 
             let count = 0
              root.traverse((o) => {
@@ -46,10 +46,10 @@ export function DancingBlocks (framework) {
 
                   o.material = material1
                 }else{
-                  
+
                      o.material = material2
-                  
-                 
+
+
                 }
                 count ++
               }
@@ -61,18 +61,18 @@ export function DancingBlocks (framework) {
 
 
 
-   
 
-   
-  
+
+
+
     camera.position.y = 0;
-    
+
     var light = new THREE.DirectionalLight( 0xdfebff, 1.75 );
-    light.position.set( 0, 1, 0.5 ); 
+    light.position.set( 0, 1, 0.5 );
     light.shadow.mapSize.width = 512; // default
     light.shadow.mapSize.height = 512; // default
-    light.shadow.camera.near = 0.1;       
-    light.shadow.camera.far = 2000;      
+    light.shadow.camera.near = 0.1;
+    light.shadow.camera.far = 2000;
     light.shadow.camera.left = -1000;
     light.shadow.camera.bottom = -1000;
     light.shadow.camera.right = 500;
@@ -85,7 +85,7 @@ export function DancingBlocks (framework) {
     let toggle = -1
     let bgToggleLimit = 40
     let bgTranslateCount = 0;
-    var setTime = Date.now() 
+    var setTime = Date.now()
     let DancingBlocks = {
       name: 'DancingBlocks',
       scene: scene,
@@ -96,30 +96,30 @@ export function DancingBlocks (framework) {
         // Linear Interpolation for smoother animation
         function lerp(a, b, t) {return a + (b - a) * t}
 
-        // example easing function 
+        // example easing function
         function ease(t) { return t<0.5 ? 2*t*t : -1+(4-2*t)*t}
 
 
-        var timer = Date.now() 
-       
+        var timer = Date.now()
+
         let count = 0
         let bgC = 0
-   
+
         let MoveUpper = framework.streamData.bufferData.peak - 1 < framework.streamData.bufferData.average
         let MoveDowner = framework.streamData.bufferData.trough + 1 > framework.streamData.bufferData.average
 
-       
+
         var time = window.performance.now();
         var rf = 0.0003;
         var distance = framework.streamData.frequencies.bassFr  + noise3D( time *rf*1,   time*rf*2 , time*rf*3) * 2 * framework.streamData.frequencies.trebelFr
 
         let t = 0;
         if(framework.streamData.bufferData.average !== 0){
-            
+
             scene.traverse((o) => {
               if(o.isMesh && o.name === 'block'){
                 if(count % 2 === 0){
-                  
+
                   if(o.position.y > 2  && (MoveDowner ||  framework.streamData.bufferData.lowerMaxFr > 0.9 )&& window.performance.now() - t > 60){
                     // o.translateY(-1 * modulate(framework.streamData.bufferData.peak, 1,2,0,2))
                      o.translateY(-1 * lerp(o.position.y, distance * 2, ease(t)))
@@ -133,7 +133,7 @@ export function DancingBlocks (framework) {
                     }else{
                       o.translateY(- 0.05)
                     }
-                  
+
                   }
                 }else{
                   if(o.position.y < 2 && (MoveDowner ||  framework.streamData.bufferData.lowerMaxFr > 0.9) && window.performance.now() - t > 60){
@@ -155,15 +155,15 @@ export function DancingBlocks (framework) {
                 if(t > 1){
                   t = 0
                 }
-                count ++ 
+                count ++
             //  console.log(o)
                // extrapolateCube(o, lowerAvgFr, upperAvgFr)
               }
             })
-         
-          
+
+
         }
-      
+
 
         }
 

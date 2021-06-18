@@ -1,14 +1,23 @@
 syntax = "proto3";
 package analyzer;
 
-service HelloService {
-  rpc sayHello (HelloRequest) returns (HelloResponse);
+service AnalyzerService {
+  rpc initAnalyzer (InitRequest) returns (InitResponse);
+  rpc analyzeStream (StreamData) returns (DataPoints);
 }
 
-message HelloRequest {
-  string greeting = 1;
+message InitRequest {
+  string initMessage = 1;
 }
 
-message HelloResponse {
-  string reply = 1;
+message InitResponse {
+  string initResponseMessage = 1;
+}
+
+message StreamData {
+
+}
+
+message DataPoints {
+
 }
