@@ -5,13 +5,25 @@ import grpc
 import  analyzer_pb2
 import analyzer_pb2_grpc
 
+import sys
+import sys
+sys.path.append("/usr/local/lib/python3.9/site-packages")
+import essentia
+import essentia.streaming
 
+
+print(dir(essentia.streaming))
 class Analyzer(analyzer_pb2_grpc.AnalyzerServiceServicer):
 
+ ## Sets up the initial connection with client
   def initAnalyzer(self, request, context):
     return analyzer_pb2.InitResponse(initResponseMessage='Connected To Analyzer')
 
-  def analyzeStream(self, request, context):
+## Loads track
+  def streamTrack(self, request, context):
+     print(self)
+     print(request)
+     print(context)
     return analyzer_pb2.DataPoints()
 
 def serve():
