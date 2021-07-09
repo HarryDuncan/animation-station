@@ -4,9 +4,10 @@ import AudioPlayer from '../audioPlayer/AudioPlayer';
 import {IPlaylist} from '../../store/music/music.actions';
 
 interface IPlayProps {
-  playlists : state.music.playlists,
-  playlistPlayingIndex   : state.music.playlistPlayingIndex,
-  playingTrackIndex : state.music.playingTrackIndex
+  playlists : IPlaylist[];
+  playlistPlayingIndex : number;
+  playingTrackIndex : number;
+  playlistChangeKey : boolean;
 }
 
 
@@ -29,7 +30,14 @@ const Play: React.FunctionComponent<IPlayProps> = (props) => {
       }
 
 
+    useEffect(() => {
+        console.log('asd')
+        if(props.playlistPlayingIndex !== -1){
 
+          updateTracklist(props.playlists[props.playlistPlayingIndex]['playlistTracks'])
+        }
+
+      }, [props.playlistChangeKey, props.playlistPlayingIndex])
 
       // On Mount set the tracklist to the tracks from the correct playlist in redux
     useEffect(() => {
@@ -46,7 +54,7 @@ const Play: React.FunctionComponent<IPlayProps> = (props) => {
           {
             props.playlistPlayingIndex !== -1 && trackList.length > 0 ?
 
-            <AudioPlayer isLight={false} audioContext={_setAudioContext()} audioFiles={trackList}  currentTrackIndex={props.playingTrackIndex}/>
+            <AudioPlayer key={trackList.length} isLight={false} audioContext={_setAudioContext()} audioFiles={trackList}  currentTrackIndex={props.playingTrackIndex}/>
             :
 
             null

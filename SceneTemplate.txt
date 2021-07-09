@@ -1,0 +1,35 @@
+import * as THREE from 'three';
+import {getBGDark, retrieveBG, retrieveSceneTime} from
+
+
+export function CUSTOMSCENE(framework : any, sceneLength : number, sceneParams : any) {
+
+    // Init Scene  
+    let scene, renderer, camera;
+
+		camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
+		camera.position.set( 0, 50, -205 );
+
+		scene = new THREE.Scene();
+		scene.background = new THREE.Color(0x050505);
+
+
+    // Where the update/animation goes
+    const _onUpdate = (framework : any) => {
+
+    }
+
+
+
+		let CUSTOMSCENE = {
+		 	  name: 'CUSTOMSCENE',
+        tag : 'generic',
+		    scene: scene,
+		    camera: camera,
+		    backgroundDark : true,
+		    responsive : true,
+		    sceneLength: retrieveSceneTime(sceneParams),
+	      onUpdate : _onUpdate
+		}
+		return BackdropLights
+	}

@@ -5,8 +5,11 @@ import grpc
 import analyzer_pb2 as analyzer__pb2
 
 
-class AnalyzerServiceStub(object):
-    """Missing associated documentation comment in .proto file."""
+class TrackAnalyzerServiceStub(object):
+    """Track Analyzer Service
+    Streams wav/mp3 files . 
+
+    """
 
     def __init__(self, channel):
         """Constructor.
@@ -15,21 +18,35 @@ class AnalyzerServiceStub(object):
             channel: A grpc.Channel.
         """
         self.initAnalyzer = channel.unary_unary(
-                '/analyzer.AnalyzerService/initAnalyzer',
+                '/analyzer.TrackAnalyzerService/initAnalyzer',
                 request_serializer=analyzer__pb2.InitRequest.SerializeToString,
                 response_deserializer=analyzer__pb2.InitResponse.FromString,
                 )
+        self.streamTrack = channel.unary_unary(
+                '/analyzer.TrackAnalyzerService/streamTrack',
+                request_serializer=analyzer__pb2.TrackData.SerializeToString,
+                response_deserializer=analyzer__pb2.DataPoints.FromString,
+                )
         self.analyzeStream = channel.unary_unary(
-                '/analyzer.AnalyzerService/analyzeStream',
+                '/analyzer.TrackAnalyzerService/analyzeStream',
                 request_serializer=analyzer__pb2.StreamData.SerializeToString,
                 response_deserializer=analyzer__pb2.DataPoints.FromString,
                 )
 
 
-class AnalyzerServiceServicer(object):
-    """Missing associated documentation comment in .proto file."""
+class TrackAnalyzerServiceServicer(object):
+    """Track Analyzer Service
+    Streams wav/mp3 files . 
+
+    """
 
     def initAnalyzer(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def streamTrack(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -42,12 +59,17 @@ class AnalyzerServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
 
-def add_AnalyzerServiceServicer_to_server(servicer, server):
+def add_TrackAnalyzerServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'initAnalyzer': grpc.unary_unary_rpc_method_handler(
                     servicer.initAnalyzer,
                     request_deserializer=analyzer__pb2.InitRequest.FromString,
                     response_serializer=analyzer__pb2.InitResponse.SerializeToString,
+            ),
+            'streamTrack': grpc.unary_unary_rpc_method_handler(
+                    servicer.streamTrack,
+                    request_deserializer=analyzer__pb2.TrackData.FromString,
+                    response_serializer=analyzer__pb2.DataPoints.SerializeToString,
             ),
             'analyzeStream': grpc.unary_unary_rpc_method_handler(
                     servicer.analyzeStream,
@@ -56,13 +78,16 @@ def add_AnalyzerServiceServicer_to_server(servicer, server):
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'analyzer.AnalyzerService', rpc_method_handlers)
+            'analyzer.TrackAnalyzerService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
  # This class is part of an EXPERIMENTAL API.
-class AnalyzerService(object):
-    """Missing associated documentation comment in .proto file."""
+class TrackAnalyzerService(object):
+    """Track Analyzer Service
+    Streams wav/mp3 files . 
+
+    """
 
     @staticmethod
     def initAnalyzer(request,
@@ -75,9 +100,26 @@ class AnalyzerService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/analyzer.AnalyzerService/initAnalyzer',
+        return grpc.experimental.unary_unary(request, target, '/analyzer.TrackAnalyzerService/initAnalyzer',
             analyzer__pb2.InitRequest.SerializeToString,
             analyzer__pb2.InitResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def streamTrack(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/analyzer.TrackAnalyzerService/streamTrack',
+            analyzer__pb2.TrackData.SerializeToString,
+            analyzer__pb2.DataPoints.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -92,7 +134,7 @@ class AnalyzerService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/analyzer.AnalyzerService/analyzeStream',
+        return grpc.experimental.unary_unary(request, target, '/analyzer.TrackAnalyzerService/analyzeStream',
             analyzer__pb2.StreamData.SerializeToString,
             analyzer__pb2.DataPoints.FromString,
             options, channel_credentials,

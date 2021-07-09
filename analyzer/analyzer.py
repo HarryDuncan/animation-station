@@ -1,19 +1,18 @@
 from concurrent import futures
 import logging
+import sys
 
 import grpc
-import  analyzer_pb2
+
+
+import essentia
+from essentia.streaming import *
+
+import analyzer_pb2
 import analyzer_pb2_grpc
 
-import sys
-import sys
-sys.path.append("/usr/local/lib/python3.9/site-packages")
-import essentia
-import essentia.streaming
 
-
-print(dir(essentia.streaming))
-class Analyzer(analyzer_pb2_grpc.AnalyzerServiceServicer):
+class Analyzer(analyzer_pb2_grpc.TrackAnalyzerServiceServicer):
 
  ## Sets up the initial connection with client
   def initAnalyzer(self, request, context):
@@ -24,11 +23,17 @@ class Analyzer(analyzer_pb2_grpc.AnalyzerServiceServicer):
      print(self)
      print(request)
      print(context)
-    return analyzer_pb2.DataPoints()
+     return analyzer_pb2.DataPoints()
+
+  def analyzeStream(self, requst, context):
+      print(self)
+      print(request)
+      print(context)
+      return analyzer_pb2.DataPoints()
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    analyzer_pb2_grpc.add_AnalyzerServiceServicer_to_server(Analyzer(), server)
+    analyzer_pb2_grpc.add_TrackAnalyzerServiceServicer_to_server(Analyzer(), server)
     server.add_insecure_port('[::]:8080')
     server.start()
     server.wait_for_termination()

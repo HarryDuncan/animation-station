@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0e\x61nalyzer.proto\x12\x08\x61nalyzer\"\"\n\x0bInitRequest\x12\x13\n\x0binitMessage\x18\x01 \x01(\t\"+\n\x0cInitResponse\x12\x1b\n\x13initResponseMessage\x18\x01 \x01(\t\"\x0c\n\nStreamData\"\x0c\n\nDataPoints2\x8d\x01\n\x0f\x41nalyzerService\x12=\n\x0cinitAnalyzer\x12\x15.analyzer.InitRequest\x1a\x16.analyzer.InitResponse\x12;\n\ranalyzeStream\x12\x14.analyzer.StreamData\x1a\x14.analyzer.DataPointsb\x06proto3'
+  serialized_pb=b'\n\x0e\x61nalyzer.proto\x12\x08\x61nalyzer\"\"\n\x0bInitRequest\x12\x13\n\x0binitMessage\x18\x01 \x01(\t\"+\n\x0cInitResponse\x12\x1b\n\x13initResponseMessage\x18\x01 \x01(\t\"\"\n\tTrackData\x12\x15\n\rtrackFileName\x18\x01 \x01(\t\"#\n\nStreamData\x12\x15\n\rtrackFileName\x18\x01 \x01(\t\"\x0c\n\nDataPoints2\xcc\x01\n\x14TrackAnalyzerService\x12=\n\x0cinitAnalyzer\x12\x15.analyzer.InitRequest\x1a\x16.analyzer.InitResponse\x12\x38\n\x0bstreamTrack\x12\x13.analyzer.TrackData\x1a\x14.analyzer.DataPoints\x12;\n\ranalyzeStream\x12\x14.analyzer.StreamData\x1a\x14.analyzer.DataPointsb\x06proto3'
 )
 
 
@@ -89,14 +89,21 @@ _INITRESPONSE = _descriptor.Descriptor(
 )
 
 
-_STREAMDATA = _descriptor.Descriptor(
-  name='StreamData',
-  full_name='analyzer.StreamData',
+_TRACKDATA = _descriptor.Descriptor(
+  name='TrackData',
+  full_name='analyzer.TrackData',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
+    _descriptor.FieldDescriptor(
+      name='trackFileName', full_name='analyzer.TrackData.trackFileName', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -110,7 +117,39 @@ _STREAMDATA = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=109,
-  serialized_end=121,
+  serialized_end=143,
+)
+
+
+_STREAMDATA = _descriptor.Descriptor(
+  name='StreamData',
+  full_name='analyzer.StreamData',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='trackFileName', full_name='analyzer.StreamData.trackFileName', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=145,
+  serialized_end=180,
 )
 
 
@@ -134,12 +173,13 @@ _DATAPOINTS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=123,
-  serialized_end=135,
+  serialized_start=182,
+  serialized_end=194,
 )
 
 DESCRIPTOR.message_types_by_name['InitRequest'] = _INITREQUEST
 DESCRIPTOR.message_types_by_name['InitResponse'] = _INITRESPONSE
+DESCRIPTOR.message_types_by_name['TrackData'] = _TRACKDATA
 DESCRIPTOR.message_types_by_name['StreamData'] = _STREAMDATA
 DESCRIPTOR.message_types_by_name['DataPoints'] = _DATAPOINTS
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -158,6 +198,13 @@ InitResponse = _reflection.GeneratedProtocolMessageType('InitResponse', (_messag
   })
 _sym_db.RegisterMessage(InitResponse)
 
+TrackData = _reflection.GeneratedProtocolMessageType('TrackData', (_message.Message,), {
+  'DESCRIPTOR' : _TRACKDATA,
+  '__module__' : 'analyzer_pb2'
+  # @@protoc_insertion_point(class_scope:analyzer.TrackData)
+  })
+_sym_db.RegisterMessage(TrackData)
+
 StreamData = _reflection.GeneratedProtocolMessageType('StreamData', (_message.Message,), {
   'DESCRIPTOR' : _STREAMDATA,
   '__module__' : 'analyzer_pb2'
@@ -174,19 +221,19 @@ _sym_db.RegisterMessage(DataPoints)
 
 
 
-_ANALYZERSERVICE = _descriptor.ServiceDescriptor(
-  name='AnalyzerService',
-  full_name='analyzer.AnalyzerService',
+_TRACKANALYZERSERVICE = _descriptor.ServiceDescriptor(
+  name='TrackAnalyzerService',
+  full_name='analyzer.TrackAnalyzerService',
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=138,
-  serialized_end=279,
+  serialized_start=197,
+  serialized_end=401,
   methods=[
   _descriptor.MethodDescriptor(
     name='initAnalyzer',
-    full_name='analyzer.AnalyzerService.initAnalyzer',
+    full_name='analyzer.TrackAnalyzerService.initAnalyzer',
     index=0,
     containing_service=None,
     input_type=_INITREQUEST,
@@ -195,9 +242,19 @@ _ANALYZERSERVICE = _descriptor.ServiceDescriptor(
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
-    name='analyzeStream',
-    full_name='analyzer.AnalyzerService.analyzeStream',
+    name='streamTrack',
+    full_name='analyzer.TrackAnalyzerService.streamTrack',
     index=1,
+    containing_service=None,
+    input_type=_TRACKDATA,
+    output_type=_DATAPOINTS,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='analyzeStream',
+    full_name='analyzer.TrackAnalyzerService.analyzeStream',
+    index=2,
     containing_service=None,
     input_type=_STREAMDATA,
     output_type=_DATAPOINTS,
@@ -205,8 +262,8 @@ _ANALYZERSERVICE = _descriptor.ServiceDescriptor(
     create_key=_descriptor._internal_create_key,
   ),
 ])
-_sym_db.RegisterServiceDescriptor(_ANALYZERSERVICE)
+_sym_db.RegisterServiceDescriptor(_TRACKANALYZERSERVICE)
 
-DESCRIPTOR.services_by_name['AnalyzerService'] = _ANALYZERSERVICE
+DESCRIPTOR.services_by_name['TrackAnalyzerService'] = _TRACKANALYZERSERVICE
 
 # @@protoc_insertion_point(module_scope)

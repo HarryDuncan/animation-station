@@ -16,7 +16,7 @@ import * as grpcWeb from 'grpc-web';
 import * as protos_analyzer_pb from '../protos/analyzer_pb';
 
 
-export class AnalyzerServiceClient {
+export class TrackAnalyzerServiceClient {
   client_: grpcWeb.AbstractClientBase;
   hostname_: string;
   credentials_: null | { [index: string]: string; };
@@ -61,7 +61,7 @@ export class AnalyzerServiceClient {
     if (callback !== undefined) {
       return this.client_.rpcCall(
         this.hostname_ +
-          '/analyzer.AnalyzerService/initAnalyzer',
+          '/analyzer.TrackAnalyzerService/initAnalyzer',
         request,
         metadata || {},
         this.methodInfoinitAnalyzer,
@@ -69,10 +69,50 @@ export class AnalyzerServiceClient {
     }
     return this.client_.unaryCall(
     this.hostname_ +
-      '/analyzer.AnalyzerService/initAnalyzer',
+      '/analyzer.TrackAnalyzerService/initAnalyzer',
     request,
     metadata || {},
     this.methodInfoinitAnalyzer);
+  }
+
+  methodInfostreamTrack = new grpcWeb.AbstractClientBase.MethodInfo(
+    protos_analyzer_pb.DataPoints,
+    (request: protos_analyzer_pb.TrackData) => {
+      return request.serializeBinary();
+    },
+    protos_analyzer_pb.DataPoints.deserializeBinary
+  );
+
+  streamTrack(
+    request: protos_analyzer_pb.TrackData,
+    metadata: grpcWeb.Metadata | null): Promise<protos_analyzer_pb.DataPoints>;
+
+  streamTrack(
+    request: protos_analyzer_pb.TrackData,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.Error,
+               response: protos_analyzer_pb.DataPoints) => void): grpcWeb.ClientReadableStream<protos_analyzer_pb.DataPoints>;
+
+  streamTrack(
+    request: protos_analyzer_pb.TrackData,
+    metadata: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.Error,
+               response: protos_analyzer_pb.DataPoints) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/analyzer.TrackAnalyzerService/streamTrack',
+        request,
+        metadata || {},
+        this.methodInfostreamTrack,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/analyzer.TrackAnalyzerService/streamTrack',
+    request,
+    metadata || {},
+    this.methodInfostreamTrack);
   }
 
   methodInfoanalyzeStream = new grpcWeb.AbstractClientBase.MethodInfo(
@@ -101,7 +141,7 @@ export class AnalyzerServiceClient {
     if (callback !== undefined) {
       return this.client_.rpcCall(
         this.hostname_ +
-          '/analyzer.AnalyzerService/analyzeStream',
+          '/analyzer.TrackAnalyzerService/analyzeStream',
         request,
         metadata || {},
         this.methodInfoanalyzeStream,
@@ -109,7 +149,7 @@ export class AnalyzerServiceClient {
     }
     return this.client_.unaryCall(
     this.hostname_ +
-      '/analyzer.AnalyzerService/analyzeStream',
+      '/analyzer.TrackAnalyzerService/analyzeStream',
     request,
     metadata || {},
     this.methodInfoanalyzeStream);

@@ -38,7 +38,28 @@ export namespace InitResponse {
   }
 }
 
+export class TrackData extends jspb.Message {
+  getTrackfilename(): string;
+  setTrackfilename(value: string): TrackData;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): TrackData.AsObject;
+  static toObject(includeInstance: boolean, msg: TrackData): TrackData.AsObject;
+  static serializeBinaryToWriter(message: TrackData, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): TrackData;
+  static deserializeBinaryFromReader(message: TrackData, reader: jspb.BinaryReader): TrackData;
+}
+
+export namespace TrackData {
+  export type AsObject = {
+    trackfilename: string,
+  }
+}
+
 export class StreamData extends jspb.Message {
+  getTrackfilename(): string;
+  setTrackfilename(value: string): StreamData;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): StreamData.AsObject;
   static toObject(includeInstance: boolean, msg: StreamData): StreamData.AsObject;
@@ -49,6 +70,7 @@ export class StreamData extends jspb.Message {
 
 export namespace StreamData {
   export type AsObject = {
+    trackfilename: string,
   }
 }
 

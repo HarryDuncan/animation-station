@@ -1,10 +1,19 @@
 syntax = "proto3";
 package analyzer;
 
-service AnalyzerService {
+
+
+/* Track Analyzer Service
+ * Streams wav/mp3 files . */
+
+
+service TrackAnalyzerService {
   rpc initAnalyzer (InitRequest) returns (InitResponse);
+  rpc streamTrack (TrackData) returns (DataPoints);
   rpc analyzeStream (StreamData) returns (DataPoints);
 }
+
+/* For initialization */
 
 message InitRequest {
   string initMessage = 1;
@@ -14,8 +23,15 @@ message InitResponse {
   string initResponseMessage = 1;
 }
 
-message StreamData {
 
+/* For Streaming track */
+
+message TrackData {
+  string trackFileName = 1;
+}
+
+message StreamData {
+  string trackFileName = 1;
 }
 
 message DataPoints {
