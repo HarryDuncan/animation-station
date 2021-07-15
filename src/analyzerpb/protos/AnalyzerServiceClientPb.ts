@@ -35,7 +35,7 @@ export class TrackAnalyzerServiceClient {
     this.options_ = options;
   }
 
-  methodInfoinitAnalyzer = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoInitAnalyzer = new grpcWeb.AbstractClientBase.MethodInfo(
     protos_analyzer_pb.InitResponse,
     (request: protos_analyzer_pb.InitRequest) => {
       return request.serializeBinary();
@@ -61,99 +61,37 @@ export class TrackAnalyzerServiceClient {
     if (callback !== undefined) {
       return this.client_.rpcCall(
         this.hostname_ +
-          '/analyzer.TrackAnalyzerService/initAnalyzer',
+          '/analyzer.TrackAnalyzerService/InitAnalyzer',
         request,
         metadata || {},
-        this.methodInfoinitAnalyzer,
+        this.methodInfoInitAnalyzer,
         callback);
     }
     return this.client_.unaryCall(
     this.hostname_ +
-      '/analyzer.TrackAnalyzerService/initAnalyzer',
+      '/analyzer.TrackAnalyzerService/InitAnalyzer',
     request,
     metadata || {},
-    this.methodInfoinitAnalyzer);
+    this.methodInfoInitAnalyzer);
   }
 
-  methodInfostreamTrack = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoAnalyzeStream = new grpcWeb.AbstractClientBase.MethodInfo(
     protos_analyzer_pb.DataPoints,
-    (request: protos_analyzer_pb.TrackData) => {
-      return request.serializeBinary();
-    },
-    protos_analyzer_pb.DataPoints.deserializeBinary
-  );
-
-  streamTrack(
-    request: protos_analyzer_pb.TrackData,
-    metadata: grpcWeb.Metadata | null): Promise<protos_analyzer_pb.DataPoints>;
-
-  streamTrack(
-    request: protos_analyzer_pb.TrackData,
-    metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
-               response: protos_analyzer_pb.DataPoints) => void): grpcWeb.ClientReadableStream<protos_analyzer_pb.DataPoints>;
-
-  streamTrack(
-    request: protos_analyzer_pb.TrackData,
-    metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
-               response: protos_analyzer_pb.DataPoints) => void) {
-    if (callback !== undefined) {
-      return this.client_.rpcCall(
-        this.hostname_ +
-          '/analyzer.TrackAnalyzerService/streamTrack',
-        request,
-        metadata || {},
-        this.methodInfostreamTrack,
-        callback);
-    }
-    return this.client_.unaryCall(
-    this.hostname_ +
-      '/analyzer.TrackAnalyzerService/streamTrack',
-    request,
-    metadata || {},
-    this.methodInfostreamTrack);
-  }
-
-  methodInfoanalyzeStream = new grpcWeb.AbstractClientBase.MethodInfo(
-    protos_analyzer_pb.DataPoints,
-    (request: protos_analyzer_pb.StreamData) => {
+    (request: protos_analyzer_pb.AudioData) => {
       return request.serializeBinary();
     },
     protos_analyzer_pb.DataPoints.deserializeBinary
   );
 
   analyzeStream(
-    request: protos_analyzer_pb.StreamData,
-    metadata: grpcWeb.Metadata | null): Promise<protos_analyzer_pb.DataPoints>;
-
-  analyzeStream(
-    request: protos_analyzer_pb.StreamData,
-    metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
-               response: protos_analyzer_pb.DataPoints) => void): grpcWeb.ClientReadableStream<protos_analyzer_pb.DataPoints>;
-
-  analyzeStream(
-    request: protos_analyzer_pb.StreamData,
-    metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
-               response: protos_analyzer_pb.DataPoints) => void) {
-    if (callback !== undefined) {
-      return this.client_.rpcCall(
-        this.hostname_ +
-          '/analyzer.TrackAnalyzerService/analyzeStream',
-        request,
-        metadata || {},
-        this.methodInfoanalyzeStream,
-        callback);
-    }
-    return this.client_.unaryCall(
-    this.hostname_ +
-      '/analyzer.TrackAnalyzerService/analyzeStream',
-    request,
-    metadata || {},
-    this.methodInfoanalyzeStream);
+    request: protos_analyzer_pb.AudioData,
+    metadata?: grpcWeb.Metadata) {
+    return this.client_.serverStreaming(
+      this.hostname_ +
+        '/analyzer.TrackAnalyzerService/AnalyzeStream',
+      request,
+      metadata || {},
+      this.methodInfoAnalyzeStream);
   }
 
 }
-

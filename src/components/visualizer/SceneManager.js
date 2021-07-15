@@ -4,11 +4,11 @@ import {getDataPoints, sceneScaffold} from './functions';
 let allScenes = {'responsive' : [], 'nonResponsive' : []};
 let currentVisualizer;
 
-import {InitRequest, InitResponse, StreamData, DataPoints  } from "./../../analyzerpb/protos/analyzer_pb"
+import {InitRequest, InitResponse, AudioData, DataPoints  } from "./../../analyzerpb/protos/analyzer_pb"
 import { TrackAnalyzerServiceClient} from "./../../analyzerpb/protos/AnalyzerServiceClientPb"
 
 var client;
-var audioData = new StreamData()
+var audioData = new AudioData()
 // Function to initialize all scenes
 // TODO - Make promise then start playback when all items are loaded
 export const initializeAllScenes = (framework) =>{
@@ -19,8 +19,7 @@ export const initializeAllScenes = (framework) =>{
     var init = new InitRequest();
     init.setInitmessage('init')
     audioData.setTrackfilename('test')
-    console.log(init)
-    console.log(client)
+
     client.initAnalyzer(init,{}, function(err, response) {
       console.log(response)
 
@@ -62,7 +61,7 @@ export const getScene = (framework) => {
 
 export const updateSceneManager = (framework) => {
 
-  
+  console.log(framework)
    client.analyzeStream(audioData, {}, function(err, response) {
      console.log(response)
    });

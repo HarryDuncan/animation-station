@@ -1,0 +1,65 @@
+syntax = "proto3";
+package audioNode;
+
+
+
+/* Track Controler Service
+ * Plays anc controls audio files - creates audio node for analyzer in PYTHON . */
+
+service AudioNodeService {
+
+  /* For initialization of the controller */
+
+  rpc InitializeControls (InitControllerRequest) returns (InitControllerResponse);
+
+  /* loads a track, and plays it */
+  rpc PlayTrack (ControlRequest) returns (ServiceResponse);
+
+  /* pauses currently loaded track */
+  rpc PauseTrack (ControlRequest) returns (ServiceResponse);
+
+  /* pauses currently loaded track */
+  rpc Rewind (ControlRequest) returns (ServiceResponse);
+
+  /* pauses currently loaded track */
+  rpc Forward (ControlRequest) returns (ServiceResponse);
+
+
+  /* Following RPCS need a specific request message because extra data is passed */
+
+  /* sets the volume track */
+  rpc SetVolume (VolumeRequest) returns (ServiceResponse);
+
+  /* seeks through the track */
+  rpc SeekTrack (SeekRequest) returns (ServiceResponse);
+}
+
+/* Initialization message - sets up the track controller and sends the audio file names and the trackIndex */
+
+message InitControllerRequest {
+  repeated string audioFileNames = 1;
+  int32 trackIndex = 2;
+}
+
+message InitControllerResponse {
+  string reply = 1;
+  bool error = 2;
+}
+
+  /* Generic request/response messages */
+message ControlRequest {
+  string action = 1;
+}
+
+message ServiceResponse {
+  string reply = 1;
+  bool error = 2;
+}
+
+message VolumeRequest {
+  int32 newVolume = 1;
+}
+
+message SeekRequest {
+  int32 seekPoint = 1;
+}

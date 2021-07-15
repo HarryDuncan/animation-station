@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 FROM python:3
-WORKDIR /analyzer
+WORKDIR /audioNode
 
  COPY requirements.txt requirements.txt
  RUN pip install -r requirements.txt
@@ -31,10 +31,10 @@ RUN apt-get update \
 
 
 ENV PYTHONPATH /usr/local/lib/python3/dist-packages
-
+ENV PYTHONUNBUFFERED=1
 
 # Run Program
-WORKDIR /analyzer
+WORKDIR /audioNode
 
 COPY . .
-CMD ["python3", "analyzer.py"]
+CMD ["python3", "audioNode.py"]

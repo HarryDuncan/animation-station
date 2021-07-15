@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from "react-redux";
-import AudioControler from '../audioControler/AudioControler';
+import AudioPlayer from '../audioPlayer/AudioPlayer';
 import {IPlaylist} from '../../store/music/music.actions';
 
 interface IPlayProps {
@@ -16,9 +16,22 @@ const Play: React.FunctionComponent<IPlayProps> = (props) => {
       const [trackList, updateTracklist] = useState([])
 
 
+      // Sets up the audio context
+      const _setAudioContext = () => {
+        let context;
+          // @ts-ignore
+          let AudioContext : any = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) {
+              context = new AudioContext();
+            }
+
+          return context
+
+      }
+
 
     useEffect(() => {
-
+        console.log('asd')
         if(props.playlistPlayingIndex !== -1){
 
           updateTracklist(props.playlists[props.playlistPlayingIndex]['playlistTracks'])
@@ -29,7 +42,7 @@ const Play: React.FunctionComponent<IPlayProps> = (props) => {
       // On Mount set the tracklist to the tracks from the correct playlist in redux
     useEffect(() => {
       if(props.playlistPlayingIndex !== -1){
-
+        console.log(props.playlists[props.playlistPlayingIndex]['playlistTracks'])
         updateTracklist(props.playlists[props.playlistPlayingIndex]['playlistTracks'])
       }
 
@@ -41,7 +54,7 @@ const Play: React.FunctionComponent<IPlayProps> = (props) => {
           {
             props.playlistPlayingIndex !== -1 && trackList.length > 0 ?
 
-            <AudioControler isLight={false} key={trackList.length} audioFiles={trackList}  currentTrackIndex={props.playingTrackIndex} />
+            <AudioPlayer key={trackList.length} isLight={false} audioContext={_setAudioContext()} audioFiles={trackList}  currentTrackIndex={props.playingTrackIndex}/>
             :
 
             null

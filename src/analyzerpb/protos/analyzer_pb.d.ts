@@ -56,25 +56,36 @@ export namespace TrackData {
   }
 }
 
-export class StreamData extends jspb.Message {
+export class AudioData extends jspb.Message {
   getTrackfilename(): string;
-  setTrackfilename(value: string): StreamData;
+  setTrackfilename(value: string): AudioData;
+
+  getDataList(): Array<number>;
+  setDataList(value: Array<number>): AudioData;
+  clearDataList(): AudioData;
+  addData(value: number, index?: number): AudioData;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): StreamData.AsObject;
-  static toObject(includeInstance: boolean, msg: StreamData): StreamData.AsObject;
-  static serializeBinaryToWriter(message: StreamData, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): StreamData;
-  static deserializeBinaryFromReader(message: StreamData, reader: jspb.BinaryReader): StreamData;
+  toObject(includeInstance?: boolean): AudioData.AsObject;
+  static toObject(includeInstance: boolean, msg: AudioData): AudioData.AsObject;
+  static serializeBinaryToWriter(message: AudioData, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): AudioData;
+  static deserializeBinaryFromReader(message: AudioData, reader: jspb.BinaryReader): AudioData;
 }
 
-export namespace StreamData {
+export namespace AudioData {
   export type AsObject = {
     trackfilename: string,
+    dataList: Array<number>,
   }
 }
 
 export class DataPoints extends jspb.Message {
+  getDataList(): Array<number>;
+  setDataList(value: Array<number>): DataPoints;
+  clearDataList(): DataPoints;
+  addData(value: number, index?: number): DataPoints;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): DataPoints.AsObject;
   static toObject(includeInstance: boolean, msg: DataPoints): DataPoints.AsObject;
@@ -85,6 +96,7 @@ export class DataPoints extends jspb.Message {
 
 export namespace DataPoints {
   export type AsObject = {
+    dataList: Array<number>,
   }
 }
 

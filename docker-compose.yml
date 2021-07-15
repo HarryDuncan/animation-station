@@ -9,7 +9,7 @@ services:
       - "8000:8000"
   server:
     build:
-      context: ./analyzer
+      context: ./audioNode
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
@@ -21,7 +21,7 @@ services:
       context: ./
       dockerfile: Dockerfile
     ports:
-      - "4000:4000"
+      - "4003:4003"
     depends_on:
       - server
       - proxy

@@ -12,20 +12,16 @@ import analyzer_pb2
 import analyzer_pb2_grpc
 
 
-class Analyzer(analyzer_pb2_grpc.TrackAnalyzerServiceServicer):
+class AudioNode(audioNode_pb2_grpc.TrackAnalyzerServiceServicer):
 
  ## Sets up the initial connection with client
-  def initAnalyzer(self, request, context):
+  def InitAnalyzer(self, request, context):
+    print('heyyy')
     return analyzer_pb2.InitResponse(initResponseMessage='Connected To Analyzer')
 
-## Loads track
-  def streamTrack(self, request, context):
-     print(self)
-     print(request)
-     print(context)
-     return analyzer_pb2.DataPoints()
 
-  def analyzeStream(self, requst, context):
+  def AnalyzeStream(self, request, context):
+      print('Analyzing stream')
       print(self)
       print(request)
       print(context)
