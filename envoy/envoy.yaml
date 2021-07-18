@@ -21,9 +21,15 @@ static_resources:
             - name: local_service
               domains: ["*"]
               routes:
-              - match: { prefix: "/" }
+              - match: { prefix: "/audioNode/" }
                 route:
-                  cluster: analyzer_service
+                  prefix_rewrite: "/"
+                  cluster: audio-node_service
+                  max_grpc_timeout: 0s
+              - match: { prefix: "/manager" }
+                route:
+                  prefix_rewrite: "/"
+                  cluster: docker-manager_service
                   max_grpc_timeout: 0s
               cors:
                 allow_origin:
@@ -37,9 +43,15 @@ static_resources:
           - name: envoy.cors
           - name: envoy.router
   clusters:
-  - name: analyzer_service
+  - name: audio-node_service
     connect_timeout: 50s
     type: logical_dns
     http2_protocol_options: {}
     lb_policy: round_robin
     hosts: [{ socket_address: { address: host.docker.internal, port_value: 8080 }}]
+  - name: docker-manager_service
+    connect_timeout: 50s
+    type: logical_dns
+    http2_protocol_options: {}
+    lb_policy: round_robin
+    hosts: [{ socket_address: { address: host.docker.internal, port_value: 8180 }}]

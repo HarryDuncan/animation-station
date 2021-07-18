@@ -1,0 +1,26 @@
+syntax = "proto3";
+package dockerManager;
+
+
+/* Docker Manager Service Manages docker - copys data from outside container into container and updates volumes . */
+
+
+
+
+service DockerManagerAudioService {
+
+  /* Copy Audio Files */
+  rpc CopyAudioFiles (CopyRequest) returns (CopyResponse);
+
+
+}
+
+message CopyRequest {
+  repeated string audioFileNames = 1;
+  int32 trackIndex = 2;
+}
+
+message CopyResponse {
+  string reply = 1;
+  bool error = 2;
+}

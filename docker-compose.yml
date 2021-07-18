@@ -11,18 +11,34 @@ services:
     build:
       context: ./audioNode
       dockerfile: Dockerfile
+    volumes:
+      - audio:/audioNode/audio
     ports:
       - "8080:8080"
     depends_on:
       - proxy
-
-  web-client:
+  docker-manager:
     build:
-      context: ./
-      dockerfile: Dockerfile
+        context: ./dockerManager
+        dockerfile: Dockerfile
     ports:
-      - "4003:4003"
+      - "8180:8180"
     depends_on:
-      - server
       - proxy
-    tty: true
+volumes:
+  audio:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ~/Desktop/Techno
+
+# web-client:
+  #build:
+  #  context: ./
+  #  dockerfile: Dockerfile
+  # ports:
+  #  - "4000:4000"
+  # depends_on:
+  #  - server
+  #  - proxy

@@ -2,12 +2,16 @@ import React, { useState, useEffect } from "react";
 import {connect} from 'react-redux';
 
 import IdleTimer from 'react-idle-timer'
-
+import {sanitizeFileName} from './../../utils';
 import {Volume, SeekBar, Play, Forward, Rewind, Loop, Name} from './innerComponents'
 import functions from "./functions/index";
 
 import { InitControllerRequest, InitControllerResponse, ControlRequest } from "./../../links/audioNode/protos/audioNode_pb"
 import { AudioNodeServiceClient} from "./../../links/audioNode/protos/AudioNodeServiceClientPb"
+
+import { CopyRequest } from "./../../links/dockerManager/protos/dockerManager_pb"
+import { DockerManagerAudioServiceClient} from "./../../links/dockerManager/protos/DockerManagerServiceClientPb"
+
 
 //style sheet
 import "./audioPlayerStyle.scss";
@@ -26,7 +30,9 @@ const AudioControler: React.FunctionComponent<IAudioControlerProps> = (props) =>
   // ######################
   // state
   // #######################
-  const audioNode = new AudioNodeServiceClient('http://localhost:8000')
+  const audioNode = new AudioNodeServiceClient('http://localhost:8000/audioNode')
+  const manager = new DockerManagerAudioServiceClient('http://localhost:8000/manager')
+
   const [trackPlaying, toggleTrackPlaying] = useState(false)
   // audio active show/hide the audio controler
   const [audioClassname, setAudioClassname] = useState('active-audio')
@@ -46,7 +52,7 @@ const AudioControler: React.FunctionComponent<IAudioControlerProps> = (props) =>
   // USE EFFECTS
   // #######################
   useEffect(() =>{
-    let cleanAudioFiles = props.audioFiles.map((item, index) => item['src'])
+    let cleanAudioFiles = props.audioFiles.map((item, index) => sanitizeFileName(item['src']))
     let init = new InitControllerRequest();
     init.setAudiofilenamesList(cleanAudioFiles)
     init.setTrackindex(props.currentTrackIndex)

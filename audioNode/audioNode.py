@@ -1,12 +1,13 @@
 from concurrent import futures
 import logging
 import sys
-
+import os
 import grpc
 
 
-import essentia
+import essentia, essentia.standard, essentia.streaming
 from essentia.streaming import *
+
 
 import audioNode_pb2
 import audioNode_pb2_grpc
@@ -18,31 +19,30 @@ class AudioNode(audioNode_pb2_grpc.AudioNodeServiceServicer):
 
     audioFileURLS = []
     trackIndex = 0
+    playing = False
     ## Sets up the initial connection with client
     def InitializeControls(self, request, context):
 
-        audioFileURLS = request.audioFileNames
-        trackIndex = request.trackIndex
-        print('heyyyyyy')
+
+        self.audioFileURLS = request.audioFileNames
+        self.trackIndex = request.trackIndex
         return audioNode_pb2.InitControllerResponse(reply='Connected To Audio Node', error=False)
 
     def PlayTrack(self, request, context):
-        print(self.audioFileURLS)
-        print(self.audioFileURLS[self.trackIndex])
-        try:
-
-            loader = MonoLoader(filename = audioFileURLS[trackIndex])
-            frameCutter = FrameCutter(frameSize = 1024, hopSize = 512)
-            w = Windowing(type = 'hann')
-            spec = Spectrum()
-            mfcc = MFCC()
-            pool = essentia.Pool()
-            essentia.run(loader)
+        if self.playing:
             return audioNode_pb2.ServiceResponse(reply='Track Playing', error=False)
-        except:
-            print('error occured')
-            return audioNode_pb2.ServiceResponse(reply='Error Occured', error=True)
-
+        else:
+            self.playing = True
+            try:
+                # self.audioFileURLS[self.trackIndex]
+                filePath ='audio/YTP.aiff'
+                print(filePath)
+                loader = streaming.MonoLoader(filename=filePath)()
+                print('asdasdasd')
+                run(loader)
+                return audioNode_pb2.ServiceResponse(reply='Track Playing', error=False)
+            except Exception as e:
+                return audioNode_pb2.ServiceResponse(reply=e, error=True)
 
 
 ## Connects audioNode to envoy proxy
@@ -56,6 +56,5 @@ def serve():
 
 
 if __name__ == '__main__':
-    print("Hello World")
     logging.basicConfig()
     serve()
