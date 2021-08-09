@@ -20,3 +20,5 @@ Werkzeug==2.0.1
 zerorpc==0.6.3
 zope.event==4.5.0
 zope.interface==5.4.0
+sounddevice==0.3.12
+soundFile===0.10.2

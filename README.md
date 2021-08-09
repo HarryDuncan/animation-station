@@ -33,6 +33,7 @@ protoc protos/dockerManager.proto  \
 build
 - docker-compose -f docker-compose.yml build
 run
+docker network create isolated
 - docker-compose -f docker-compose.yml up -d
 
 docker ps

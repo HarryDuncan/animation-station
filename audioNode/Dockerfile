@@ -11,7 +11,9 @@ RUN apt-get update \
     && apt-get -y upgrade \
     && apt-get install -y python3-numpy python3-six \
     && apt-get install -y libfftw3-3 libyaml-0-2 libtag1v5 libsamplerate0 python3-yaml \
-    && apt-get install -y ffmpeg
+    && apt-get install -y ffmpeg \
+    && apt-get install -y libportaudio2
+
 
 
 RUN apt-get update \
@@ -30,11 +32,46 @@ RUN apt-get update \
     && cd / && rm -rf /essentia/essentia
 
 
+RUN apt-get update && apt-get install -y \
+    vorbis-tools \
+    sox \
+    alsa-utils \
+    libasound2 \
+    libasound2-plugins \
+    pulseaudio \
+    pulseaudio-utils \
+    libportaudio2 \
+    alsa-tools \
+    --no-install-recommends
+
+
+ENV HOME /home/pulseaudio
+RUN useradd --create-home --home-dir $HOME pulseaudio \
+	&& usermod -aG audio pulseaudio \
+	&& chown -R pulseaudio:pulseaudio $HOME
+
+WORKDIR /audioNode
+USER pulseaudio
+
+
+
+
+COPY default.pa /etc/pulse/default.pa
+COPY client.conf /etc/pulse/client.conf
+COPY daemon.conf /etc/pulse/daemon.conf
+
+ENTRYPOINT [ "pulseaudio" ]
+CMD [ "--log-level=4", "--log-target=stderr", "-v" ]
+
 ENV PYTHONPATH /usr/local/lib/python3/dist-packages
 ENV PYTHONUNBUFFERED=1
+
 
 # Run Program
 WORKDIR /audioNode
 
+
 COPY . .
-CMD ["python3", "audioNode.py"]
+
+ENTRYPOINT [ "python3" ]
+CMD [ "audioNode.py"]
