@@ -13,7 +13,7 @@ service AudioNodeService {
   rpc InitializeControls (InitControllerRequest) returns (InitControllerResponse);
 
   /* loads a track, and plays it */
-  rpc PlayTrack (ControlRequest) returns (ServiceResponse);
+  rpc PlayTrack (ControlRequest) returns (stream StreamResponse);
 
   /* pauses currently loaded track */
   rpc PauseTrack (ControlRequest) returns (ServiceResponse);
@@ -49,6 +49,14 @@ message InitControllerResponse {
   /* Generic request/response messages */
 message ControlRequest {
   string action = 1;
+}
+
+message StreamResponse {
+  string streamData = 1;
+}
+
+message AudioData {
+  repeated double points = 1;
 }
 
 message ServiceResponse {

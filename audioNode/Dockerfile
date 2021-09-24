@@ -25,7 +25,7 @@ RUN apt-get update \
     && python3 waf && python3 waf install && ldconfig \
     &&  apt-get remove -y build-essential libyaml-dev libfftw3-dev libavcodec-dev \
         libavformat-dev libavutil-dev libavresample-dev python-dev libsamplerate0-dev \
-        libtag1-dev python-numpy-dev \
+        libtag1-dev \
     && apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* \

@@ -22,10 +22,10 @@ class AudioNodeServiceStub(object):
                 request_serializer=audioNode__pb2.InitControllerRequest.SerializeToString,
                 response_deserializer=audioNode__pb2.InitControllerResponse.FromString,
                 )
-        self.PlayTrack = channel.unary_unary(
+        self.PlayTrack = channel.unary_stream(
                 '/audioNode.AudioNodeService/PlayTrack',
                 request_serializer=audioNode__pb2.ControlRequest.SerializeToString,
-                response_deserializer=audioNode__pb2.ServiceResponse.FromString,
+                response_deserializer=audioNode__pb2.StreamResponse.FromString,
                 )
         self.PauseTrack = channel.unary_unary(
                 '/audioNode.AudioNodeService/PauseTrack',
@@ -120,10 +120,10 @@ def add_AudioNodeServiceServicer_to_server(servicer, server):
                     request_deserializer=audioNode__pb2.InitControllerRequest.FromString,
                     response_serializer=audioNode__pb2.InitControllerResponse.SerializeToString,
             ),
-            'PlayTrack': grpc.unary_unary_rpc_method_handler(
+            'PlayTrack': grpc.unary_stream_rpc_method_handler(
                     servicer.PlayTrack,
                     request_deserializer=audioNode__pb2.ControlRequest.FromString,
-                    response_serializer=audioNode__pb2.ServiceResponse.SerializeToString,
+                    response_serializer=audioNode__pb2.StreamResponse.SerializeToString,
             ),
             'PauseTrack': grpc.unary_unary_rpc_method_handler(
                     servicer.PauseTrack,
@@ -191,9 +191,9 @@ class AudioNodeService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/audioNode.AudioNodeService/PlayTrack',
+        return grpc.experimental.unary_stream(request, target, '/audioNode.AudioNodeService/PlayTrack',
             audioNode__pb2.ControlRequest.SerializeToString,
-            audioNode__pb2.ServiceResponse.FromString,
+            audioNode__pb2.StreamResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

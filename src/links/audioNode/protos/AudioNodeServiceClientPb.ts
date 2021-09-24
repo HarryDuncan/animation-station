@@ -76,43 +76,22 @@ export class AudioNodeServiceClient {
   }
 
   methodInfoPlayTrack = new grpcWeb.AbstractClientBase.MethodInfo(
-    protos_audioNode_pb.ServiceResponse,
+    protos_audioNode_pb.StreamResponse,
     (request: protos_audioNode_pb.ControlRequest) => {
       return request.serializeBinary();
     },
-    protos_audioNode_pb.ServiceResponse.deserializeBinary
+    protos_audioNode_pb.StreamResponse.deserializeBinary
   );
 
   playTrack(
     request: protos_audioNode_pb.ControlRequest,
-    metadata: grpcWeb.Metadata | null): Promise<protos_audioNode_pb.ServiceResponse>;
-
-  playTrack(
-    request: protos_audioNode_pb.ControlRequest,
-    metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
-               response: protos_audioNode_pb.ServiceResponse) => void): grpcWeb.ClientReadableStream<protos_audioNode_pb.ServiceResponse>;
-
-  playTrack(
-    request: protos_audioNode_pb.ControlRequest,
-    metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
-               response: protos_audioNode_pb.ServiceResponse) => void) {
-    if (callback !== undefined) {
-      return this.client_.rpcCall(
-        this.hostname_ +
-          '/audioNode.AudioNodeService/PlayTrack',
-        request,
-        metadata || {},
-        this.methodInfoPlayTrack,
-        callback);
-    }
-    return this.client_.unaryCall(
-    this.hostname_ +
-      '/audioNode.AudioNodeService/PlayTrack',
-    request,
-    metadata || {},
-    this.methodInfoPlayTrack);
+    metadata?: grpcWeb.Metadata) {
+    return this.client_.serverStreaming(
+      this.hostname_ +
+        '/audioNode.AudioNodeService/PlayTrack',
+      request,
+      metadata || {},
+      this.methodInfoPlayTrack);
   }
 
   methodInfoPauseTrack = new grpcWeb.AbstractClientBase.MethodInfo(

@@ -8,22 +8,28 @@ import argparse
 import queue
 import sys
 import threading
-
+import numpy as np
 import sounddevice as sd
 import soundfile as sf
-
+import pickle
 
 import essentia
 from essentia.streaming import *
-
+from essentia import Pool, run, array, reset
 
 import audioNode_pb2
 import audioNode_pb2_grpc
 
-
+## Connection
+import websockets
+import socket
+import asyncio
+import json
 from struct import unpack
 ## Import other internal modules
+HOST = 'ws://127.0.0.1:8080'
 
+## s = websocket.create_connection(HOST)
 
 class AudioNode(audioNode_pb2_grpc.AudioNodeServiceServicer):
 
@@ -45,8 +51,8 @@ class AudioNode(audioNode_pb2_grpc.AudioNodeServiceServicer):
 
 
         sampleRate = 16000
-        frameSize = 512
-        hopSize = 256
+        frameSize = 1024
+        hopSize = 512
         numberBands = 96
 
         # analysis parameters
@@ -56,12 +62,65 @@ class AudioNode(audioNode_pb2_grpc.AudioNodeServiceServicer):
         # bufferSize = patchSize * hopSize
 
         blockS = 2048
-        buffersize = 20
+        buffersize = patchSize * hopSize
 
         q = queue.Queue(maxsize=buffersize)
         event = threading.Event()
 
+
+
+        # Essentia stuff
+        buffer = np.zeros(buffersize, dtype='float32')
+        vimp = VectorInput(buffer)
+
+
+        fc = FrameCutter(frameSize=frameSize, hopSize=hopSize)
+
+
+
+
+        frameCutter = FrameCutter(frameSize = 1024, hopSize = 512)
+        w = Windowing(type = 'hann')
+        spec = Spectrum()
+        mfcc = MFCC()
+        pool = Pool()
+
+
+        vimp.data >> frameCutter.signal
+        frameCutter.frame >> w.frame >> spec.frame
+        spec.spectrum >> mfcc.spectrum
+        mfcc.bands >> None
+        mfcc.mfcc >> (pool, 'lowlevel.mfcc')
+
+
+        ##################
+        ## CALLBACK FOR SD
+        ######################
+
+        #def sendData(data):
+        #    print(data)
+        #    return audioNode_pb2.StreamResponse(streamData=data.tobytes())
+        #########################
+        #### AUDIO CALCULATIONS TAKE PLACE HERE
+        ###############################
+
+        # print(outdata)
+        # print(frames)
+        # print(time)
+        # # update audio buffer
+        # buffer[:] = array(unpack('f' * blockS, outdata))
+        # # generate predictions
+        # reset(vimp)
+        # run(vimp)
+
+
+        #############################################
+        ##### RETURN GRPC STREM DATA IN THIS FUNCTION
+        ##############################################
+
+
         def callback(outdata, frames, time, status):
+
             assert frames == blockS
             if status.output_underflow:
                 print('Output underflow: increase blocksize?', file=sys.stderr)
@@ -80,11 +139,17 @@ class AudioNode(audioNode_pb2_grpc.AudioNodeServiceServicer):
                 outdata[:] = data
 
 
+
+
+
+
+
         if self.playing:
-            return audioNode_pb2.ServiceResponse(reply='Track Playing', error=False)
+            print('playing')
         else:
             self.playing = True
             try:
+
                 # self.audioFileURLS[self.trackIndex]
                 filePath ='audio/YTP.aiff'
                 print(sd.query_devices())
@@ -92,52 +157,40 @@ class AudioNode(audioNode_pb2_grpc.AudioNodeServiceServicer):
                 print(os.getcwd() + "\n")
                 print('deviced should be printed')
                 with sf.SoundFile(filePath) as f:
-                    for _ in range(buffersize):
+                    for _ in range(20):
                         data = f.read(blockS)
                         if not len(data):
                             break
                         q.put_nowait(data)  # Pre-fill queue
                     stream = sd.OutputStream(
                         samplerate=f.samplerate, blocksize=blockS,
-                        device=2, channels=f.channels,
+                        device=1, channels=f.channels,
                         callback=callback, finished_callback=event.set)
                     with stream:
-                        timeout = blockS * bufferSize / f.samplerate
+                        timeout = blockS * buffersize / f.samplerate
                         while len(data):
                             data = f.read(blockS)
                             q.put(data, timeout=timeout)
+                            yield audioNode_pb2.StreamResponse(streamData='hi')
                             print(data)
                         event.wait()  # Wait until playback is finished
-                #
-                # buffer = np.zeros(bufferSize, dtype='float32')
-                #
-                # vimp = VectorInput(buffer)
-                #
-                # fc = FrameCutter(frameSize=frameSize, hopSize=hopSize)
 
-                # print(essentia.streaming)
-                # loader = essentia.streaming.MonoLoader(filename=filePath)
+
                 #
-                # frameCutter = FrameCutter(frameSize = 1024, hopSize = 512)
-                # w = Windowing(type = 'hann')
-                # spec = Spectrum()
-                # mfcc = MFCC()
-                # pool = essentia.Pool()
+
+
                 #
                 #
-                # loader.audio >> frameCutter.signal
-                # frameCutter.frame >> w.frame >> spec.frame
-                # spec.spectrum >> mfcc.spectrum
-                # mfcc.bands >> None
-                # mfcc.mfcc >> (pool, 'lowlevel.mfcc')
+
                 #
                 #
                 #
                 # essentia.run(loader)
                 # print('Pool contains %d frames of MFCCs' % len(pool['lowlevel.mfcc']))
-                return audioNode_pb2.ServiceResponse(reply='Track Playing', error=False)
+                return audioNode_pb2.StreamResponse(streamData='done')
             except Exception as e:
-                return audioNode_pb2.ServiceResponse(reply=e, error=True)
+                print(e)
+                return audioNode_pb2.StreamResponse(streamData='error')
 
 
 ## Connects audioNode to envoy proxy
@@ -150,9 +203,9 @@ def serve():
 
 
 
+
 if __name__ == '__main__':
     print(sd.query_devices())
-    print("Path at terminal when executing this file")
-    print(os.getcwd() + "\n")
     logging.basicConfig()
+
     serve()

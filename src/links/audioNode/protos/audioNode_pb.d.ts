@@ -66,6 +66,44 @@ export namespace ControlRequest {
   }
 }
 
+export class StreamResponse extends jspb.Message {
+  getStreamdata(): string;
+  setStreamdata(value: string): StreamResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): StreamResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: StreamResponse): StreamResponse.AsObject;
+  static serializeBinaryToWriter(message: StreamResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): StreamResponse;
+  static deserializeBinaryFromReader(message: StreamResponse, reader: jspb.BinaryReader): StreamResponse;
+}
+
+export namespace StreamResponse {
+  export type AsObject = {
+    streamdata: string,
+  }
+}
+
+export class AudioData extends jspb.Message {
+  getPointsList(): Array<number>;
+  setPointsList(value: Array<number>): AudioData;
+  clearPointsList(): AudioData;
+  addPoints(value: number, index?: number): AudioData;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): AudioData.AsObject;
+  static toObject(includeInstance: boolean, msg: AudioData): AudioData.AsObject;
+  static serializeBinaryToWriter(message: AudioData, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): AudioData;
+  static deserializeBinaryFromReader(message: AudioData, reader: jspb.BinaryReader): AudioData;
+}
+
+export namespace AudioData {
+  export type AsObject = {
+    pointsList: Array<number>,
+  }
+}
+
 export class ServiceResponse extends jspb.Message {
   getReply(): string;
   setReply(value: string): ServiceResponse;

@@ -66,8 +66,11 @@
     "redux-thunk": "^2.3.0",
     "request": "^2.88.2",
     "request-promise": "^4.2.6",
+    "socket.io-client": "^4.2.0",
     "three": "^0.124",
     "tinycolor2": "^1.4.2",
-    "webpack-dev-server": "^3.7.1"
+    "webpack-dev-server": "^3.7.1",
+    "websocket": "^1.0.34",
+    "ws": "^8.2.2"
   }
 }

@@ -1,18 +1,5 @@
-version: '3'
+version: "3"
 services:
-  # pulseaudio:
-  #   privileged: true
-  #   build:
-  #       context: ./pulseaudio
-  #       dockerfile: Dockerfile
-  #   devices: # audio control
-  #       - /dev/snd:/dev/snd
-  #   environment:
-  #      - PULSE_SERVER=host.docker.internal
-  #   volumes:
-  #     - /var/run/dbus:/var/run/dbus
-  #     - /etc/machine-id:/etc/machine-id
-  #     - /etc/localtime:/etc/localtime:ro
   proxy:
     build:
       context: ./envoy
@@ -21,10 +8,8 @@ services:
       - "8000:8000"
   server:
     privileged: true
-    # links:
-    #   - pulseaudio:pulseaudio
     environment:
-       - PULSE_SERVER=docker.for.mac.localhost
+      - PULSE_SERVER=docker.for.mac.localhost
     build:
       context: ./audioNode
       dockerfile: Dockerfile
@@ -34,17 +19,11 @@ services:
 
     ports:
       - "8080:8080"
+      - "8888:8888"
+
     depends_on:
       - proxy
-  # docker-manager:
-  #   build:
-  #       context: ./dockerManager
-  #       dockerfile: Dockerfile
-  #   ports:
-  #     - "8180:8180"
-  #   depends_on:
-  #     - proxy
-  #     - pulseaudio
+
 volumes:
   audio:
     driver: local
@@ -52,14 +31,3 @@ volumes:
       type: none
       o: bind
       device: ~/Desktop/Techno
-
-
-# web-client:
-  #build:
-  #  context: ./
-  #  dockerfile: Dockerfile
-  # ports:
-  #  - "4000:4000"
-  # depends_on:
-  #  - server
-  #  - proxy
