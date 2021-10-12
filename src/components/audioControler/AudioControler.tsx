@@ -21,10 +21,6 @@ import {
 } from "./../../links/audioNode/protos/audioNode_pb";
 import { AudioNodeServiceClient } from "./../../links/audioNode/protos/AudioNodeServiceClientPb";
 
-import { CopyRequest } from "./../../links/dockerManager/protos/dockerManager_pb";
-import { DockerManagerAudioServiceClient } from "./../../links/dockerManager/protos/DockerManagerServiceClientPb";
-import { w3cwebsocket as WebSocket } from "websocket";
-
 //style sheet
 import "./audioPlayerStyle.scss";
 
@@ -35,19 +31,20 @@ interface IAudioControlerProps {
   isLight: boolean;
 }
 
-const AudioControler: React.FunctionComponent<IAudioControlerProps> = (
-  props
-) => {
+const AudioControler: React.FunctionComponent<IAudioControlerProps> = ({
+  isLight,
+  audioFiles,
+  currentTrackIndex,
+}) => {
   // ######################
   // state
   // #######################
   const audioNode = new AudioNodeServiceClient(
     "http://localhost:8000/audioNode"
   );
-  const manager = new DockerManagerAudioServiceClient(
-    "http://localhost:8000/manager"
-  );
-  // var ws = new WebSocket("ws://localhost:6000");
+  // const manager = new DockerManagerAudioServiceClient(
+  //   "http://localhost:8000/manager"
+  // );
 
   const [trackPlaying, toggleTrackPlaying] = useState(false);
   // audio active show/hide the audio controler
@@ -57,38 +54,28 @@ const AudioControler: React.FunctionComponent<IAudioControlerProps> = (
 
   //SEEKER STATE
 
-  const [seekerVal, updateSeekerVal] = useState(0);
-  const [audioDuration, setAudioDuration] = useState(0);
-  const [currentAudioTime, updateCurrentAudioTime] = useState(0);
+  const [seekerVal, updateSeekerVal] = useState<number>(0);
+  const [audioDuration, setAudioDuration] = useState<number>(0);
+  const [currentAudioTime, updateCurrentAudioTime] = useState<number>(0);
 
   // Volume for audio - max 100
-  const [currentVolume, updateCurrentVolume] = useState(50);
+  const [currentVolume, updateCurrentVolume] = useState<number>(50);
   // ######################
   // USE EFFECTS
   // #######################
 
-  // console.log(ws);
-  // ws.onopen = () => {
-  //   console.log("connection open");
-  // };
-  //
-  // ws.onMessage = (event: any) => {
-  //   console.log(event.data);
-  // };
-  // ws.onerror = (error: any) => {
-  //   console.log(error);
-  // };
-
   useEffect(() => {
-    let cleanAudioFiles = props.audioFiles.map((item, index) =>
-      sanitizeFileName(item["src"])
+    let cleanAudioFiles = audioFiles.map((item, index) =>
+      sanitizeFileName(item.src)
     );
     let init = new InitControllerRequest();
     init.setAudiofilenamesList(cleanAudioFiles);
-    init.setTrackindex(props.currentTrackIndex);
+    init.setTrackindex(currentTrackIndex);
 
     audioNode.initializeControls(init, {}, function (err, response) {
-      console.log(response);
+      if (err) {
+        throw "Error Could Not Connect";
+      }
     });
   }, []);
 
@@ -98,62 +85,60 @@ const AudioControler: React.FunctionComponent<IAudioControlerProps> = (
 
   // VOLUME METHODS
 
-  const _handleVolume = (newVol: number) => {};
+  const handleVolume = (newVol: number) => {};
 
-  const _handleMute = (event: any) => {};
+  const handleMute = (event: any) => {};
 
   // SEEK BAR METHODS
 
-  const _handleProgress = () => {};
+  const handleProgress = () => {};
 
-  const _handleSeekSlider = (newSeek: number) => {};
+  const handleSeekSlider = (newSeek: number) => {};
 
-  const _handleSeek = (newSeek: number) => {};
+  const handleSeek = (newSeek: number) => {};
 
-  const _setTime = (seekTo: number) => {};
+  const setTime = (seekTo: number) => {};
 
-  const _secondsToClock = (time) => {};
+  const secondsToClock = (time) => {};
 
-  const _loadDuration = () => {};
+  const loadDuration = () => {};
 
   // PLAY PAUSE METHODS
 
-  const _handlePlayPause = () => {
+  const handlePlayPause = () => {
     // If play
     const audioRequest = new ControlRequest();
     if (!trackPlaying) {
       audioRequest.setAction("play");
       let stream = audioNode.playTrack(audioRequest, {});
-
       stream.on("data", (response: any) => {
         console.log(response);
       });
+      toggleTrackPlaying(true);
     } else {
       audioRequest.setAction("pause");
       audioNode.pauseTrack(audioRequest, {}, function (response) {
         console.log(response);
       });
-      console.log("pause");
+      toggleTrackPlaying(false);
     }
-
-    toggleTrackPlaying(!trackPlaying);
   };
 
   // REWIND METHODS
 
-  const _handleRewind = () => {};
+  const handleRewind = () => {};
 
   // FORWARD METHODS
 
-  const _handleForward = () => {};
+  const handleForward = () => {};
 
   // Toggles the audio classname based on the idle timer
 
-  const _handleOnActive = () => {
+  const handleOnActive = () => {
     setAudioClassname("active-audio");
   };
 
-  const _handleOnIdle = () => {
+  const handleOnIdle = () => {
     setAudioClassname("idle-audio");
   };
 
@@ -181,17 +166,17 @@ const AudioControler: React.FunctionComponent<IAudioControlerProps> = (
   return (
     <div className={"audio-player "} style={_setStyle()}>
       <div className={audioClassname}>
-        <div className={"wrapper " + (props.isLight ? "light-screen" : "")}>
-          <Rewind handleRewind={_handleRewind} />
+        <div className={"wrapper " + (isLight ? "light-screen" : "")}>
+          <Rewind handleRewind={handleRewind} />
           <Play
             key={`PlayPauseButton ${trackPlaying}`}
             playing={trackPlaying}
-            playPause={_handlePlayPause}
+            playPause={handlePlayPause}
           />
-          <Forward endForward={_handleForward} />
+          <Forward endForward={handleForward} />
           <Volume
-            handleVolume={_handleVolume}
-            handleMute={_handleMute}
+            handleVolume={handleVolume}
+            handleMute={handleMute}
             volume={currentVolume}
           />
         </div>

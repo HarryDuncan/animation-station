@@ -8,8 +8,9 @@ package audioNode;
 
 service AudioNodeService {
 
-  /* For initialization of the controller */
+  rpc InitializeAudioNode (InitializeAudioNodeRequest) returns (InitializeAudioNodeResponse);
 
+  /* For initialization of the controller */
   rpc InitializeControls (InitControllerRequest) returns (InitControllerResponse);
 
   /* loads a track, and plays it */
@@ -34,6 +35,16 @@ service AudioNodeService {
   rpc SeekTrack (SeekRequest) returns (ServiceResponse);
 }
 
+/* Initialization Audionode */
+
+message InitializeAudioNodeRequest {
+
+}
+
+message InitializeAudioNodeResponse {
+  bool isInitialized = 1;
+}
+
 /* Initialization message - sets up the track controller and sends the audio file names and the trackIndex */
 
 message InitControllerRequest {
@@ -42,8 +53,7 @@ message InitControllerRequest {
 }
 
 message InitControllerResponse {
-  string reply = 1;
-  bool error = 2;
+  bool isConnected = 1;
 }
 
   /* Generic request/response messages */
@@ -52,7 +62,7 @@ message ControlRequest {
 }
 
 message StreamResponse {
-  string streamData = 1;
+  repeated int32 streamData = 1;
 }
 
 message AudioData {

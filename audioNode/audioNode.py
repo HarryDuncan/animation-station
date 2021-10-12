@@ -16,37 +16,35 @@ import pickle
 import essentia
 from essentia.streaming import *
 from essentia import Pool, run, array, reset
-
 import audioNode_pb2
 import audioNode_pb2_grpc
 
-## Connection
-import websockets
-import socket
-import asyncio
-import json
-from struct import unpack
-## Import other internal modules
-HOST = 'ws://127.0.0.1:8080'
+from modules.controller import TrackController
 
-## s = websocket.create_connection(HOST)
+## Import other internal modules
+
 
 class AudioNode(audioNode_pb2_grpc.AudioNodeServiceServicer):
 
-    audioFileURLS = []
-    trackIndex = 0
-    playing = False
+    def __init__(self):
+        # audioPlayMode - type of playback track|live
+        self.audioPlayMode = 'tracks'
+        self.sd = None
+        self.controller = None
 
-
+    def InitializeAudioNode(self, request, context):
+        arr = os.listdir('audio')
+        print(arr)
+        return audioNode_pb2.InitializeAudioNodeResponse(isInitialized=True)
 
     ## Sets up the initial connection with client
     def InitializeControls(self, request, context):
+        self.controller = TrackController()
+        self.controller.setUpTrackController(request)
 
+        return audioNode_pb2.InitControllerResponse(isConnected=True)
 
-        self.audioFileURLS = request.audioFileNames
-        self.trackIndex = request.trackIndex
-        return audioNode_pb2.InitControllerResponse(reply='Connected To Audio Node', error=False)
-
+## CONTROLS
     def PlayTrack(self, request, context):
 
 
@@ -93,30 +91,7 @@ class AudioNode(audioNode_pb2_grpc.AudioNodeServiceServicer):
         mfcc.mfcc >> (pool, 'lowlevel.mfcc')
 
 
-        ##################
-        ## CALLBACK FOR SD
-        ######################
 
-        #def sendData(data):
-        #    print(data)
-        #    return audioNode_pb2.StreamResponse(streamData=data.tobytes())
-        #########################
-        #### AUDIO CALCULATIONS TAKE PLACE HERE
-        ###############################
-
-        # print(outdata)
-        # print(frames)
-        # print(time)
-        # # update audio buffer
-        # buffer[:] = array(unpack('f' * blockS, outdata))
-        # # generate predictions
-        # reset(vimp)
-        # run(vimp)
-
-
-        #############################################
-        ##### RETURN GRPC STREM DATA IN THIS FUNCTION
-        ##############################################
 
 
         def callback(outdata, frames, time, status):
@@ -143,26 +118,21 @@ class AudioNode(audioNode_pb2_grpc.AudioNodeServiceServicer):
 
 
 
-
-        if self.playing:
-            print('playing')
+        if self.controller.getControllerStatus() == 'playing':
+            self.controller.setPaused()
+            self.sd.stop()
         else:
-            self.playing = True
+            self.controller.setPlaying()
             try:
-
+                filePath ='audio/heliotropic.aiff'
                 # self.audioFileURLS[self.trackIndex]
-                filePath ='audio/YTP.aiff'
-                print(sd.query_devices())
-                print("Path at terminal when executing this file")
-                print(os.getcwd() + "\n")
-                print('deviced should be printed')
                 with sf.SoundFile(filePath) as f:
                     for _ in range(20):
                         data = f.read(blockS)
                         if not len(data):
                             break
                         q.put_nowait(data)  # Pre-fill queue
-                    stream = sd.OutputStream(
+                    self.sd = sd.OutputStream(
                         samplerate=f.samplerate, blocksize=blockS,
                         device=1, channels=f.channels,
                         callback=callback, finished_callback=event.set)
@@ -171,26 +141,33 @@ class AudioNode(audioNode_pb2_grpc.AudioNodeServiceServicer):
                         while len(data):
                             data = f.read(blockS)
                             q.put(data, timeout=timeout)
-                            yield audioNode_pb2.StreamResponse(streamData='hi')
+                            yield audioNode_pb2.StreamResponse(streamData=data)
                             print(data)
                         event.wait()  # Wait until playback is finished
 
 
-                #
-
-
-                #
-                #
-
-                #
-                #
-                #
-                # essentia.run(loader)
-                # print('Pool contains %d frames of MFCCs' % len(pool['lowlevel.mfcc']))
                 return audioNode_pb2.StreamResponse(streamData='done')
             except Exception as e:
                 print(e)
                 return audioNode_pb2.StreamResponse(streamData='error')
+
+
+    def PauseTrack(self, request, context):
+        self.sd.stop()
+        self.controller.setPaused()
+        return audioNode_pb2.InitControllerResponse(reply='Paused', error=False)
+
+    def Forward(self, request, context):
+        self.sd.stop()
+
+
+    def Rewind(self, request, context):
+        self.sd.stop()
+
+
+    def SeekTrack(self, request, context):
+        self.sd.stop()
+
 
 
 ## Connects audioNode to envoy proxy
@@ -205,7 +182,5 @@ def serve():
 
 
 if __name__ == '__main__':
-    print(sd.query_devices())
     logging.basicConfig()
-
     serve()

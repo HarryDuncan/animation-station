@@ -14,7 +14,7 @@ protoc protos/audioNode.proto \
 
 - generate python proto
 
-python -m grpc_tools.protoc -I./protos --python_out=./audioNode --grpc_python_out=. ./protos/audioNode.proto
+python -m grpc_tools.protoc -I./protos --python_out=./audioNode --grpc_python_out=./audioNode ./protos/audioNode.proto
 
 ## Build Docker Images
 

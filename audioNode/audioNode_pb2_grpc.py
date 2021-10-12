@@ -17,6 +17,11 @@ class AudioNodeServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
+        self.InitializeAudioNode = channel.unary_unary(
+                '/audioNode.AudioNodeService/InitializeAudioNode',
+                request_serializer=audioNode__pb2.InitializeAudioNodeRequest.SerializeToString,
+                response_deserializer=audioNode__pb2.InitializeAudioNodeResponse.FromString,
+                )
         self.InitializeControls = channel.unary_unary(
                 '/audioNode.AudioNodeService/InitializeControls',
                 request_serializer=audioNode__pb2.InitControllerRequest.SerializeToString,
@@ -60,9 +65,14 @@ class AudioNodeServiceServicer(object):
 
     """
 
+    def InitializeAudioNode(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def InitializeControls(self, request, context):
         """For initialization of the controller 
-
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -115,6 +125,11 @@ class AudioNodeServiceServicer(object):
 
 def add_AudioNodeServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
+            'InitializeAudioNode': grpc.unary_unary_rpc_method_handler(
+                    servicer.InitializeAudioNode,
+                    request_deserializer=audioNode__pb2.InitializeAudioNodeRequest.FromString,
+                    response_serializer=audioNode__pb2.InitializeAudioNodeResponse.SerializeToString,
+            ),
             'InitializeControls': grpc.unary_unary_rpc_method_handler(
                     servicer.InitializeControls,
                     request_deserializer=audioNode__pb2.InitControllerRequest.FromString,
@@ -162,6 +177,23 @@ class AudioNodeService(object):
     Plays anc controls audio files - creates audio node for analyzer in PYTHON . 
 
     """
+
+    @staticmethod
+    def InitializeAudioNode(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/audioNode.AudioNodeService/InitializeAudioNode',
+            audioNode__pb2.InitializeAudioNodeRequest.SerializeToString,
+            audioNode__pb2.InitializeAudioNodeResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def InitializeControls(request,

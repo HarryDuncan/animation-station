@@ -2,6 +2,38 @@ import * as jspb from 'google-protobuf'
 
 
 
+export class InitializeAudioNodeRequest extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): InitializeAudioNodeRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: InitializeAudioNodeRequest): InitializeAudioNodeRequest.AsObject;
+  static serializeBinaryToWriter(message: InitializeAudioNodeRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): InitializeAudioNodeRequest;
+  static deserializeBinaryFromReader(message: InitializeAudioNodeRequest, reader: jspb.BinaryReader): InitializeAudioNodeRequest;
+}
+
+export namespace InitializeAudioNodeRequest {
+  export type AsObject = {
+  }
+}
+
+export class InitializeAudioNodeResponse extends jspb.Message {
+  getIsinitialized(): boolean;
+  setIsinitialized(value: boolean): InitializeAudioNodeResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): InitializeAudioNodeResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: InitializeAudioNodeResponse): InitializeAudioNodeResponse.AsObject;
+  static serializeBinaryToWriter(message: InitializeAudioNodeResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): InitializeAudioNodeResponse;
+  static deserializeBinaryFromReader(message: InitializeAudioNodeResponse, reader: jspb.BinaryReader): InitializeAudioNodeResponse;
+}
+
+export namespace InitializeAudioNodeResponse {
+  export type AsObject = {
+    isinitialized: boolean,
+  }
+}
+
 export class InitControllerRequest extends jspb.Message {
   getAudiofilenamesList(): Array<string>;
   setAudiofilenamesList(value: Array<string>): InitControllerRequest;
@@ -27,11 +59,8 @@ export namespace InitControllerRequest {
 }
 
 export class InitControllerResponse extends jspb.Message {
-  getReply(): string;
-  setReply(value: string): InitControllerResponse;
-
-  getError(): boolean;
-  setError(value: boolean): InitControllerResponse;
+  getIsconnected(): boolean;
+  setIsconnected(value: boolean): InitControllerResponse;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): InitControllerResponse.AsObject;
@@ -43,8 +72,7 @@ export class InitControllerResponse extends jspb.Message {
 
 export namespace InitControllerResponse {
   export type AsObject = {
-    reply: string,
-    error: boolean,
+    isconnected: boolean,
   }
 }
 
@@ -67,8 +95,10 @@ export namespace ControlRequest {
 }
 
 export class StreamResponse extends jspb.Message {
-  getStreamdata(): string;
-  setStreamdata(value: string): StreamResponse;
+  getStreamdataList(): Array<number>;
+  setStreamdataList(value: Array<number>): StreamResponse;
+  clearStreamdataList(): StreamResponse;
+  addStreamdata(value: number, index?: number): StreamResponse;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): StreamResponse.AsObject;
@@ -80,7 +110,7 @@ export class StreamResponse extends jspb.Message {
 
 export namespace StreamResponse {
   export type AsObject = {
-    streamdata: string,
+    streamdataList: Array<number>,
   }
 }
 
