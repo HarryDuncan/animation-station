@@ -25,6 +25,7 @@ class TrackController():
         return self.controllerStatus
 
     def setPlaying(self):
+        print('playing')
         self.controllerStatus = 'playing'
 
     def setPaused(self):

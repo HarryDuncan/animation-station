@@ -35,13 +35,8 @@ export namespace InitializeAudioNodeResponse {
 }
 
 export class InitControllerRequest extends jspb.Message {
-  getAudiofilenamesList(): Array<string>;
-  setAudiofilenamesList(value: Array<string>): InitControllerRequest;
-  clearAudiofilenamesList(): InitControllerRequest;
-  addAudiofilenames(value: string, index?: number): InitControllerRequest;
-
-  getTrackindex(): number;
-  setTrackindex(value: number): InitControllerRequest;
+  getControlrequesttype(): string;
+  setControlrequesttype(value: string): InitControllerRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): InitControllerRequest.AsObject;
@@ -53,8 +48,7 @@ export class InitControllerRequest extends jspb.Message {
 
 export namespace InitControllerRequest {
   export type AsObject = {
-    audiofilenamesList: Array<string>,
-    trackindex: number,
+    controlrequesttype: string,
   }
 }
 
@@ -95,10 +89,15 @@ export namespace ControlRequest {
 }
 
 export class StreamResponse extends jspb.Message {
+  getResponsemessage(): string;
+  setResponsemessage(value: string): StreamResponse;
+
   getStreamdataList(): Array<number>;
   setStreamdataList(value: Array<number>): StreamResponse;
   clearStreamdataList(): StreamResponse;
   addStreamdata(value: number, index?: number): StreamResponse;
+
+  getResponsemessageCase(): StreamResponse.ResponsemessageCase;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): StreamResponse.AsObject;
@@ -110,7 +109,13 @@ export class StreamResponse extends jspb.Message {
 
 export namespace StreamResponse {
   export type AsObject = {
+    responsemessage: string,
     streamdataList: Array<number>,
+  }
+
+  export enum ResponsemessageCase { 
+    _RESPONSEMESSAGE_NOT_SET = 0,
+    RESPONSEMESSAGE = 1,
   }
 }
 
@@ -138,9 +143,6 @@ export class ServiceResponse extends jspb.Message {
   getReply(): string;
   setReply(value: string): ServiceResponse;
 
-  getError(): boolean;
-  setError(value: boolean): ServiceResponse;
-
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): ServiceResponse.AsObject;
   static toObject(includeInstance: boolean, msg: ServiceResponse): ServiceResponse.AsObject;
@@ -152,7 +154,6 @@ export class ServiceResponse extends jspb.Message {
 export namespace ServiceResponse {
   export type AsObject = {
     reply: string,
-    error: boolean,
   }
 }
 

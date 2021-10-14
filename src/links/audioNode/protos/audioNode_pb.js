@@ -78,7 +78,7 @@ if (goog.DEBUG && !COMPILED) {
  * @constructor
  */
 proto.audioNode.InitControllerRequest = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, proto.audioNode.InitControllerRequest.repeatedFields_, null);
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
 };
 goog.inherits(proto.audioNode.InitControllerRequest, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
@@ -467,13 +467,6 @@ proto.audioNode.InitializeAudioNodeResponse.prototype.setIsinitialized = functio
 
 
 
-/**
- * List of repeated fields within this message type.
- * @private {!Array<number>}
- * @const
- */
-proto.audioNode.InitControllerRequest.repeatedFields_ = [1];
-
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -505,8 +498,7 @@ proto.audioNode.InitControllerRequest.prototype.toObject = function(opt_includeI
  */
 proto.audioNode.InitControllerRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    audiofilenamesList: (f = jspb.Message.getRepeatedField(msg, 1)) == null ? undefined : f,
-    trackindex: jspb.Message.getFieldWithDefault(msg, 2, 0)
+    controlrequesttype: jspb.Message.getFieldWithDefault(msg, 1, "")
   };
 
   if (includeInstance) {
@@ -545,11 +537,7 @@ proto.audioNode.InitControllerRequest.deserializeBinaryFromReader = function(msg
     switch (field) {
     case 1:
       var value = /** @type {string} */ (reader.readString());
-      msg.addAudiofilenames(value);
-      break;
-    case 2:
-      var value = /** @type {number} */ (reader.readInt32());
-      msg.setTrackindex(value);
+      msg.setControlrequesttype(value);
       break;
     default:
       reader.skipField();
@@ -580,75 +568,31 @@ proto.audioNode.InitControllerRequest.prototype.serializeBinary = function() {
  */
 proto.audioNode.InitControllerRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getAudiofilenamesList();
+  f = message.getControlrequesttype();
   if (f.length > 0) {
-    writer.writeRepeatedString(
+    writer.writeString(
       1,
       f
     );
   }
-  f = message.getTrackindex();
-  if (f !== 0) {
-    writer.writeInt32(
-      2,
-      f
-    );
-  }
 };
 
 
 /**
- * repeated string audioFileNames = 1;
- * @return {!Array<string>}
+ * optional string controlRequestType = 1;
+ * @return {string}
  */
-proto.audioNode.InitControllerRequest.prototype.getAudiofilenamesList = function() {
-  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 1));
-};
-
-
-/**
- * @param {!Array<string>} value
- * @return {!proto.audioNode.InitControllerRequest} returns this
- */
-proto.audioNode.InitControllerRequest.prototype.setAudiofilenamesList = function(value) {
-  return jspb.Message.setField(this, 1, value || []);
+proto.audioNode.InitControllerRequest.prototype.getControlrequesttype = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /**
  * @param {string} value
- * @param {number=} opt_index
  * @return {!proto.audioNode.InitControllerRequest} returns this
  */
-proto.audioNode.InitControllerRequest.prototype.addAudiofilenames = function(value, opt_index) {
-  return jspb.Message.addToRepeatedField(this, 1, value, opt_index);
-};
-
-
-/**
- * Clears the list making it empty but non-null.
- * @return {!proto.audioNode.InitControllerRequest} returns this
- */
-proto.audioNode.InitControllerRequest.prototype.clearAudiofilenamesList = function() {
-  return this.setAudiofilenamesList([]);
-};
-
-
-/**
- * optional int32 trackIndex = 2;
- * @return {number}
- */
-proto.audioNode.InitControllerRequest.prototype.getTrackindex = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.audioNode.InitControllerRequest} returns this
- */
-proto.audioNode.InitControllerRequest.prototype.setTrackindex = function(value) {
-  return jspb.Message.setProto3IntField(this, 2, value);
+proto.audioNode.InitControllerRequest.prototype.setControlrequesttype = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
 };
 
 
@@ -918,7 +862,7 @@ proto.audioNode.ControlRequest.prototype.setAction = function(value) {
  * @private {!Array<number>}
  * @const
  */
-proto.audioNode.StreamResponse.repeatedFields_ = [1];
+proto.audioNode.StreamResponse.repeatedFields_ = [2];
 
 
 
@@ -951,7 +895,8 @@ proto.audioNode.StreamResponse.prototype.toObject = function(opt_includeInstance
  */
 proto.audioNode.StreamResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    streamdataList: (f = jspb.Message.getRepeatedField(msg, 1)) == null ? undefined : f
+    responsemessage: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    streamdataList: (f = jspb.Message.getRepeatedField(msg, 2)) == null ? undefined : f
   };
 
   if (includeInstance) {
@@ -989,6 +934,10 @@ proto.audioNode.StreamResponse.deserializeBinaryFromReader = function(msg, reade
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setResponsemessage(value);
+      break;
+    case 2:
       var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedInt32() : [reader.readInt32()]);
       for (var i = 0; i < values.length; i++) {
         msg.addStreamdata(values[i]);
@@ -1023,10 +972,17 @@ proto.audioNode.StreamResponse.prototype.serializeBinary = function() {
  */
 proto.audioNode.StreamResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
+  f = /** @type {string} */ (jspb.Message.getField(message, 1));
+  if (f != null) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
   f = message.getStreamdataList();
   if (f.length > 0) {
     writer.writePackedInt32(
-      1,
+      2,
       f
     );
   }
@@ -1034,11 +990,47 @@ proto.audioNode.StreamResponse.serializeBinaryToWriter = function(message, write
 
 
 /**
- * repeated int32 streamData = 1;
+ * optional string responseMessage = 1;
+ * @return {string}
+ */
+proto.audioNode.StreamResponse.prototype.getResponsemessage = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.audioNode.StreamResponse} returns this
+ */
+proto.audioNode.StreamResponse.prototype.setResponsemessage = function(value) {
+  return jspb.Message.setField(this, 1, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.audioNode.StreamResponse} returns this
+ */
+proto.audioNode.StreamResponse.prototype.clearResponsemessage = function() {
+  return jspb.Message.setField(this, 1, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.audioNode.StreamResponse.prototype.hasResponsemessage = function() {
+  return jspb.Message.getField(this, 1) != null;
+};
+
+
+/**
+ * repeated int32 streamData = 2;
  * @return {!Array<number>}
  */
 proto.audioNode.StreamResponse.prototype.getStreamdataList = function() {
-  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 1));
+  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 2));
 };
 
 
@@ -1047,7 +1039,7 @@ proto.audioNode.StreamResponse.prototype.getStreamdataList = function() {
  * @return {!proto.audioNode.StreamResponse} returns this
  */
 proto.audioNode.StreamResponse.prototype.setStreamdataList = function(value) {
-  return jspb.Message.setField(this, 1, value || []);
+  return jspb.Message.setField(this, 2, value || []);
 };
 
 
@@ -1057,7 +1049,7 @@ proto.audioNode.StreamResponse.prototype.setStreamdataList = function(value) {
  * @return {!proto.audioNode.StreamResponse} returns this
  */
 proto.audioNode.StreamResponse.prototype.addStreamdata = function(value, opt_index) {
-  return jspb.Message.addToRepeatedField(this, 1, value, opt_index);
+  return jspb.Message.addToRepeatedField(this, 2, value, opt_index);
 };
 
 
@@ -1260,8 +1252,7 @@ proto.audioNode.ServiceResponse.prototype.toObject = function(opt_includeInstanc
  */
 proto.audioNode.ServiceResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    reply: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    error: jspb.Message.getBooleanFieldWithDefault(msg, 2, false)
+    reply: jspb.Message.getFieldWithDefault(msg, 1, "")
   };
 
   if (includeInstance) {
@@ -1302,10 +1293,6 @@ proto.audioNode.ServiceResponse.deserializeBinaryFromReader = function(msg, read
       var value = /** @type {string} */ (reader.readString());
       msg.setReply(value);
       break;
-    case 2:
-      var value = /** @type {boolean} */ (reader.readBool());
-      msg.setError(value);
-      break;
     default:
       reader.skipField();
       break;
@@ -1342,13 +1329,6 @@ proto.audioNode.ServiceResponse.serializeBinaryToWriter = function(message, writ
       f
     );
   }
-  f = message.getError();
-  if (f) {
-    writer.writeBool(
-      2,
-      f
-    );
-  }
 };
 
 
@@ -1367,24 +1347,6 @@ proto.audioNode.ServiceResponse.prototype.getReply = function() {
  */
 proto.audioNode.ServiceResponse.prototype.setReply = function(value) {
   return jspb.Message.setProto3StringField(this, 1, value);
-};
-
-
-/**
- * optional bool error = 2;
- * @return {boolean}
- */
-proto.audioNode.ServiceResponse.prototype.getError = function() {
-  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 2, false));
-};
-
-
-/**
- * @param {boolean} value
- * @return {!proto.audioNode.ServiceResponse} returns this
- */
-proto.audioNode.ServiceResponse.prototype.setError = function(value) {
-  return jspb.Message.setProto3BooleanField(this, 2, value);
 };
 
 

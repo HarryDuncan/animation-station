@@ -28,6 +28,7 @@ service AudioNodeService {
 
   /* Following RPCS need a specific request message because extra data is passed */
 
+
   /* sets the volume track */
   rpc SetVolume (VolumeRequest) returns (ServiceResponse);
 
@@ -48,8 +49,8 @@ message InitializeAudioNodeResponse {
 /* Initialization message - sets up the track controller and sends the audio file names and the trackIndex */
 
 message InitControllerRequest {
-  repeated string audioFileNames = 1;
-  int32 trackIndex = 2;
+  // track | live
+  string controlRequestType = 1;
 }
 
 message InitControllerResponse {
@@ -61,9 +62,7 @@ message ControlRequest {
   string action = 1;
 }
 
-message StreamResponse {
-  repeated int32 streamData = 1;
-}
+
 
 message AudioData {
   repeated double points = 1;
@@ -71,7 +70,6 @@ message AudioData {
 
 message ServiceResponse {
   string reply = 1;
-  bool error = 2;
 }
 
 message VolumeRequest {
@@ -80,4 +78,12 @@ message VolumeRequest {
 
 message SeekRequest {
   int32 seekPoint = 1;
+}
+
+
+//
+repeated innerType numpyData = 5;
+message StreamResponse {
+  optional string responseMessage = 1;
+  repeated double streamData = 2 [packed=true];
 }

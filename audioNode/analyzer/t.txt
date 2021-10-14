@@ -1,0 +1,42 @@
+
+                sampleRate = 16000
+                frameSize = 1024
+                hopSize = 512
+                numberBands = 96
+
+                # analysis parameters
+                patchSize = 64
+                displaySize = 10
+
+                # bufferSize = patchSize * hopSize
+
+                blockS = 2048
+                buffersize = patchSize * hopSize
+
+                q = queue.Queue(maxsize=buffersize)
+                event = threading.Event()
+
+
+
+                # Essentia stuff
+                buffer = np.zeros(buffersize, dtype='float32')
+                vimp = VectorInput(buffer)
+
+
+                fc = FrameCutter(frameSize=frameSize, hopSize=hopSize)
+
+
+
+
+                frameCutter = FrameCutter(frameSize = 1024, hopSize = 512)
+                w = Windowing(type = 'hann')
+                spec = Spectrum()
+                mfcc = MFCC()
+                pool = Pool()
+
+
+                vimp.data >> frameCutter.signal
+                frameCutter.frame >> w.frame >> spec.frame
+                spec.spectrum >> mfcc.spectrum
+                mfcc.bands >> None
+                mfcc.mfcc >> (pool, 'lowlevel.mfcc')

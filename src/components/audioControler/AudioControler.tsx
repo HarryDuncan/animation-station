@@ -69,8 +69,7 @@ const AudioControler: React.FunctionComponent<IAudioControlerProps> = ({
       sanitizeFileName(item.src)
     );
     let init = new InitControllerRequest();
-    init.setAudiofilenamesList(cleanAudioFiles);
-    init.setTrackindex(currentTrackIndex);
+    init.setControlrequesttype("tracks");
 
     audioNode.initializeControls(init, {}, function (err, response) {
       if (err) {

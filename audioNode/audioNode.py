@@ -1,28 +1,35 @@
+# System Imports
 from concurrent import futures
 import logging
 import sys
 import os
-import grpc
+
 
 import argparse
 import queue
 import sys
 import threading
 import numpy as np
+
+# Sound
 import sounddevice as sd
-import soundfile as sf
-import pickle
+
 
 import essentia
 from essentia.streaming import *
 from essentia import Pool, run, array, reset
+
+# GRPC
+import grpc
 import audioNode_pb2
 import audioNode_pb2_grpc
 
-from modules.controller import TrackController
+# Project Classes
+from trackMode.controller import TrackController
 
-## Import other internal modules
-
+## Project modules
+from modules.soundFileHelpers import standardSDCallback
+from modules.fileHelpers import *
 
 class AudioNode(audioNode_pb2_grpc.AudioNodeServiceServicer):
 
@@ -31,71 +38,40 @@ class AudioNode(audioNode_pb2_grpc.AudioNodeServiceServicer):
         self.audioPlayMode = 'tracks'
         self.sd = None
         self.controller = None
+        self.sf = None
 
     def InitializeAudioNode(self, request, context):
-        arr = os.listdir('audio')
-        print(arr)
+        playlists =  fileHelpers.getPlaylists()
         return audioNode_pb2.InitializeAudioNodeResponse(isInitialized=True)
 
     ## Sets up the initial connection with client
     def InitializeControls(self, request, context):
-        self.controller = TrackController()
-        self.controller.setUpTrackController(request)
+        if request.controlRequestType == 'tracks':
+            self.controller = TrackController()
+
+
 
         return audioNode_pb2.InitControllerResponse(isConnected=True)
 
-## CONTROLS
+## 'track' AUDIO PLAY MODE CONTROLS
+
+    def setUpTrack(self, request, context):
+        print('setting up track')
+
+
     def PlayTrack(self, request, context):
 
-
-        sampleRate = 16000
-        frameSize = 1024
-        hopSize = 512
-        numberBands = 96
-
-        # analysis parameters
-        patchSize = 64
-        displaySize = 10
-
-        # bufferSize = patchSize * hopSize
-
+        #<------ SF - Variables ------->
+        # Block size:
         blockS = 2048
-        buffersize = patchSize * hopSize
 
+        #
+        hopSize = 512
+        patchSize = 64
+        buffersize = patchSize * hopSize
         q = queue.Queue(maxsize=buffersize)
         event = threading.Event()
-
-
-
-        # Essentia stuff
-        buffer = np.zeros(buffersize, dtype='float32')
-        vimp = VectorInput(buffer)
-
-
-        fc = FrameCutter(frameSize=frameSize, hopSize=hopSize)
-
-
-
-
-        frameCutter = FrameCutter(frameSize = 1024, hopSize = 512)
-        w = Windowing(type = 'hann')
-        spec = Spectrum()
-        mfcc = MFCC()
-        pool = Pool()
-
-
-        vimp.data >> frameCutter.signal
-        frameCutter.frame >> w.frame >> spec.frame
-        spec.spectrum >> mfcc.spectrum
-        mfcc.bands >> None
-        mfcc.mfcc >> (pool, 'lowlevel.mfcc')
-
-
-
-
-
-        def callback(outdata, frames, time, status):
-
+        def cllback(outdata, frames, time, status):
             assert frames == blockS
             if status.output_underflow:
                 print('Output underflow: increase blocksize?', file=sys.stderr)
@@ -113,64 +89,63 @@ class AudioNode(audioNode_pb2_grpc.AudioNodeServiceServicer):
             else:
                 outdata[:] = data
 
-
-
-
-
-
         if self.controller.getControllerStatus() == 'playing':
             self.controller.setPaused()
             self.sd.stop()
         else:
             self.controller.setPlaying()
             try:
-                filePath ='audio/heliotropic.aiff'
-                # self.audioFileURLS[self.trackIndex]
-                with sf.SoundFile(filePath) as f:
-                    for _ in range(20):
-                        data = f.read(blockS)
-                        if not len(data):
-                            break
-                        q.put_nowait(data)  # Pre-fill queue
-                    self.sd = sd.OutputStream(
-                        samplerate=f.samplerate, blocksize=blockS,
-                        device=1, channels=f.channels,
-                        callback=callback, finished_callback=event.set)
-                    with stream:
-                        timeout = blockS * buffersize / f.samplerate
-                        while len(data):
-                            data = f.read(blockS)
-                            q.put(data, timeout=timeout)
-                            yield audioNode_pb2.StreamResponse(streamData=data)
-                            print(data)
-                        event.wait()  # Wait until playback is finished
+                for _ in range(20):
+                    data = self.sf.read(blockS)
+                    if not len(data):
+                        break
+                    q.put_nowait(data)  # Pre-fill queue
+                self.sd = sd.OutputStream(
+                    samplerate=self.sf.samplerate, blocksize=blockS,
+                    device=1, channels=self.sf.channels,
+                    callback=cllback, finished_callback=event.set)
+                with self.sd:
+                    timeout = blockS * buffersize / self.sf.samplerate
+                    while (len(data)) and (self.controller.controllerStatus == 'playing'):
+                        data = self.sf.read(blockS)
+                        q.put(data, timeout=timeout)
+                        print(self.sf.tell())
+                        yield audioNode_pb2.StreamResponse(streamData=data)
+
+                    event.wait()  # Wait until playback is finished
 
 
-                return audioNode_pb2.StreamResponse(streamData='done')
+                return audioNode_pb2.StreamResponse(responseMessage='done',streamData=[0])
             except Exception as e:
                 print(e)
-                return audioNode_pb2.StreamResponse(streamData='error')
+                return audioNode_pb2.StreamResponse(responseMessage='error',streamData=[0])
 
 
     def PauseTrack(self, request, context):
         self.sd.stop()
         self.controller.setPaused()
-        return audioNode_pb2.InitControllerResponse(reply='Paused', error=False)
+        return audioNode_pb2.StreamResponse(responseMessage='paused', streamData=[0])
+        return audioNode_pb2.ServiceResponse(reply='Paused')
 
     def Forward(self, request, context):
         self.sd.stop()
+        return audioNode_pb2.ServiceResponse(reply='Forward')
 
 
     def Rewind(self, request, context):
         self.sd.stop()
+        return audioNode_pb2.ServiceResponse(reply='Rewind')
 
 
     def SeekTrack(self, request, context):
         self.sd.stop()
+        return audioNode_pb2.ServiceResponse(reply='Seek')
 
 
 
-## Connects audioNode to envoy proxy
+
+
+## GRPC CONNECTION: Connects audioNode to envoy proxy
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     audioNode_pb2_grpc.add_AudioNodeServiceServicer_to_server(AudioNode(), server)
