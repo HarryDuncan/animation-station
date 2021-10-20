@@ -20,6 +20,11 @@ export class InitializeAudioNodeResponse extends jspb.Message {
   getIsinitialized(): boolean;
   setIsinitialized(value: boolean): InitializeAudioNodeResponse;
 
+  getPlaylistsList(): Array<string>;
+  setPlaylistsList(value: Array<string>): InitializeAudioNodeResponse;
+  clearPlaylistsList(): InitializeAudioNodeResponse;
+  addPlaylists(value: string, index?: number): InitializeAudioNodeResponse;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): InitializeAudioNodeResponse.AsObject;
   static toObject(includeInstance: boolean, msg: InitializeAudioNodeResponse): InitializeAudioNodeResponse.AsObject;
@@ -31,6 +36,45 @@ export class InitializeAudioNodeResponse extends jspb.Message {
 export namespace InitializeAudioNodeResponse {
   export type AsObject = {
     isinitialized: boolean,
+    playlistsList: Array<string>,
+  }
+}
+
+export class PlaylistRequest extends jspb.Message {
+  getPlaylistname(): string;
+  setPlaylistname(value: string): PlaylistRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): PlaylistRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: PlaylistRequest): PlaylistRequest.AsObject;
+  static serializeBinaryToWriter(message: PlaylistRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): PlaylistRequest;
+  static deserializeBinaryFromReader(message: PlaylistRequest, reader: jspb.BinaryReader): PlaylistRequest;
+}
+
+export namespace PlaylistRequest {
+  export type AsObject = {
+    playlistname: string,
+  }
+}
+
+export class PlaylistResponse extends jspb.Message {
+  getTracksList(): Array<string>;
+  setTracksList(value: Array<string>): PlaylistResponse;
+  clearTracksList(): PlaylistResponse;
+  addTracks(value: string, index?: number): PlaylistResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): PlaylistResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: PlaylistResponse): PlaylistResponse.AsObject;
+  static serializeBinaryToWriter(message: PlaylistResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): PlaylistResponse;
+  static deserializeBinaryFromReader(message: PlaylistResponse, reader: jspb.BinaryReader): PlaylistResponse;
+}
+
+export namespace PlaylistResponse {
+  export type AsObject = {
+    tracksList: Array<string>,
   }
 }
 
@@ -85,37 +129,6 @@ export class ControlRequest extends jspb.Message {
 export namespace ControlRequest {
   export type AsObject = {
     action: string,
-  }
-}
-
-export class StreamResponse extends jspb.Message {
-  getResponsemessage(): string;
-  setResponsemessage(value: string): StreamResponse;
-
-  getStreamdataList(): Array<number>;
-  setStreamdataList(value: Array<number>): StreamResponse;
-  clearStreamdataList(): StreamResponse;
-  addStreamdata(value: number, index?: number): StreamResponse;
-
-  getResponsemessageCase(): StreamResponse.ResponsemessageCase;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): StreamResponse.AsObject;
-  static toObject(includeInstance: boolean, msg: StreamResponse): StreamResponse.AsObject;
-  static serializeBinaryToWriter(message: StreamResponse, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): StreamResponse;
-  static deserializeBinaryFromReader(message: StreamResponse, reader: jspb.BinaryReader): StreamResponse;
-}
-
-export namespace StreamResponse {
-  export type AsObject = {
-    responsemessage: string,
-    streamdataList: Array<number>,
-  }
-
-  export enum ResponsemessageCase { 
-    _RESPONSEMESSAGE_NOT_SET = 0,
-    RESPONSEMESSAGE = 1,
   }
 }
 
@@ -190,6 +203,37 @@ export class SeekRequest extends jspb.Message {
 export namespace SeekRequest {
   export type AsObject = {
     seekpoint: number,
+  }
+}
+
+export class StreamResponse extends jspb.Message {
+  getResponsemessage(): string;
+  setResponsemessage(value: string): StreamResponse;
+
+  getStreamdataList(): Array<number>;
+  setStreamdataList(value: Array<number>): StreamResponse;
+  clearStreamdataList(): StreamResponse;
+  addStreamdata(value: number, index?: number): StreamResponse;
+
+  getResponsemessageCase(): StreamResponse.ResponsemessageCase;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): StreamResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: StreamResponse): StreamResponse.AsObject;
+  static serializeBinaryToWriter(message: StreamResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): StreamResponse;
+  static deserializeBinaryFromReader(message: StreamResponse, reader: jspb.BinaryReader): StreamResponse;
+}
+
+export namespace StreamResponse {
+  export type AsObject = {
+    responsemessage: string,
+    streamdataList: Array<number>,
+  }
+
+  export enum ResponsemessageCase { 
+    _RESPONSEMESSAGE_NOT_SET = 0,
+    RESPONSEMESSAGE = 1,
   }
 }
 

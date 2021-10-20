@@ -8,11 +8,15 @@ package audioNode;
 
 service AudioNodeService {
 
+// <------------------- Initialization -------------------------------->
   rpc InitializeAudioNode (InitializeAudioNodeRequest) returns (InitializeAudioNodeResponse);
+  rpc SendPlaylists (PlaylistRequest) returns (PlaylistResponse);
 
   /* For initialization of the controller */
   rpc InitializeControls (InitControllerRequest) returns (InitControllerResponse);
 
+
+// <------------------ Audio Control ------------------------------>
   /* loads a track, and plays it */
   rpc PlayTrack (ControlRequest) returns (stream StreamResponse);
 
@@ -36,16 +40,29 @@ service AudioNodeService {
   rpc SeekTrack (SeekRequest) returns (ServiceResponse);
 }
 
+
+
+// <------------------- Initialization -------------------------------->
 /* Initialization Audionode */
 
 message InitializeAudioNodeRequest {
 
 }
 
+
+// Returns the playlists and directories
 message InitializeAudioNodeResponse {
   bool isInitialized = 1;
+  repeated string playlists = 2;
 }
 
+message PlaylistRequest {
+  string playlistName = 1;
+}
+
+message PlaylistResponse {
+  repeated string tracks = 1;
+}
 /* Initialization message - sets up the track controller and sends the audio file names and the trackIndex */
 
 message InitControllerRequest {
@@ -55,8 +72,10 @@ message InitControllerRequest {
 
 message InitControllerResponse {
   bool isConnected = 1;
+
 }
 
+// <------------------ Audio Control ------------------------------>
   /* Generic request/response messages */
 message ControlRequest {
   string action = 1;
@@ -81,8 +100,7 @@ message SeekRequest {
 }
 
 
-//
-repeated innerType numpyData = 5;
+
 message StreamResponse {
   optional string responseMessage = 1;
   repeated double streamData = 2 [packed=true];

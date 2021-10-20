@@ -1,63 +1,74 @@
-import {musicActionTypes, ITrack} from './music.types';
+import { musicActionTypes, ITrack } from "./music.types";
 
 // ######################################################
 // Playlist Editor - opening, closing adding and removing
 // #######################################################
 
 // Toggles the add track menu
-export const openPlaylistManager = (playlistKey?: number|string) => {
-	return function (dispatch : any) {
-			if(playlistKey === 'new'){
-					dispatch({type : musicActionTypes.NEW_PLAYLIST, payload : playlistKey})
-			}else{
-					dispatch({type : musicActionTypes.OPEN_PLAYLIST_EDITOR, payload : playlistKey})
-			}
+export const openPlaylistManager = (playlistKey?: number | string) => {
+  return function (dispatch: any) {
+    if (playlistKey === "new") {
+      dispatch({ type: musicActionTypes.NEW_PLAYLIST, payload: playlistKey });
+    } else {
+      dispatch({
+        type: musicActionTypes.OPEN_PLAYLIST_EDITOR,
+        payload: playlistKey,
+      });
+    }
+  };
+};
 
-		}
-	}
+export const setUpPlaylists = (playlistNames: string[]) => {
+  return function (dispatch: any) {
+    dispatch({
+      type: musicActionTypes.SET_UP_PLAYLISTS,
+      payload: playlistNames,
+    });
+  };
+};
 
-	// Toggles the add track menu
+// Toggles the add track menu
 export const closePlaylistManager = (playlistKey?: number) => {
-	return function (dispatch : any) {
-			dispatch({type : musicActionTypes.CLOSE_PLAYLIST_EDITOR})
-		}
-	}
+  return function (dispatch: any) {
+    dispatch({ type: musicActionTypes.CLOSE_PLAYLIST_EDITOR });
+  };
+};
 
-export const addToPlaylist = (trackItem : any[]) => {
-		return function (dispatch : any) {
-				dispatch({type : musicActionTypes.ADD_TO_PLAYLIST, payload : trackItem})
-			}
-		}
+export const addToPlaylist = (trackItem: any[]) => {
+  return function (dispatch: any) {
+    dispatch({ type: musicActionTypes.ADD_TO_PLAYLIST, payload: trackItem });
+  };
+};
 
-
-export const removeFromPlaylist = (itemIndex : number) => {
-			return function (dispatch : any) {
-					dispatch({type : musicActionTypes.REMOVE_FROM_PLAYLIST, payload : itemIndex})
-				}
-			}
-
+export const removeFromPlaylist = (itemIndex: number) => {
+  return function (dispatch: any) {
+    dispatch({
+      type: musicActionTypes.REMOVE_FROM_PLAYLIST,
+      payload: itemIndex,
+    });
+  };
+};
 
 // ######################################################
 // Play/pause/skip of a track
 // #######################################################
 
-export const playTrack = (trackIndex : number, playPause?: boolean) => {
-
-	return function (dispatch : any) {
-			if(playPause === false){
-				dispatch({type : musicActionTypes.PAUSE_TRACK, payload : trackIndex})
-			}else{
-				dispatch({type : musicActionTypes.PLAY_TRACK, payload : trackIndex})
-			}
-	}
-}
+export const playTrack = (trackIndex: number, playPause?: boolean) => {
+  return function (dispatch: any) {
+    if (playPause === false) {
+      dispatch({ type: musicActionTypes.PAUSE_TRACK, payload: trackIndex });
+    } else {
+      dispatch({ type: musicActionTypes.PLAY_TRACK, payload: trackIndex });
+    }
+  };
+};
 
 // Accepts -1 or 1 to go forward or back
-export const skipTrack = (moveBy : number) => {
-	return function (dispatch : any) {
-		dispatch({type : musicActionTypes.SKIP_TRACK, payload : moveBy})
-	}
-}
+export const skipTrack = (moveBy: number) => {
+  return function (dispatch: any) {
+    dispatch({ type: musicActionTypes.SKIP_TRACK, payload: moveBy });
+  };
+};
 
 //
 // export const isDragging  = () => {

@@ -12,7 +12,10 @@ import NavMenu from "./components/navigation/NavMenu";
 import PlaylistManager from "./components/playlistManager/PlaylistManager";
 
 // Redux
-import { openPlaylistManager } from "./store/music/music.actions";
+import {
+  openPlaylistManager,
+  setUpPlaylists,
+} from "./store/music/music.actions";
 import { IPlaylist } from "./store/music/music.types";
 
 // Styles
@@ -22,18 +25,25 @@ import "./styles/globalStyles.scss";
 import {
   InitialzeAudioNodeResponse,
   InitializeAudioNodeRequest,
+  PlaylistRequest,
 } from "./links/audioNode/protos/audioNode_pb";
 import { AudioNodeServiceClient } from "./links/audioNode/protos/AudioNodeServiceClientPb";
 
 interface IRootProps {
-  togglePlaylistManager: any;
-
+  setUpPlaylists: any;
+  openPlaylistManager: any;
   // Playlists - for the nav
   playlists: IPlaylist[];
   playlistChangeKey: boolean;
 }
 
-export const Root: React.FunctionComponent<IootProps> = (props) => {
+export const Root: React.FunctionComponent<IRootProps> = ({
+  setUpPlaylists,
+
+  openPlaylistManager,
+  playlists,
+  playlistChangeKey,
+}) => {
   const history = useHistory();
 
   // When a nav item is clicked this is where the actions take place
@@ -47,10 +57,10 @@ export const Root: React.FunctionComponent<IootProps> = (props) => {
       case "Live":
         break;
       case "new":
-        props.openPlaylistManager("new");
+        openPlaylistManager("new");
         break;
       default:
-        props.openPlaylistManager(Number(navItemString));
+        openPlaylistManager(Number(navItemString));
         break;
     }
   };
@@ -64,16 +74,29 @@ export const Root: React.FunctionComponent<IootProps> = (props) => {
     audioNode.initializeAudioNode(init, {}, (err, response) => {
       if (err) {
         throw "Error Could Not Connect To Audio Node";
+      } else {
+        // gets the playlists
+        const playlists: string[] = response.array[1];
+        setUpPlaylists(playlists);
+
+        playlists.forEach((playlist) => {
+          const getTracks = new PlaylistRequest();
+          getTracks.setPlaylistname(playlist);
+          audioNode.sendPlaylists(getTracks, {}, (err, response) => {
+            console.log(response);
+          });
+        });
       }
     });
+    // const getPlaylists = new
   }, []);
 
   return (
     <div className="App">
       <NavMenu
-        key={`${props.playlistChangeKey}  sideNav`}
+        key={`${playlistChangeKey}  sideNav`}
         itemClickedCallback={_navItemClicked}
-        playlistItems={props.playlists.filter((item) => item["saved"] === true)}
+        playlistItems={playlists.filter((item) => item.saved === true)}
       />
       <PlaylistManager />
       <Switch>
@@ -92,6 +115,7 @@ const mapStateToProps = (state: any) => ({
 
 const mapDispatchToProps = {
   openPlaylistManager,
+  setUpPlaylists,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Root);

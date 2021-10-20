@@ -26,10 +26,10 @@ import audioNode_pb2_grpc
 
 # Project Classes
 from trackMode.controller import TrackController
-
+from trackMode.directory import DirectoryManager
 ## Project modules
 from modules.soundFileHelpers import standardSDCallback
-from modules.fileHelpers import *
+
 
 class AudioNode(audioNode_pb2_grpc.AudioNodeServiceServicer):
 
@@ -37,12 +37,23 @@ class AudioNode(audioNode_pb2_grpc.AudioNodeServiceServicer):
         # audioPlayMode - type of playback track|live
         self.audioPlayMode = 'tracks'
         self.sd = None
-        self.controller = None
+
         self.sf = None
+        # custom class object
+        self.fileHelper = None
+        self.controller = None
 
     def InitializeAudioNode(self, request, context):
-        playlists =  fileHelpers.getPlaylists()
-        return audioNode_pb2.InitializeAudioNodeResponse(isInitialized=True)
+        self.fileHelper = DirectoryManager()
+        playlistDirectories = self.fileHelper.getPlaylists()
+        print(playlistDirectories)
+        return audioNode_pb2.InitializeAudioNodeResponse(isInitialized=True, playlists=playlistDirectories)
+
+    def SendPlaylists(self, request, context):
+        print(request)
+        tracksInPlaylist = self.fileHelper.getTracksInPlaylist(request.playlistName)
+        print(tracksInPlaylist)
+        return audioNode_pb2.PlaylistResponse(tracks=tracksInPlaylist)
 
     ## Sets up the initial connection with client
     def InitializeControls(self, request, context):

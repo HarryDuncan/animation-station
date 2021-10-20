@@ -1,13 +1,12 @@
 import os
+from os import listdir
+from os.path import isfile, join
+from pathlib import Path
 
-# module for getting managing playlists and track file paths
-def getPlaylists():
-  arr = os.listdir('audio')
-  print(arr)
-  for item in arr:
-      print(item)
-  print('getting playlists')
+def getImmediateSubdirectories(a_dir):
+    return [name for name in os.listdir(a_dir)
+        if os.path.isdir(os.path.join(a_dir, name))]
 
 
-def getCurrentTrackPath():
-    print('getting track path')
+def getTracksInDirectory(pathName):
+    return [f for f in listdir(pathName) if isfile(join(pathName, f))]

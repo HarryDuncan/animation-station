@@ -75,6 +75,46 @@ export class AudioNodeServiceClient {
     this.methodInfoInitializeAudioNode);
   }
 
+  methodInfoSendPlaylists = new grpcWeb.AbstractClientBase.MethodInfo(
+    protos_audioNode_pb.PlaylistResponse,
+    (request: protos_audioNode_pb.PlaylistRequest) => {
+      return request.serializeBinary();
+    },
+    protos_audioNode_pb.PlaylistResponse.deserializeBinary
+  );
+
+  sendPlaylists(
+    request: protos_audioNode_pb.PlaylistRequest,
+    metadata: grpcWeb.Metadata | null): Promise<protos_audioNode_pb.PlaylistResponse>;
+
+  sendPlaylists(
+    request: protos_audioNode_pb.PlaylistRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.Error,
+               response: protos_audioNode_pb.PlaylistResponse) => void): grpcWeb.ClientReadableStream<protos_audioNode_pb.PlaylistResponse>;
+
+  sendPlaylists(
+    request: protos_audioNode_pb.PlaylistRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.Error,
+               response: protos_audioNode_pb.PlaylistResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/audioNode.AudioNodeService/SendPlaylists',
+        request,
+        metadata || {},
+        this.methodInfoSendPlaylists,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/audioNode.AudioNodeService/SendPlaylists',
+    request,
+    metadata || {},
+    this.methodInfoSendPlaylists);
+  }
+
   methodInfoInitializeControls = new grpcWeb.AbstractClientBase.MethodInfo(
     protos_audioNode_pb.InitControllerResponse,
     (request: protos_audioNode_pb.InitControllerRequest) => {

@@ -40,6 +40,8 @@ export enum musicActionTypes {
   CLOSE_PLAYLIST_EDITOR = "music/CLOSE_PLAYLIST_EDITOR",
   ADD_TO_PLAYLIST = "music/ADD_TO_PLAYLIST",
   REMOVE_FROM_PLAYLIST = "music/REMOVE_FROM_PLAYLIST",
+  SET_UP_PLAYLISTS = "music/SET_UP_PLAYLISTS",
+  //
 
   // Playing track
   PAUSE_TRACK = "music/PAUSE_TRACK",
