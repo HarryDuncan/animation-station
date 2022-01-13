@@ -1,6 +1,6 @@
 import { IMusicState, musicActionTypes, IPlaylist } from "./music.types";
 import update from "immutability-helper";
-import { remote } from "electron";
+import { addTracksToPlaylist } from "./musicFunctions";
 
 const initialMusicState: IMusicState = {
   playlistManagerOpen: false,
@@ -14,6 +14,31 @@ const initialMusicState: IMusicState = {
 
 function music(state: IMusicState = initialMusicState, action: any) {
   switch (action.type) {
+    case musicActionTypes.SET_UP_PLAYLISTS:
+      return update(state, {
+        playlists: {
+          $set: state.playlists.concat(
+            action.payload.map((playlist: string, index: number) => ({
+              playlistId: state.playlists.length + index,
+              playlistTitle: playlist,
+              playlistTracks: [],
+              saved: true,
+            }))
+          ),
+        },
+      });
+
+    case musicActionTypes.SET_UP_PLAYLIST_ITEMS:
+      return update(state, {
+        playlists: {
+          $set: addTracksToPlaylist(
+            state.playlists,
+            action.payload.index,
+            action.payload.tracks
+          ),
+        },
+      });
+
     case musicActionTypes.PLAY_TRACK:
       return update(state, {
         playlistPlayingIndex: { $set: state.playlistManagerIndex },
@@ -37,19 +62,7 @@ function music(state: IMusicState = initialMusicState, action: any) {
           ],
         },
       });
-    case musicActionTypes.SET_UP_PLAYLISTS:
-      return update(state, {
-        playlists: {
-          $set: state.playlists.concat(
-            action.payload.map((playlist: string, index: number) => ({
-              playlistId: state.playlists.length + index,
-              playlistTitle: playlist,
-              playlistTracks: [],
-              saved: true,
-            }))
-          ),
-        },
-      });
+
     case musicActionTypes.OPEN_PLAYLIST_EDITOR:
       return update(state, {
         playlistManagerOpen: { $set: true },

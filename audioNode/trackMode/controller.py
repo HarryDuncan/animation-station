@@ -1,7 +1,7 @@
 from concurrent import futures
 import logging
 import sys
-
+from soundfile import SoundFile
 
 
  ## Performs all the analysis and returns the data back to main - to be streamed to client
@@ -13,10 +13,10 @@ class TrackController():
         self.controllerStatus = ''
         self.trackName = ''
         self.audioFileUrls = []
+        self.sf = None
 
     # called when audio node is initialized and mode is tracks
     def setUpTrackController(self, initRequest):
-        print(initRequest)
         self.audioFileUrls = initRequest.audioFileNames
 
     # <------------ Status Functions -------------->
@@ -30,6 +30,11 @@ class TrackController():
 
     def setPaused(self):
         self.controllerStatus = 'paused'
+
+    def setUpTrack(self):
+        filePath ='audio/heliotropic.aiff'
+        # self.audioFileURLS[self.trackIndex]
+        self.sf = SoundFile(filePath)
 
     # <----- General Functions -------------->
     def clearController(self):

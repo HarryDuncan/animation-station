@@ -17,6 +17,7 @@ service AudioNodeService {
 
 
 // <------------------ Audio Control ------------------------------>
+  rpc SetUpTrack (SetUpTrackRequest) returns (SetUpTrackResponse);
   /* loads a track, and plays it */
   rpc PlayTrack (ControlRequest) returns (stream StreamResponse);
 
@@ -65,6 +66,14 @@ message PlaylistResponse {
 }
 /* Initialization message - sets up the track controller and sends the audio file names and the trackIndex */
 
+message SetUpTrackRequest {
+  int32 trackIndex = 1;
+  int32 playlistIndex = 2;
+}
+
+message SetUpTrackResponse {
+
+}
 message InitControllerRequest {
   // track | live
   string controlRequestType = 1;
@@ -83,9 +92,7 @@ message ControlRequest {
 
 
 
-message AudioData {
-  repeated double points = 1;
-}
+
 
 message ServiceResponse {
   string reply = 1;
@@ -99,9 +106,12 @@ message SeekRequest {
   int32 seekPoint = 1;
 }
 
-
+message AudioData {
+  repeated double mean = 1 [packed=true];
+  repeated double median = 2 [packed=true];
+}
 
 message StreamResponse {
   optional string responseMessage = 1;
-  repeated double streamData = 2 [packed=true];
+  optional AudioData streamData = 2;
 }

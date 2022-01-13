@@ -30,23 +30,3 @@ export interface IMusicState {
 
   // Spotify
 }
-
-export enum musicActionTypes {
-  // On App initialization
-  SET_UP_PLAYLISTS = "music/SET_UP_PLAYLISTS",
-  SET_UP_PLAYLIST_ITEMS = "music/SET_UP_PLAYLIST_ITEMS",
-  PLAYLISTS_INITIALIZED = "music/PLAYLISTS_INITIALIZED",
-  // Playlist Manager
-  NEW_PLAYLIST = "music/NEW_PLAYLIST",
-  OPEN_PLAYLIST_EDITOR = "music/OPEN_PLAYLIST_EDITOR",
-  CLOSE_PLAYLIST_EDITOR = "music/CLOSE_PLAYLIST_EDITOR",
-  ADD_TO_PLAYLIST = "music/ADD_TO_PLAYLIST",
-  REMOVE_FROM_PLAYLIST = "music/REMOVE_FROM_PLAYLIST",
-
-  //
-
-  // Playing track
-  PAUSE_TRACK = "music/PAUSE_TRACK",
-  PLAY_TRACK = "music/PLAY_TRACK",
-  SKIP_TRACK = "music/SKIP_TRACK",
-}

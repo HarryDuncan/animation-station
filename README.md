@@ -9,8 +9,8 @@ Desktop Application for music visualisation
 - compile typescript client proto
 
 protoc protos/audioNode.proto \
---js_out=import_style=commonjs,binary:./src/links/audioNode \
---grpc-web_out=import_style=typescript,mode=grpcwebtext:./src/links/audioNode
+--js_out=import_style=commonjs,binary:./src/grpc \
+--grpc-web_out=import_style=typescript,mode=grpcwebtext:./src/grpc
 
 - generate python proto
 

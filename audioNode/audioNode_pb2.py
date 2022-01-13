@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0f\x61udioNode.proto\x12\taudioNode\"\x1c\n\x1aInitializeAudioNodeRequest\"G\n\x1bInitializeAudioNodeResponse\x12\x15\n\risInitialized\x18\x01 \x01(\x08\x12\x11\n\tplaylists\x18\x02 \x03(\t\"\'\n\x0fPlaylistRequest\x12\x14\n\x0cplaylistName\x18\x01 \x01(\t\"\"\n\x10PlaylistResponse\x12\x0e\n\x06tracks\x18\x01 \x03(\t\"3\n\x15InitControllerRequest\x12\x1a\n\x12\x63ontrolRequestType\x18\x01 \x01(\t\"-\n\x16InitControllerResponse\x12\x13\n\x0bisConnected\x18\x01 \x01(\x08\" \n\x0e\x43ontrolRequest\x12\x0e\n\x06\x61\x63tion\x18\x01 \x01(\t\"\x1b\n\tAudioData\x12\x0e\n\x06points\x18\x01 \x03(\x01\" \n\x0fServiceResponse\x12\r\n\x05reply\x18\x01 \x01(\t\"\"\n\rVolumeRequest\x12\x11\n\tnewVolume\x18\x01 \x01(\x05\" \n\x0bSeekRequest\x12\x11\n\tseekPoint\x18\x01 \x01(\x05\"Z\n\x0eStreamResponse\x12\x1c\n\x0fresponseMessage\x18\x01 \x01(\tH\x00\x88\x01\x01\x12\x16\n\nstreamData\x18\x02 \x03(\x01\x42\x02\x10\x01\x42\x12\n\x10_responseMessage2\xae\x05\n\x10\x41udioNodeService\x12\x64\n\x13InitializeAudioNode\x12%.audioNode.InitializeAudioNodeRequest\x1a&.audioNode.InitializeAudioNodeResponse\x12H\n\rSendPlaylists\x12\x1a.audioNode.PlaylistRequest\x1a\x1b.audioNode.PlaylistResponse\x12Y\n\x12InitializeControls\x12 .audioNode.InitControllerRequest\x1a!.audioNode.InitControllerResponse\x12\x43\n\tPlayTrack\x12\x19.audioNode.ControlRequest\x1a\x19.audioNode.StreamResponse0\x01\x12\x43\n\nPauseTrack\x12\x19.audioNode.ControlRequest\x1a\x1a.audioNode.ServiceResponse\x12?\n\x06Rewind\x12\x19.audioNode.ControlRequest\x1a\x1a.audioNode.ServiceResponse\x12@\n\x07\x46orward\x12\x19.audioNode.ControlRequest\x1a\x1a.audioNode.ServiceResponse\x12\x41\n\tSetVolume\x12\x18.audioNode.VolumeRequest\x1a\x1a.audioNode.ServiceResponse\x12?\n\tSeekTrack\x12\x16.audioNode.SeekRequest\x1a\x1a.audioNode.ServiceResponseb\x06proto3'
+  serialized_pb=b'\n\x0f\x61udioNode.proto\x12\taudioNode\"\x1c\n\x1aInitializeAudioNodeRequest\"G\n\x1bInitializeAudioNodeResponse\x12\x15\n\risInitialized\x18\x01 \x01(\x08\x12\x11\n\tplaylists\x18\x02 \x03(\t\"\'\n\x0fPlaylistRequest\x12\x14\n\x0cplaylistName\x18\x01 \x01(\t\"\"\n\x10PlaylistResponse\x12\x0e\n\x06tracks\x18\x01 \x03(\t\">\n\x11SetUpTrackRequest\x12\x12\n\ntrackIndex\x18\x01 \x01(\x05\x12\x15\n\rplaylistIndex\x18\x02 \x01(\x05\"\x14\n\x12SetUpTrackResponse\"3\n\x15InitControllerRequest\x12\x1a\n\x12\x63ontrolRequestType\x18\x01 \x01(\t\"-\n\x16InitControllerResponse\x12\x13\n\x0bisConnected\x18\x01 \x01(\x08\" \n\x0e\x43ontrolRequest\x12\x0e\n\x06\x61\x63tion\x18\x01 \x01(\t\" \n\x0fServiceResponse\x12\r\n\x05reply\x18\x01 \x01(\t\"\"\n\rVolumeRequest\x12\x11\n\tnewVolume\x18\x01 \x01(\x05\" \n\x0bSeekRequest\x12\x11\n\tseekPoint\x18\x01 \x01(\x05\"1\n\tAudioData\x12\x10\n\x04mean\x18\x01 \x03(\x01\x42\x02\x10\x01\x12\x12\n\x06median\x18\x02 \x03(\x01\x42\x02\x10\x01\"\x80\x01\n\x0eStreamResponse\x12\x1c\n\x0fresponseMessage\x18\x01 \x01(\tH\x00\x88\x01\x01\x12-\n\nstreamData\x18\x02 \x01(\x0b\x32\x14.audioNode.AudioDataH\x01\x88\x01\x01\x42\x12\n\x10_responseMessageB\r\n\x0b_streamData2\xf9\x05\n\x10\x41udioNodeService\x12\x64\n\x13InitializeAudioNode\x12%.audioNode.InitializeAudioNodeRequest\x1a&.audioNode.InitializeAudioNodeResponse\x12H\n\rSendPlaylists\x12\x1a.audioNode.PlaylistRequest\x1a\x1b.audioNode.PlaylistResponse\x12Y\n\x12InitializeControls\x12 .audioNode.InitControllerRequest\x1a!.audioNode.InitControllerResponse\x12I\n\nSetUpTrack\x12\x1c.audioNode.SetUpTrackRequest\x1a\x1d.audioNode.SetUpTrackResponse\x12\x43\n\tPlayTrack\x12\x19.audioNode.ControlRequest\x1a\x19.audioNode.StreamResponse0\x01\x12\x43\n\nPauseTrack\x12\x19.audioNode.ControlRequest\x1a\x1a.audioNode.ServiceResponse\x12?\n\x06Rewind\x12\x19.audioNode.ControlRequest\x1a\x1a.audioNode.ServiceResponse\x12@\n\x07\x46orward\x12\x19.audioNode.ControlRequest\x1a\x1a.audioNode.ServiceResponse\x12\x41\n\tSetVolume\x12\x18.audioNode.VolumeRequest\x1a\x1a.audioNode.ServiceResponse\x12?\n\tSeekTrack\x12\x16.audioNode.SeekRequest\x1a\x1a.audioNode.ServiceResponseb\x06proto3'
 )
 
 
@@ -153,6 +153,70 @@ _PLAYLISTRESPONSE = _descriptor.Descriptor(
 )
 
 
+_SETUPTRACKREQUEST = _descriptor.Descriptor(
+  name='SetUpTrackRequest',
+  full_name='audioNode.SetUpTrackRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='trackIndex', full_name='audioNode.SetUpTrackRequest.trackIndex', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='playlistIndex', full_name='audioNode.SetUpTrackRequest.playlistIndex', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=210,
+  serialized_end=272,
+)
+
+
+_SETUPTRACKRESPONSE = _descriptor.Descriptor(
+  name='SetUpTrackResponse',
+  full_name='audioNode.SetUpTrackResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=274,
+  serialized_end=294,
+)
+
+
 _INITCONTROLLERREQUEST = _descriptor.Descriptor(
   name='InitControllerRequest',
   full_name='audioNode.InitControllerRequest',
@@ -180,8 +244,8 @@ _INITCONTROLLERREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=210,
-  serialized_end=261,
+  serialized_start=296,
+  serialized_end=347,
 )
 
 
@@ -212,8 +276,8 @@ _INITCONTROLLERRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=263,
-  serialized_end=308,
+  serialized_start=349,
+  serialized_end=394,
 )
 
 
@@ -244,40 +308,8 @@ _CONTROLREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=310,
-  serialized_end=342,
-)
-
-
-_AUDIODATA = _descriptor.Descriptor(
-  name='AudioData',
-  full_name='audioNode.AudioData',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='points', full_name='audioNode.AudioData.points', index=0,
-      number=1, type=1, cpp_type=5, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=344,
-  serialized_end=371,
+  serialized_start=396,
+  serialized_end=428,
 )
 
 
@@ -308,8 +340,8 @@ _SERVICERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=373,
-  serialized_end=405,
+  serialized_start=430,
+  serialized_end=462,
 )
 
 
@@ -340,8 +372,8 @@ _VOLUMEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=407,
-  serialized_end=441,
+  serialized_start=464,
+  serialized_end=498,
 )
 
 
@@ -372,8 +404,47 @@ _SEEKREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=443,
-  serialized_end=475,
+  serialized_start=500,
+  serialized_end=532,
+)
+
+
+_AUDIODATA = _descriptor.Descriptor(
+  name='AudioData',
+  full_name='audioNode.AudioData',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='mean', full_name='audioNode.AudioData.mean', index=0,
+      number=1, type=1, cpp_type=5, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=b'\020\001', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='median', full_name='audioNode.AudioData.median', index=1,
+      number=2, type=1, cpp_type=5, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=b'\020\001', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=534,
+  serialized_end=583,
 )
 
 
@@ -394,11 +465,11 @@ _STREAMRESPONSE = _descriptor.Descriptor(
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='streamData', full_name='audioNode.StreamResponse.streamData', index=1,
-      number=2, type=1, cpp_type=5, label=3,
-      has_default_value=False, default_value=[],
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=b'\020\001', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -415,25 +486,36 @@ _STREAMRESPONSE = _descriptor.Descriptor(
       index=0, containing_type=None,
       create_key=_descriptor._internal_create_key,
     fields=[]),
+    _descriptor.OneofDescriptor(
+      name='_streamData', full_name='audioNode.StreamResponse._streamData',
+      index=1, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=477,
-  serialized_end=567,
+  serialized_start=586,
+  serialized_end=714,
 )
 
+_STREAMRESPONSE.fields_by_name['streamData'].message_type = _AUDIODATA
 _STREAMRESPONSE.oneofs_by_name['_responseMessage'].fields.append(
   _STREAMRESPONSE.fields_by_name['responseMessage'])
 _STREAMRESPONSE.fields_by_name['responseMessage'].containing_oneof = _STREAMRESPONSE.oneofs_by_name['_responseMessage']
+_STREAMRESPONSE.oneofs_by_name['_streamData'].fields.append(
+  _STREAMRESPONSE.fields_by_name['streamData'])
+_STREAMRESPONSE.fields_by_name['streamData'].containing_oneof = _STREAMRESPONSE.oneofs_by_name['_streamData']
 DESCRIPTOR.message_types_by_name['InitializeAudioNodeRequest'] = _INITIALIZEAUDIONODEREQUEST
 DESCRIPTOR.message_types_by_name['InitializeAudioNodeResponse'] = _INITIALIZEAUDIONODERESPONSE
 DESCRIPTOR.message_types_by_name['PlaylistRequest'] = _PLAYLISTREQUEST
 DESCRIPTOR.message_types_by_name['PlaylistResponse'] = _PLAYLISTRESPONSE
+DESCRIPTOR.message_types_by_name['SetUpTrackRequest'] = _SETUPTRACKREQUEST
+DESCRIPTOR.message_types_by_name['SetUpTrackResponse'] = _SETUPTRACKRESPONSE
 DESCRIPTOR.message_types_by_name['InitControllerRequest'] = _INITCONTROLLERREQUEST
 DESCRIPTOR.message_types_by_name['InitControllerResponse'] = _INITCONTROLLERRESPONSE
 DESCRIPTOR.message_types_by_name['ControlRequest'] = _CONTROLREQUEST
-DESCRIPTOR.message_types_by_name['AudioData'] = _AUDIODATA
 DESCRIPTOR.message_types_by_name['ServiceResponse'] = _SERVICERESPONSE
 DESCRIPTOR.message_types_by_name['VolumeRequest'] = _VOLUMEREQUEST
 DESCRIPTOR.message_types_by_name['SeekRequest'] = _SEEKREQUEST
+DESCRIPTOR.message_types_by_name['AudioData'] = _AUDIODATA
 DESCRIPTOR.message_types_by_name['StreamResponse'] = _STREAMRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -465,6 +547,20 @@ PlaylistResponse = _reflection.GeneratedProtocolMessageType('PlaylistResponse', 
   })
 _sym_db.RegisterMessage(PlaylistResponse)
 
+SetUpTrackRequest = _reflection.GeneratedProtocolMessageType('SetUpTrackRequest', (_message.Message,), {
+  'DESCRIPTOR' : _SETUPTRACKREQUEST,
+  '__module__' : 'audioNode_pb2'
+  # @@protoc_insertion_point(class_scope:audioNode.SetUpTrackRequest)
+  })
+_sym_db.RegisterMessage(SetUpTrackRequest)
+
+SetUpTrackResponse = _reflection.GeneratedProtocolMessageType('SetUpTrackResponse', (_message.Message,), {
+  'DESCRIPTOR' : _SETUPTRACKRESPONSE,
+  '__module__' : 'audioNode_pb2'
+  # @@protoc_insertion_point(class_scope:audioNode.SetUpTrackResponse)
+  })
+_sym_db.RegisterMessage(SetUpTrackResponse)
+
 InitControllerRequest = _reflection.GeneratedProtocolMessageType('InitControllerRequest', (_message.Message,), {
   'DESCRIPTOR' : _INITCONTROLLERREQUEST,
   '__module__' : 'audioNode_pb2'
@@ -485,13 +581,6 @@ ControlRequest = _reflection.GeneratedProtocolMessageType('ControlRequest', (_me
   # @@protoc_insertion_point(class_scope:audioNode.ControlRequest)
   })
 _sym_db.RegisterMessage(ControlRequest)
-
-AudioData = _reflection.GeneratedProtocolMessageType('AudioData', (_message.Message,), {
-  'DESCRIPTOR' : _AUDIODATA,
-  '__module__' : 'audioNode_pb2'
-  # @@protoc_insertion_point(class_scope:audioNode.AudioData)
-  })
-_sym_db.RegisterMessage(AudioData)
 
 ServiceResponse = _reflection.GeneratedProtocolMessageType('ServiceResponse', (_message.Message,), {
   'DESCRIPTOR' : _SERVICERESPONSE,
@@ -514,6 +603,13 @@ SeekRequest = _reflection.GeneratedProtocolMessageType('SeekRequest', (_message.
   })
 _sym_db.RegisterMessage(SeekRequest)
 
+AudioData = _reflection.GeneratedProtocolMessageType('AudioData', (_message.Message,), {
+  'DESCRIPTOR' : _AUDIODATA,
+  '__module__' : 'audioNode_pb2'
+  # @@protoc_insertion_point(class_scope:audioNode.AudioData)
+  })
+_sym_db.RegisterMessage(AudioData)
+
 StreamResponse = _reflection.GeneratedProtocolMessageType('StreamResponse', (_message.Message,), {
   'DESCRIPTOR' : _STREAMRESPONSE,
   '__module__' : 'audioNode_pb2'
@@ -522,7 +618,8 @@ StreamResponse = _reflection.GeneratedProtocolMessageType('StreamResponse', (_me
 _sym_db.RegisterMessage(StreamResponse)
 
 
-_STREAMRESPONSE.fields_by_name['streamData']._options = None
+_AUDIODATA.fields_by_name['mean']._options = None
+_AUDIODATA.fields_by_name['median']._options = None
 
 _AUDIONODESERVICE = _descriptor.ServiceDescriptor(
   name='AudioNodeService',
@@ -531,8 +628,8 @@ _AUDIONODESERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=570,
-  serialized_end=1256,
+  serialized_start=717,
+  serialized_end=1478,
   methods=[
   _descriptor.MethodDescriptor(
     name='InitializeAudioNode',
@@ -565,9 +662,19 @@ _AUDIONODESERVICE = _descriptor.ServiceDescriptor(
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
+    name='SetUpTrack',
+    full_name='audioNode.AudioNodeService.SetUpTrack',
+    index=3,
+    containing_service=None,
+    input_type=_SETUPTRACKREQUEST,
+    output_type=_SETUPTRACKRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
     name='PlayTrack',
     full_name='audioNode.AudioNodeService.PlayTrack',
-    index=3,
+    index=4,
     containing_service=None,
     input_type=_CONTROLREQUEST,
     output_type=_STREAMRESPONSE,
@@ -577,7 +684,7 @@ _AUDIONODESERVICE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='PauseTrack',
     full_name='audioNode.AudioNodeService.PauseTrack',
-    index=4,
+    index=5,
     containing_service=None,
     input_type=_CONTROLREQUEST,
     output_type=_SERVICERESPONSE,
@@ -587,7 +694,7 @@ _AUDIONODESERVICE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='Rewind',
     full_name='audioNode.AudioNodeService.Rewind',
-    index=5,
+    index=6,
     containing_service=None,
     input_type=_CONTROLREQUEST,
     output_type=_SERVICERESPONSE,
@@ -597,7 +704,7 @@ _AUDIONODESERVICE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='Forward',
     full_name='audioNode.AudioNodeService.Forward',
-    index=6,
+    index=7,
     containing_service=None,
     input_type=_CONTROLREQUEST,
     output_type=_SERVICERESPONSE,
@@ -607,7 +714,7 @@ _AUDIONODESERVICE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='SetVolume',
     full_name='audioNode.AudioNodeService.SetVolume',
-    index=7,
+    index=8,
     containing_service=None,
     input_type=_VOLUMEREQUEST,
     output_type=_SERVICERESPONSE,
@@ -617,7 +724,7 @@ _AUDIONODESERVICE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='SeekTrack',
     full_name='audioNode.AudioNodeService.SeekTrack',
-    index=8,
+    index=9,
     containing_service=None,
     input_type=_SEEKREQUEST,
     output_type=_SERVICERESPONSE,

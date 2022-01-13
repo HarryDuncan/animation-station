@@ -32,6 +32,11 @@ class AudioNodeServiceStub(object):
                 request_serializer=audioNode__pb2.InitControllerRequest.SerializeToString,
                 response_deserializer=audioNode__pb2.InitControllerResponse.FromString,
                 )
+        self.SetUpTrack = channel.unary_unary(
+                '/audioNode.AudioNodeService/SetUpTrack',
+                request_serializer=audioNode__pb2.SetUpTrackRequest.SerializeToString,
+                response_deserializer=audioNode__pb2.SetUpTrackResponse.FromString,
+                )
         self.PlayTrack = channel.unary_stream(
                 '/audioNode.AudioNodeService/PlayTrack',
                 request_serializer=audioNode__pb2.ControlRequest.SerializeToString,
@@ -90,10 +95,15 @@ class AudioNodeServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def PlayTrack(self, request, context):
+    def SetUpTrack(self, request, context):
         """<------------------ Audio Control ------------------------------>
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
-        loads a track, and plays it 
+    def PlayTrack(self, request, context):
+        """loads a track, and plays it 
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -153,6 +163,11 @@ def add_AudioNodeServiceServicer_to_server(servicer, server):
                     servicer.InitializeControls,
                     request_deserializer=audioNode__pb2.InitControllerRequest.FromString,
                     response_serializer=audioNode__pb2.InitControllerResponse.SerializeToString,
+            ),
+            'SetUpTrack': grpc.unary_unary_rpc_method_handler(
+                    servicer.SetUpTrack,
+                    request_deserializer=audioNode__pb2.SetUpTrackRequest.FromString,
+                    response_serializer=audioNode__pb2.SetUpTrackResponse.SerializeToString,
             ),
             'PlayTrack': grpc.unary_stream_rpc_method_handler(
                     servicer.PlayTrack,
@@ -245,6 +260,23 @@ class AudioNodeService(object):
         return grpc.experimental.unary_unary(request, target, '/audioNode.AudioNodeService/InitializeControls',
             audioNode__pb2.InitControllerRequest.SerializeToString,
             audioNode__pb2.InitControllerResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def SetUpTrack(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/audioNode.AudioNodeService/SetUpTrack',
+            audioNode__pb2.SetUpTrackRequest.SerializeToString,
+            audioNode__pb2.SetUpTrackResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

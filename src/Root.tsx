@@ -3,9 +3,9 @@ import { connect } from "react-redux";
 import { BrowserRouter, Switch, Route, useHistory } from "react-router-dom";
 
 // Containers
-import { LandingContainer } from "./containers/landing/LandingContainer";
-import { LiveContainer } from "./containers/live/LiveContainer";
-import { PlayContainer } from "./containers/play/PlayContainer";
+import { LandingContainer } from "./@landing";
+import { LiveContainer } from "./@live";
+import { PlayContainer } from "./@play";
 
 // Components
 import NavMenu from "./components/navigation/NavMenu";
@@ -15,6 +15,7 @@ import PlaylistManager from "./components/playlistManager/PlaylistManager";
 import {
   openPlaylistManager,
   setUpPlaylists,
+  setUpPlaylistItems,
 } from "./store/music/music.actions";
 import { IPlaylist } from "./store/music/music.types";
 
@@ -26,12 +27,13 @@ import {
   InitialzeAudioNodeResponse,
   InitializeAudioNodeRequest,
   PlaylistRequest,
-} from "./links/audioNode/protos/audioNode_pb";
-import { AudioNodeServiceClient } from "./links/audioNode/protos/AudioNodeServiceClientPb";
+} from "./grpc/protos/audioNode_pb";
+import { AudioNodeServiceClient } from "./grpc";
 
 interface IRootProps {
   setUpPlaylists: any;
   openPlaylistManager: any;
+  setUpPlaylistItems: any;
   // Playlists - for the nav
   playlists: IPlaylist[];
   playlistChangeKey: boolean;
@@ -39,7 +41,7 @@ interface IRootProps {
 
 export const Root: React.FunctionComponent<IRootProps> = ({
   setUpPlaylists,
-
+  setUpPlaylistItems,
   openPlaylistManager,
   playlists,
   playlistChangeKey,
@@ -79,11 +81,11 @@ export const Root: React.FunctionComponent<IRootProps> = ({
         const playlists: string[] = response.array[1];
         setUpPlaylists(playlists);
 
-        playlists.forEach((playlist) => {
+        playlists.forEach((playlist: string, index: number) => {
           const getTracks = new PlaylistRequest();
           getTracks.setPlaylistname(playlist);
           audioNode.sendPlaylists(getTracks, {}, (err, response) => {
-            console.log(response);
+            setUpPlaylistItems(response.array[0], index);
           });
         });
       }
@@ -116,6 +118,7 @@ const mapStateToProps = (state: any) => ({
 const mapDispatchToProps = {
   openPlaylistManager,
   setUpPlaylists,
+  setUpPlaylistItems,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Root);

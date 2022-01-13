@@ -27,6 +27,9 @@ import audioNode_pb2_grpc
 # Project Classes
 from trackMode.controller import TrackController
 from trackMode.directory import DirectoryManager
+from trackMode.audio import AudioController
+from analyzer.analyzerClass import Analyzer
+
 ## Project modules
 from modules.soundFileHelpers import standardSDCallback
 
@@ -36,9 +39,11 @@ class AudioNode(audioNode_pb2_grpc.AudioNodeServiceServicer):
     def __init__(self):
         # audioPlayMode - type of playback track|live
         self.audioPlayMode = 'tracks'
+        self.analyzer = None
+        #Sound device and sound file
         self.sd = None
-
         self.sf = None
+
         # custom class object
         self.fileHelper = None
         self.controller = None
@@ -46,31 +51,35 @@ class AudioNode(audioNode_pb2_grpc.AudioNodeServiceServicer):
     def InitializeAudioNode(self, request, context):
         self.fileHelper = DirectoryManager()
         playlistDirectories = self.fileHelper.getPlaylists()
-        print(playlistDirectories)
+        self.analyzer = Analyzer()
+        self.analyzer.connectAlgorithims()
         return audioNode_pb2.InitializeAudioNodeResponse(isInitialized=True, playlists=playlistDirectories)
 
     def SendPlaylists(self, request, context):
-        print(request)
         tracksInPlaylist = self.fileHelper.getTracksInPlaylist(request.playlistName)
-        print(tracksInPlaylist)
         return audioNode_pb2.PlaylistResponse(tracks=tracksInPlaylist)
 
     ## Sets up the initial connection with client
     def InitializeControls(self, request, context):
+
         if request.controlRequestType == 'tracks':
             self.controller = TrackController()
-
-
-
         return audioNode_pb2.InitControllerResponse(isConnected=True)
 
 ## 'track' AUDIO PLAY MODE CONTROLS
 
-    def setUpTrack(self, request, context):
-        print('setting up track')
+
+    def SetUpTrack(self, request, context):
+        self.fileHelper.setCurrentTrack(request.playlistIndex, request.trackIndex)
+        self.sf = AudioController()
+        trackPath = self.fileHelper.getCurrentTrackPath()
+        self.sf.setUpTrack(trackPath)
+        return audioNode_pb2.SetUpTrackResponse()
 
 
     def PlayTrack(self, request, context):
+
+
 
         #<------ SF - Variables ------->
         # Block size:
@@ -82,21 +91,22 @@ class AudioNode(audioNode_pb2_grpc.AudioNodeServiceServicer):
         buffersize = patchSize * hopSize
         q = queue.Queue(maxsize=buffersize)
         event = threading.Event()
+
         def cllback(outdata, frames, time, status):
             assert frames == blockS
             if status.output_underflow:
                 print('Output underflow: increase blocksize?', file=sys.stderr)
-                raise sd.CallbackAbort
+                raise self.sd.CallbackAbort
             assert not status
             try:
                 data = q.get_nowait()
             except queue.Empty as e:
                 print('Buffer is empty: increase buffersize?', file=sys.stderr)
-                raise sd.CallbackAbort from e
+                raise self.sd.CallbackAbort from e
             if len(data) < len(outdata):
                 outdata[:len(data)] = data
                 outdata[len(data):].fill(0)
-                raise sd.CallbackStop
+                raise self.sd.CallbackStop
             else:
                 outdata[:] = data
 
@@ -107,29 +117,27 @@ class AudioNode(audioNode_pb2_grpc.AudioNodeServiceServicer):
             self.controller.setPlaying()
             try:
                 for _ in range(20):
-                    data = self.sf.read(blockS)
+                    data = self.sf.sound.read(blockS)
                     if not len(data):
                         break
                     q.put_nowait(data)  # Pre-fill queue
                 self.sd = sd.OutputStream(
-                    samplerate=self.sf.samplerate, blocksize=blockS,
-                    device=1, channels=self.sf.channels,
+                    samplerate=self.sf.sound.samplerate, blocksize=blockS,
+                    device=1, channels=self.sf.sound.channels,
                     callback=cllback, finished_callback=event.set)
                 with self.sd:
-                    timeout = blockS * buffersize / self.sf.samplerate
+                    timeout = blockS * buffersize / self.sf.sound.samplerate
                     while (len(data)) and (self.controller.controllerStatus == 'playing'):
-                        data = self.sf.read(blockS)
+                        data = self.sf.sound.read(blockS)
                         q.put(data, timeout=timeout)
-                        print(self.sf.tell())
-                        yield audioNode_pb2.StreamResponse(streamData=data)
-
+                        dataPoints = self.analyzer.analyzeFrame(data)
+                        yield audioNode_pb2.StreamResponse(data=dataPoints)
                     event.wait()  # Wait until playback is finished
 
 
-                return audioNode_pb2.StreamResponse(responseMessage='done',streamData=[0])
+                return audioNode_pb2.StreamResponse(responseMessage='done')
             except Exception as e:
-                print(e)
-                return audioNode_pb2.StreamResponse(responseMessage='error',streamData=[0])
+                return audioNode_pb2.StreamResponse(responseMessage='error')
 
 
     def PauseTrack(self, request, context):

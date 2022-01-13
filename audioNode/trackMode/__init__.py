@@ -1,3 +1,3 @@
 from .controller import TrackController
-from .audioPlayer import AudioController
+from .audio import AudioController
 from .directory import DirectoryManager

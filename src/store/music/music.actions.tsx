@@ -27,6 +27,18 @@ export const setUpPlaylists = (playlistNames: string[]) => {
   };
 };
 
+export const setUpPlaylistItems = (
+  playlistItems: string[],
+  playlistIndex: number
+) => {
+  return function (dispatch: any) {
+    dispatch({
+      type: musicActionTypes.SET_UP_PLAYLIST_ITEMS,
+      payload: { tracks: playlistItems, index: playlistIndex },
+    });
+  };
+};
+
 // Toggles the add track menu
 export const closePlaylistManager = (playlistKey?: number) => {
   return function (dispatch: any) {
