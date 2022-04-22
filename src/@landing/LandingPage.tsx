@@ -1,14 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 
-interface ILandingPageProps {
-  toggleListMenu: any;
-  closeList: any;
-  key: string | null;
-  trackList: any[];
-}
+interface ILandingPageProps {}
 
-const LandingPage: React.FunctionComponent<ILandingPageProps> = (props) => {
+const LandingPage: React.FunctionComponent<ILandingPageProps> = ({}) => {
   return (
     <div className="home-container">
       <h1>Get Started</h1>

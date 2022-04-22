@@ -52,7 +52,7 @@ class AudioNode(audioNode_pb2_grpc.AudioNodeServiceServicer):
         self.fileHelper = DirectoryManager()
         playlistDirectories = self.fileHelper.getPlaylists()
         self.analyzer = Analyzer()
-        self.analyzer.connectAlgorithims()
+        self.analyzer.connectAlgorithms()
         return audioNode_pb2.InitializeAudioNodeResponse(isInitialized=True, playlists=playlistDirectories)
 
     def SendPlaylists(self, request, context):

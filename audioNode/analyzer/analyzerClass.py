@@ -42,7 +42,7 @@ class Analyzer():
         self.mfcc = MFCC(inputSize=513)
         self.pool = Pool()
 
-    def connectAlgorithims(self):
+    def connectAlgorithms(self):
 
         self.vimp.data >> self.frameCutter.signal
 
@@ -83,6 +83,6 @@ class Analyzer():
 
 
         return [12, 12]
-self.aggPool = PoolAggregator(defaultStats = ['mean', 'var'])
-  self.aggPool(self.pool)
-          print(self.aggPool['lowlevel.mfcc'])
+# self.aggPool = PoolAggregator(defaultStats = ['mean', 'var'])
+# self.aggPool(self.pool)
+# print(self.aggPool['lowlevel.mfcc'])

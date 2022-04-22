@@ -65,6 +65,11 @@ const NavMenu: React.FunctionComponent<INavMenuProps> = (props) => {
             onClick: () => linkClickCallback("Home"),
           },
           {
+            name: "Digital Art",
+            key: "DigitalArt",
+            onClick: () => linkClickCallback("digital-art"),
+          },
+          {
             name: "Play Live",
             key: "Live",
             onClick: () => linkClickCallback("Live"),

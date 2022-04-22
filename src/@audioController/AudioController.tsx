@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import IdleTimer from "react-idle-timer";
-import { sanitizeFileName } from "../utils";
+import { useSanitizeFileName } from "../utils";
 import { IPlaylist } from "data";
 import {
   Volume,
@@ -73,7 +73,7 @@ const AudioController: React.FunctionComponent<IAudioControlerProps> = ({
 
   useEffect(() => {
     let cleanAudioFiles = audioFiles.map((item, index) =>
-      sanitizeFileName(item.src)
+      useSanitizeFileName(item.src)
     );
     let init = new InitControllerRequest();
     init.setControlrequesttype("tracks");
