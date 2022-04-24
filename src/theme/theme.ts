@@ -18,13 +18,7 @@ export const THEME: DefaultTheme = {
       text02: "#c6cdd2",
       text03: "#98a5ae",
     },
-    threshold: {
-      low: "#a0f751",
-      lowmid: "#d1d40e",
-      mid: "#f9ef00",
-      midhigh: "#ff7326",
-      high: "#dc4545",
-    },
+
     brand: {
       brand01: "#0081a1",
       brand02: "#59cbe8",
@@ -32,7 +26,7 @@ export const THEME: DefaultTheme = {
   },
   font: {
     default: {
-      family: "Inter, Arial, Helvetica, sans-serif",
+      family: "AnimationS",
       weight: {
         light: 200,
         normal: 400,

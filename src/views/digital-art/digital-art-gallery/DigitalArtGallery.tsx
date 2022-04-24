@@ -1,19 +1,24 @@
 import React from "react";
-import { MosaicGallery } from "@hjd/ui";
+import { selectPiece } from "../context/slice";
+import { useDigitalArtContext } from "../context/useDigitalArtContext";
 import { GalleryContainer } from "../StyledComponents";
+import { Card } from "./../../../components";
 
 export const DigitalArtGallery = () => {
-  const items = [
-    { title: "Piece One", imageUrl: "t" },
-    { title: "Piece 2", imageUrl: "t" },
-  ];
+  const { dispatch, pieces } = useDigitalArtContext();
 
   const onCardClick = (index: number) => {
-    console.log(index);
+    dispatch(selectPiece(index));
   };
   return (
     <GalleryContainer>
-      <MosaicGallery items={items} onClickCallback={onCardClick} />
+      {pieces.map((item, index) => (
+        <Card
+          key={index}
+          cardDetails={{ title: item.title }}
+          onClick={() => onCardClick(index)}
+        />
+      ))}
     </GalleryContainer>
   );
 };

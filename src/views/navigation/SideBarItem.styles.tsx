@@ -50,6 +50,8 @@ export const SideBarLink = styled.a<{
   overflow: hidden;
   position: relative;
   cursor: pointer;
+  font-family: "HarryDuncan";
+  font-size: 2rem;
 
   && {
     color: ${({ theme }) => theme.colors.mono.text01};

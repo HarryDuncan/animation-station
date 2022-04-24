@@ -11,6 +11,7 @@
         "fileName": false, // generate another classname
         "preprocess": false
       }
-    ]
+    ],
+    ["@babel/plugin-transform-runtime"]
   ]
 }

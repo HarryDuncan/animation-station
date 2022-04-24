@@ -32,6 +32,7 @@ export const StyledSideBar = styled.nav`
   width: ${SIDE_BAR_WIDTH}px;
   height: 100vh;
   display: flex;
+  z-index: 500;
   flex-direction: column;
   transition: width ${SIDE_BAR_TRANSITION_SPEED}s ease-out,
     box-shadow ${SIDE_BAR_TRANSITION_SPEED}s ease-out;
@@ -100,5 +101,6 @@ export const SideBarLinkTitle = styled.span`
   flex: 1 1 1px;
   white-space: nowrap;
   overflow: hidden;
+  font-family: ${({ theme }) => theme.font.default.family}
   font-size: ${SIDE_BAR_LINK_FONT_SIZE};
 `;

@@ -1,5 +1,6 @@
 import React from "react";
 import SideBarItem, { ISideBarItem } from "./SideBarItem";
+import { Link } from "react-router-dom";
 
 import {
   SideBarLinkList,
@@ -14,7 +15,11 @@ interface ISideBarProps {
 const SideBar = ({ navItems }: ISideBarProps) => {
   return (
     <StyledSideBar>
-      <SideBarTitleContainer></SideBarTitleContainer>
+      <SideBarTitleContainer>
+        <Link to={"/"}>
+          <h1>GLO</h1>
+        </Link>
+      </SideBarTitleContainer>
       <SideBarLinkList>
         <SideBarItemList items={navItems as ISideBarItem[]} />
       </SideBarLinkList>
