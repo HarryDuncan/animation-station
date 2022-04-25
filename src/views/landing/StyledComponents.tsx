@@ -8,11 +8,12 @@ export const LandingContainer = styled.div`
   padding-left: ${SIDE_BAR_WIDTH};
 `;
 
-export const DigitalArtHeader = styled.div`
-  display: flex;
-  margin: 0 auto;
-`;
-export const GalleryContainer = styled.div`
-  width: 70%;
-  margin: 0 auto;
+export const LandingPageTitle = styled.h1`
+  position: absolute;
+  z-index: 100;
+  top: 30%;
+  left: 30%;
+  font-size: 5rem;
+  width: 40%;
+  color: white;
 `;

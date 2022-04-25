@@ -1,6 +1,6 @@
 export const fragShader = `#define PI 3.14159265359
 #define TWO_PI 6.28318530718
-#define time iTime
+
 #define resolution iResolution.xy
 #define size 0.0240525
 #define lineSize 0.24540144
@@ -11,7 +11,9 @@ export const fragShader = `#define PI 3.14159265359
 #define delay2 6.429779
 #define speed 0.39144516
 
-
+varying vec2 vUv;
+uniform vec3 iResolution;
+uniform float iTime;
 float impulse( float k, float x )
 {
     float h = k*x;
@@ -64,7 +66,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
   st = st *2.-1.;
   
   // Number of sides of your shape
-  int N = 3;
+  int N = 9;
 
   // Angle and radius from the current pixel
   vec3 colorNew = vec3(0);
@@ -72,17 +74,17 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
   for(int i=0;i<5;i++) {
       
       float m = (float(i)/5.);
-      st.y += size*m*sin(time/3.);
-      float a = atan(st.x,st.y)+PI+(morph*m) + (0.03*m * sin(time));
+      st.y += size*m*sin(iTime/3.);
+      float a = atan(st.x,st.y)+PI+(morph*m) + (0.03*m * sin(iTime));
       float r = TWO_PI/float(N);
       
       d = cos(floor(.5+a/r)*r-a )*length(st);
       d = impulse(d,delayAmount);
       vec3 color = vec3(0.0);
       float check = delay2 * (1.-length(st));
-      color.r = plot(fract(d*grid - check + time*speed));
-      color.g = plot(fract(d*grid - check + time*speed*0.8));
-      color.b = plot(fract(d*grid - check + time*speed*0.6));
+      color.r = plot(fract(d*grid - check + iTime*speed));
+      color.g = plot(fract(d*grid - check + iTime*speed*0.8));
+      color.b = plot(fract(d*grid - check + iTime*speed*0.6));
       colorNew+= ( color*m );
     }
     
@@ -95,4 +97,13 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     fragColor = vec4( hsb2rgb(hue)-colorNew*0.2 ,1.);
 
   
-}`;
+}
+
+
+void main( void ){
+    vec4 color = vec4(0.0,0.0,0.0,1.0);
+    mainImage( color, vUv * iResolution.xy );
+    color.w = 1.0;
+    gl_FragColor = color;
+  }
+`;

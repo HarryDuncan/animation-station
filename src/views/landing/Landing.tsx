@@ -1,14 +1,17 @@
 import React from "react";
 import { AnimationWidget } from "../../components/animation-widget/AnimationWidget";
-import { PageTitle } from "../../components/page-text";
-import { LandingContainer } from "./StyledComponents";
+import { Overlay } from "../../components/overlay/Overlay";
+import { LandingContainer, LandingPageTitle } from "./StyledComponents";
 
 export const Landing = () => {
-  const landingScene = { title: "Landing", name: "Landing", assetUrls: {} };
+  const landingScene = { title: "cosmic", name: "Cosmic", assetUrls: {} };
 
   return (
     <LandingContainer>
-      <PageTitle>Welcome To GLO</PageTitle>
+      <Overlay>
+        <LandingPageTitle>Welcome To GLO</LandingPageTitle>
+      </Overlay>
+
       <AnimationWidget scenes={[landingScene]} />
     </LandingContainer>
   );
