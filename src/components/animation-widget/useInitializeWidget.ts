@@ -3,7 +3,7 @@ import { Clock, WebGLRenderer } from "three";
 import { INITIAL_FRAMEWORK } from "./consts";
 import { IAnimationWidgetScene, IFramework } from "./interfaces";
 import { getHeightVhToPx, getWidthVwToPx } from "./utils";
-import * as Scenes from "./scenes";
+import * as Scenes from "../../@visual/scenes/widget-scenes";
 
 export const useInitializeWidget = (
   scenes: IAnimationWidgetScene[],

@@ -30,7 +30,8 @@
     "style-loader": "^2.0.0",
     "testing-library": "0.0.2",
     "webpack": "^5.20.2",
-    "webpack-cli": "^3.3.12"
+    "webpack-cli": "^3.3.12",
+    "webpack-obj-loader": "^1.0.4"
   },
   "private": false,
   "dependencies": {

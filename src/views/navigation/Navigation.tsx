@@ -11,6 +11,11 @@ export const Navigation = () => {
           title: "Digital Art",
           link: "digital-art",
         },
+        {
+          key: "sandbox",
+          title: "Sandbox",
+          link: "sandbox",
+        },
       ],
       []
     );

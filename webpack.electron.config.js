@@ -43,6 +43,10 @@ module.exports = {
         ],
       },
       {
+        test: /\.obj$/i,
+        use: [{ loader: "webpack-obj-loader" }],
+      },
+      {
         test: /\.(glb|gltf)$/,
         use: [
           {

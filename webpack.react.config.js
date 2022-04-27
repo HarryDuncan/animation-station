@@ -27,6 +27,10 @@ module.exports = {
         ],
       },
       {
+        test: /\.obj$/i,
+        use: [{ loader: "webpack-obj-loader" }],
+      },
+      {
         test: /\.s[ac]ss$/i,
         use: [
           // Creates `style` nodes from JS strings

@@ -15,6 +15,7 @@ import { Provider } from "react-redux";
 import styled, { ThemeProvider } from "styled-components";
 import { THEME } from "./theme/theme";
 import GlobalStyle from "./theme/GlobalStyle";
+import { Sandbox } from "./views/sanbox/Sandbox";
 
 interface AppProps {}
 
@@ -40,6 +41,7 @@ export const App: React.FunctionComponent<AppProps> = ({}) => {
             <Navigation />
             <Switch>
               <Route exact path="/digital-art" component={DigitalArt} />
+              <Route exact path="/sandbox" component={Sandbox} />
               <Route exact path="/" component={Landing} />
             </Switch>
           </AppContainer>

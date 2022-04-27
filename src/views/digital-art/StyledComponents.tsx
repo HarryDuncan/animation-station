@@ -6,6 +6,7 @@ export const DigitalArtContainer = styled.div`
   height: 100vh;
   background-color: ${({ theme }) => theme.colors.mono.ui06};
   padding-left: ${SIDE_BAR_WIDTH};
+  position: relative;
 `;
 
 export const DigitalArtHeader = styled.div`
